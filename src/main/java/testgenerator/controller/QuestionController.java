@@ -14,7 +14,7 @@ public class QuestionController {
 
     private final QuestionService questionService;
 
-    @GetMapping("/get/{id}")
+    @GetMapping("/find/{id}")
     public QuestionEntity findById(@PathVariable long id) {
         return questionService.findById(id);
     }
