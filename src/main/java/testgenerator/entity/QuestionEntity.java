@@ -20,6 +20,9 @@ public class QuestionEntity {
     private String level;
 
     @Column
+    private String subject;
+
+    @Column
     private String questionText;
 
 }

@@ -10,6 +10,7 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class QuestionService {
+
     private final QuestionRepository questionRepository;
 
     public QuestionEntity save(QuestionEntity questionEntity) {
