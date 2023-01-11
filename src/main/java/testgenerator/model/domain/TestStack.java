@@ -10,13 +10,13 @@ import javax.persistence.*;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class TestStackEntity extends SuperEntity {
+public class TestStack extends SuperEntity {
 
     @ManyToOne
     @JoinColumn(name = "stack_id")
-    private StackEntity stack;
+    private Stack stack;
 
     @ManyToOne
     @JoinColumn(name = "test_id")
-    private TestEntity test;
+    private Test test;
 }

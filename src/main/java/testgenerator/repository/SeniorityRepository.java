@@ -2,8 +2,8 @@ package testgenerator.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
-import testgenerator.model.domain.SeniorityEntity;
+import testgenerator.model.domain.Seniority;
 
 @Repository
-public interface SeniorityRepository extends JpaRepository<SeniorityEntity, Long> {
+public interface SeniorityRepository extends JpaRepository<Seniority, Long> {
 }

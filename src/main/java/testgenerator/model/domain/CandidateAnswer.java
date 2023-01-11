@@ -10,7 +10,7 @@ import javax.persistence.*;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class CandidateAnswerEntity extends SuperEntity {
+public class CandidateAnswer extends SuperEntity {
 
     @Column(name = "answer")
     private String answer;
@@ -20,10 +20,10 @@ public class CandidateAnswerEntity extends SuperEntity {
 
     @ManyToOne
     @JoinColumn(name = "test_question_id")
-    private TestQuestionEntity testQuestion;
+    private TestQuestion testQuestion;
 
     @ManyToOne
     @JoinColumn(name = "chosen_answer_id")
-    private AnswerEntity chosenAnswer;
+    private Answer chosenAnswer;
 
 }

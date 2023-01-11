@@ -10,7 +10,7 @@ import javax.persistence.*;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class StackEntity extends SuperEntity {
+public class Stack extends SuperEntity {
 
     @Column(name = "name", nullable = false)
     private String name;

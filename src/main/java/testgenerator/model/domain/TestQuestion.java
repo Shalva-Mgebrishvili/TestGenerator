@@ -11,7 +11,7 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class TestQuestionEntity extends SuperEntity {
+public class TestQuestion extends SuperEntity {
 
     @ManyToOne
     @JoinColumn(name = "question_id", nullable = false)
@@ -19,9 +19,9 @@ public class TestQuestionEntity extends SuperEntity {
 
     @ManyToOne
     @JoinColumn(name = "test_id", nullable = false)
-    private TestEntity test;
+    private Test test;
 
     @OneToMany(mappedBy = "testQuestion")
-    private List<CandidateAnswerEntity> candidateAnswers;
+    private List<CandidateAnswer> candidateAnswers;
 
 }

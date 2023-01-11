@@ -1,30 +1,26 @@
 package testgenerator.model.dto;
 
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.springframework.beans.BeanUtils;
-import testgenerator.model.domain.AnswerEntity;
-import testgenerator.model.domain.CandidateAnswerEntity;
-import testgenerator.model.domain.TestQuestionEntity;
-import testgenerator.model.domain.TestResultEntity;
+import testgenerator.model.domain.Answer;
+import testgenerator.model.domain.CandidateAnswer;
+import testgenerator.model.domain.TestQuestion;
+import testgenerator.model.domain.TestResult;
 
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
+@AllArgsConstructor
 public class CandidateAnswerDto {
 
-    private Long candidateAnswerId;
+    private Long id;
 
     private String answer;
 
     private Integer candidatePoint;
 
-    private TestQuestionEntity testQuestion;
+    private TestQuestion testQuestion;
 
-    private AnswerEntity chosenAnswer;
+    private Answer chosenAnswer;
 
-    private TestResultEntity testResult;
-
-    public CandidateAnswerDto(CandidateAnswerEntity candidateAnswer) {
-        BeanUtils.copyProperties(candidateAnswer, this);
-    }
 }

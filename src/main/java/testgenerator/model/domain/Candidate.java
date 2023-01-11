@@ -11,7 +11,7 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class CandidateEntity extends SuperEntity {
+public class Candidate extends SuperEntity {
 
     @Column(name = "name")
     private String name;
@@ -23,6 +23,6 @@ public class CandidateEntity extends SuperEntity {
     private String email;
 
     @ManyToMany(mappedBy = "candidates")
-    private List<TestEntity> tests;
+    private List<Test> tests;
 
 }

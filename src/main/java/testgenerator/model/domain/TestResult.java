@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class TestResultEntity extends SuperEntity {
+public class TestResult extends SuperEntity {
 
     //    ?????
     @Column(name = "test_start_date")
@@ -33,7 +33,7 @@ public class TestResultEntity extends SuperEntity {
 
     @ManyToOne
     @JoinColumn(name = "test_id")
-    private TestEntity test;
+    private Test test;
 
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)

@@ -29,8 +29,4 @@ public class QuestionDto {
 
     private Long seniority;
 
-//    public QuestionDto(Question question){
-//        this.id=question.getId();
-//    }
-
 }

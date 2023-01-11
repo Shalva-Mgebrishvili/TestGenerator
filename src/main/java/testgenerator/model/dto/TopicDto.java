@@ -1,27 +1,23 @@
 package testgenerator.model.dto;
 
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.springframework.beans.BeanUtils;
 import testgenerator.model.domain.Question;
-import testgenerator.model.domain.StackEntity;
-import testgenerator.model.domain.TopicEntity;
+import testgenerator.model.domain.Stack;
+import testgenerator.model.domain.Topic;
 
 import java.util.List;
 
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
+@AllArgsConstructor
 public class TopicDto {
 
-    private Long topicId;
+    private Long id;
 
     private String name;
 
-    private StackEntity stack;
+    private Stack stack;
 
-    private List<Question> questions;
-
-    public TopicDto(TopicEntity topic) {
-        BeanUtils.copyProperties(topic, this);
-    }
 }

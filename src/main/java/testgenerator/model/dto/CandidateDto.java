@@ -1,18 +1,19 @@
 package testgenerator.model.dto;
 
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.springframework.beans.BeanUtils;
-import testgenerator.model.domain.CandidateEntity;
-import testgenerator.model.domain.TestEntity;
+import testgenerator.model.domain.Candidate;
+import testgenerator.model.domain.Test;
 
 import java.util.List;
 
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
+@AllArgsConstructor
 public class CandidateDto {
 
-    private Long candidateId;
+    private Long id;
 
     private String name;
 
@@ -20,9 +21,6 @@ public class CandidateDto {
 
     private String email;
 
-    private List<TestEntity> tests;
+    private List<Test> tests;
 
-    public CandidateDto(CandidateEntity candidate) {
-        BeanUtils.copyProperties(candidate, this);
-    }
 }

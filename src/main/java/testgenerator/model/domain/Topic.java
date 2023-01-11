@@ -10,13 +10,13 @@ import javax.persistence.*;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class TopicEntity extends  SuperEntity {
+public class Topic extends  SuperEntity {
 
     @Column(name = "name", nullable = false)
     private String name;
 
     @ManyToOne
     @JoinColumn(name = "stack_id")
-    private StackEntity stack;
+    private Stack stack;
 
 }

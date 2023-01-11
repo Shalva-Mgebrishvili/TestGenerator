@@ -10,7 +10,7 @@ import javax.persistence.*;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class SeniorityEntity extends SuperEntity {
+public class Seniority extends SuperEntity {
     @Column(name = "seniority_level", nullable = false)
     private String seniorityLevel;
 

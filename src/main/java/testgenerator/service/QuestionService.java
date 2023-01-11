@@ -2,13 +2,12 @@ package testgenerator.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import testgenerator.model.domain.Question;
 import testgenerator.model.enums.Status;
 import testgenerator.repository.QuestionRepository;
 
-import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -21,11 +20,11 @@ public class QuestionService {
         return questionRepository.findByIdAndStatus(id, status);
     }
 
-    public Page<Question> findAll(Status status) {
-        return questionRepository.findAllByStatus(status, PageRequest.ofSize(10));
+    public Page<Question> findAll(Status status, Pageable pageable) {
+        return questionRepository.findAllByStatus(status, pageable);
     }
 
-    public Question add(Question questionEntity) {
-        return questionRepository.save(questionEntity);
+    public Question add(Question question) {
+        return questionRepository.save(question);
     }
 }

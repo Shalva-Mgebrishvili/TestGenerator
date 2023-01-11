@@ -29,10 +29,10 @@ public class Question extends SuperEntity {
 
     @ManyToOne
     @JoinColumn(name = "topic_id", nullable = false)
-    private TopicEntity topic;
+    private Topic topic;
 
     @ManyToOne
     @JoinColumn(name = "seniority_id", nullable = false)
-    private SeniorityEntity seniority;
+    private Seniority seniority;
 
 }

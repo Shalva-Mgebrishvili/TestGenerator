@@ -1,16 +1,17 @@
 package testgenerator.model.dto;
 
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.springframework.beans.BeanUtils;
-import testgenerator.model.domain.AnswerEntity;
+import testgenerator.model.domain.Answer;
 import testgenerator.model.domain.Question;
 
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
+@AllArgsConstructor
 public class AnswerDto {
 
-    private Long answerId;
+    private Long id;
 
     private String answer;
 
@@ -18,7 +19,4 @@ public class AnswerDto {
 
     private Question question;
 
-    public AnswerDto(AnswerEntity answer) {
-        BeanUtils.copyProperties(answer, this);
-    }
 }

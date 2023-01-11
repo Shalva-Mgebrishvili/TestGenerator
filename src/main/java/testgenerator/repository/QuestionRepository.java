@@ -19,7 +19,6 @@ public interface QuestionRepository extends JpaRepository<Question, Long> {
         FROM Question q
         WHERE q.id = :question_id
         AND q.status = :status
-        order by q.id 
         """)
     Optional<Question> findByIdAndStatus(
             @Param("question_id") Long QuestionId,
