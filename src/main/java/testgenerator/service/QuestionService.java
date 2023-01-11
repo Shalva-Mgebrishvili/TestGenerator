@@ -17,27 +17,15 @@ public class QuestionService {
 
     private final QuestionRepository questionRepository;
 
-//    public QuestionEntity save(QuestionEntity questionEntity) {
-//        return questionRepository.save(questionEntity);
-//    }
-
-    public Optional<Question> findById(long id, Status status) {
+    public Optional<Question> findById(Long id, Status status) {
         return questionRepository.findByIdAndStatus(id, status);
     }
 
     public Page<Question> findAll(Status status) {
         return questionRepository.findAllByStatus(status, PageRequest.ofSize(10));
     }
-//
-//    public void update(long id, QuestionEntity questionEntity) {
-//        QuestionEntity updateQuestion = findById(id);
-//        updateQuestion.setSeniority(questionEntity.getSeniority());
-//        updateQuestion.setTopic(questionEntity.getTopic());
-//        updateQuestion.setText(questionEntity.getText());
-//        questionRepository.save(updateQuestion);
-//    }
-//
-//    public void deleteById(long id) {
-//        questionRepository.deleteById(id);
-//    }
+
+    public Question add(Question questionEntity) {
+        return questionRepository.save(questionEntity);
+    }
 }
