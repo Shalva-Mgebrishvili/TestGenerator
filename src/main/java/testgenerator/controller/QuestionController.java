@@ -2,6 +2,9 @@ package testgenerator.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -23,11 +26,18 @@ public class QuestionController {
     }
 
     @GetMapping("/findAll")
-    public ResponseEntity<Page<QuestionDto>> findAll(Integer offset, Integer limit){
-        return ResponseEntity.status(HttpStatus.OK).body(questionFacade.findAll(offset, limit));
+    public ResponseEntity<Page<QuestionDto>> findAll(
+            @RequestParam(value = "page", defaultValue = "0", required = false) Integer page,
+            @RequestParam(value = "size", defaultValue = "20", required = false) Integer size,
+            @RequestParam(value = "direction", defaultValue = "ASC", required = false) Sort.Direction direction,
+            @RequestParam(value = "sort", defaultValue = "id", required = false) String sort){
+
+        Pageable pageable = PageRequest.of(page, size, Sort.by(direction, sort));
+
+        return ResponseEntity.status(HttpStatus.OK).body(questionFacade.findAll(pageable));
     }
 
-    @PostMapping("/create")
+    @PostMapping("/add")
     public ResponseEntity<QuestionDto> add(@RequestBody QuestionParam param) {
         return ResponseEntity.status(HttpStatus.OK).body(questionFacade.add(param));
     }
