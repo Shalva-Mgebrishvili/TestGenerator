@@ -18,6 +18,6 @@ public class TopicDto {
 
     private String name;
 
-    private Stack stack;
+    private StackDto stack;
 
 }
