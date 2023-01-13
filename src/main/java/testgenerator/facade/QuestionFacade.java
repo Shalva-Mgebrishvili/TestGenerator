@@ -36,8 +36,8 @@ public class QuestionFacade {
     }
 
     public QuestionDto add(QuestionParam param) {
-        Topic topic;
-        Seniority seniority;
+        Topic topic = new Topic();
+        Seniority seniority = new Seniority();
         //SERVICES NEEDED-------------------------------------
 
         Question question = QuestionMapper.paramToQuestion(param, topic, seniority);
@@ -46,8 +46,8 @@ public class QuestionFacade {
     }
 
     public QuestionDto update(Long id, QuestionParam param) {
-        Topic topic;
-        Seniority seniority;
+        Topic topic = new Topic();
+        Seniority seniority = new Seniority();
         //SERVICES NEEDED-------------------------------------
 
         Question updateQuestion = service.findById(id,Status.ACTIVE).orElseThrow(
