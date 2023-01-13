@@ -1,12 +1,8 @@
 package testgenerator.model.dto;
 
 import lombok.*;
-import testgenerator.model.domain.Candidate;
 import testgenerator.model.domain.Seniority;
-import testgenerator.model.domain.TestQuestion;
-import testgenerator.model.domain.TestStack;
 
-import java.util.List;
 
 @Getter
 @Setter
@@ -14,13 +10,10 @@ import java.util.List;
 @AllArgsConstructor
 public class TestDto {
 
-    private Integer givenTime;
+    private Long id;
 
-    private List<TestStack> testStacks;
+    private Integer givenTime;
 
     private Seniority seniority;
 
-    private List<TestQuestion> testQuestions;
-
-    private List<Candidate> candidates;
 }
