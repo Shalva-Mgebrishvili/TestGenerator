@@ -14,18 +14,18 @@ import testgenerator.model.params.QuestionParam;
 
 
 @RestController
-@RequestMapping ("/question")
+@RequestMapping ("/questions")
 @RequiredArgsConstructor
 public class QuestionController {
 
     private final QuestionFacade questionFacade;
 
-    @GetMapping("/find/{id}")
-    public ResponseEntity<QuestionDto> findById(@PathVariable Long id) throws Exception {
+    @GetMapping("/{id}")
+    public ResponseEntity<QuestionDto> findById(@PathVariable Long id) {
         return ResponseEntity.status(HttpStatus.OK).body(questionFacade.findById(id));
     }
 
-    @GetMapping("/findAll")
+    @GetMapping
     public ResponseEntity<Page<QuestionDto>> findAll(
             @RequestParam(value = "page", defaultValue = "0", required = false) Integer page,
             @RequestParam(value = "size", defaultValue = "20", required = false) Integer size,
@@ -37,18 +37,18 @@ public class QuestionController {
         return ResponseEntity.status(HttpStatus.OK).body(questionFacade.findAll(pageable));
     }
 
-    @PostMapping("/add")
+    @PostMapping
     public ResponseEntity<QuestionDto> add(@RequestBody QuestionParam param) {
         return ResponseEntity.status(HttpStatus.OK).body(questionFacade.add(param));
     }
 
-    @PutMapping("/update/{id}")
-    public ResponseEntity<QuestionDto> update(@PathVariable Long id, @RequestBody QuestionParam param) throws Exception {
+    @PutMapping("/{id}")
+    public ResponseEntity<QuestionDto> update(@PathVariable Long id, @RequestBody QuestionParam param) {
         return ResponseEntity.status(HttpStatus.OK).body(questionFacade.update(id, param));
     }
 
-    @DeleteMapping("/delete/{id}")
-    public ResponseEntity<Void> delete(@PathVariable Long id) throws Exception {
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> delete(@PathVariable Long id) {
         questionFacade.deleteById(id);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }

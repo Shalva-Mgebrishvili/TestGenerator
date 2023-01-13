@@ -3,8 +3,12 @@ package testgenerator.facade;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 import testgenerator.model.domain.Question;
+import testgenerator.model.domain.Seniority;
+import testgenerator.model.domain.Topic;
 import testgenerator.model.dto.QuestionDto;
 import testgenerator.model.enums.Status;
 import testgenerator.model.mapper.QuestionMapper;
@@ -18,8 +22,9 @@ public class QuestionFacade {
 
     private final QuestionService service;
 
-    public QuestionDto findById(Long id) throws Exception {
-        Question question = service.findById(id,Status.ACTIVE).orElseThrow(() -> new Exception("Question with ID: " + id + " not found."));
+    public QuestionDto findById(Long id) {
+        Question question = service.findById(id,Status.ACTIVE).orElseThrow(
+                () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Question with ID: " + id + " not found."));
 
         return QuestionMapper.questionDto(question);
     }
@@ -31,21 +36,31 @@ public class QuestionFacade {
     }
 
     public QuestionDto add(QuestionParam param) {
-        Question question = QuestionMapper.paramToQuestion(param);
+        Topic topic;
+        Seniority seniority;
+        //SERVICES NEEDED-------------------------------------
+
+        Question question = QuestionMapper.paramToQuestion(param, topic, seniority);
 
         return QuestionMapper.questionDto(service.add(question));
     }
 
-    public QuestionDto update(Long id, QuestionParam param) throws Exception {
-        Question updateQuestion = service.findById(id,Status.ACTIVE).orElseThrow(() -> new Exception("Question with ID: " + id + " not found."));
+    public QuestionDto update(Long id, QuestionParam param) {
+        Topic topic;
+        Seniority seniority;
+        //SERVICES NEEDED-------------------------------------
 
-        Question question = QuestionMapper.updateQuestionWithParam(param, updateQuestion);
+        Question updateQuestion = service.findById(id,Status.ACTIVE).orElseThrow(
+                () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Question with ID: " + id + " not found."));
+
+        Question question = QuestionMapper.updateQuestionWithParam(param, updateQuestion, topic, seniority);
 
         return QuestionMapper.questionDto(service.add(question));
     }
 
-    public void deleteById(Long id) throws Exception {
-        Question question = service.findById(id, Status.ACTIVE).orElseThrow(() -> new Exception("Question with ID: " + id + " not found."));
+    public void deleteById(Long id) {
+        Question question = service.findById(id, Status.ACTIVE).orElseThrow(
+                () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Question with ID: " + id + " not found."));
         question.setStatus(Status.DEACTIVATED);
         service.add(question);
     }

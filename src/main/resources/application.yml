@@ -6,11 +6,11 @@ spring:
   datasource:
     driver-class-name: org.postgresql.Driver
     url: jdbc:postgresql://localhost:5432/test
-    username: myusername
+    username: myusername #${DB_USERNAME}
     password: mypassword
   jpa:
     hibernate:
-      ddl-auto: create
+      ddl-auto: update
     show-sql: true
     database: postgresql
     generate-ddl: true

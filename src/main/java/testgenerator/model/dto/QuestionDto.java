@@ -21,8 +21,10 @@ public class QuestionDto {
 
     private QuestionType questionType;
 
-    private Long topic;
+    private TopicShortDto topic;
 
-    private Long seniority;
+    //TopicShortDTO(Long id, String name), same with seniority
+
+    private SeniorityDto seniority;
 
 }
