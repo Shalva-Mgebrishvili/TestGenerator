@@ -3,9 +3,7 @@ package testgenerator.facade;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
 import testgenerator.model.domain.Seniority;
 import testgenerator.model.dto.SeniorityDto;
 import testgenerator.model.enums.Status;
@@ -20,8 +18,7 @@ public class SeniorityFacade {
     private final SeniorityService service;
 
     public SeniorityDto findById(Long id){
-        Seniority seniority = service.findById(id, Status.ACTIVE).orElseThrow(
-                () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Seniority with ID: " + id + " not found."));
+        Seniority seniority = service.findById(id, Status.ACTIVE);
 
         return SeniorityMapper.seniorityDto(seniority);
     }
@@ -42,8 +39,7 @@ public class SeniorityFacade {
 
     public SeniorityDto update(Long id, SeniorityParam param) {
 
-        Seniority updateSeniority = service.findById(id,Status.ACTIVE).orElseThrow(
-                () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Seniority with ID: " + id + " not found."));
+        Seniority updateSeniority = service.findById(id,Status.ACTIVE);
 
         Seniority seniority = SeniorityMapper.updateSeniorityWithParam(param, updateSeniority);
 
@@ -51,9 +47,9 @@ public class SeniorityFacade {
     }
 
     public void deleteById(Long id) {
-        Seniority seniority = service.findById(id, Status.ACTIVE).orElseThrow(
-                () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Seniority with ID: " + id + " not found."));
+        Seniority seniority = service.findById(id, Status.ACTIVE);
         seniority.setStatus(Status.DEACTIVATED);
+
         service.add(seniority);
     }
 }

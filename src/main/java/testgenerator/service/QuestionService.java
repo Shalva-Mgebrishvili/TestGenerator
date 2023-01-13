@@ -3,7 +3,9 @@ package testgenerator.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 import testgenerator.model.domain.Question;
 import testgenerator.model.enums.Status;
 import testgenerator.repository.QuestionRepository;
@@ -16,8 +18,12 @@ public class QuestionService {
 
     private final QuestionRepository questionRepository;
 
-    public Optional<Question> findById(Long id, Status status) {
-        return questionRepository.findByIdAndStatus(id, status);
+    public Question findById(Long id, Status status) {
+        Optional<Question> question = questionRepository.findByIdAndStatus(id, status);
+
+        if(question.isEmpty()) throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Question with ID: " + id + " not found.");
+
+        return question.get();
     }
 
     public Page<Question> findAll(Status status, Pageable pageable) {

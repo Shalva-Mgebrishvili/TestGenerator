@@ -3,9 +3,7 @@ package testgenerator.facade;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
 import testgenerator.model.domain.Stack;
 import testgenerator.model.dto.StackDto;
 import testgenerator.model.enums.Status;
@@ -20,8 +18,7 @@ public class StackFacade {
     private final StackService service;
 
     public StackDto findById(Long id) {
-        Stack stack = service.findById(id, Status.ACTIVE).orElseThrow(
-                () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Stack with ID: " + id + " not found."));
+        Stack stack = service.findById(id, Status.ACTIVE);
 
         return StackMapper.stackDto(stack);
     }
@@ -39,8 +36,7 @@ public class StackFacade {
     }
 
     public StackDto update(Long id, StackParam param) {
-        Stack updateStack = service.findById(id,Status.ACTIVE).orElseThrow(
-                () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Stack with ID: " + id + " not found."));
+        Stack updateStack = service.findById(id,Status.ACTIVE);
 
         Stack stack = StackMapper.updateStackWithParam(param, updateStack);
 
@@ -48,9 +44,7 @@ public class StackFacade {
     }
 
     public void deleteById(Long id) {
-        Stack stack = service.findById(id, Status.ACTIVE).orElseThrow(
-                () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Stack with ID: " + id + " not found."));
-
+        Stack stack = service.findById(id, Status.ACTIVE);
         stack.setStatus(Status.DEACTIVATED);
 
         service.add(stack);
