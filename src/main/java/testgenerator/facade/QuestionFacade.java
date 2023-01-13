@@ -3,9 +3,7 @@ package testgenerator.facade;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
 import testgenerator.model.domain.Question;
 import testgenerator.model.domain.Seniority;
 import testgenerator.model.domain.Topic;
@@ -14,6 +12,8 @@ import testgenerator.model.enums.Status;
 import testgenerator.model.mapper.QuestionMapper;
 import testgenerator.model.params.QuestionParam;
 import testgenerator.service.QuestionService;
+import testgenerator.service.SeniorityService;
+import testgenerator.service.TopicService;
 
 
 @Service
@@ -21,10 +21,11 @@ import testgenerator.service.QuestionService;
 public class QuestionFacade {
 
     private final QuestionService service;
+    private final SeniorityService seniorityService;
+    private final TopicService topicService;
 
     public QuestionDto findById(Long id) {
-        Question question = service.findById(id,Status.ACTIVE).orElseThrow(
-                () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Question with ID: " + id + " not found."));
+        Question question = service.findById(id,Status.ACTIVE);
 
         return QuestionMapper.questionDto(question);
     }
@@ -36,9 +37,8 @@ public class QuestionFacade {
     }
 
     public QuestionDto add(QuestionParam param) {
-        Topic topic = new Topic();
-        Seniority seniority = new Seniority();
-        //SERVICES NEEDED-------------------------------------
+        Topic topic = topicService.findById(param.getTopic(), Status.ACTIVE);
+        Seniority seniority = seniorityService.findById(param.getSeniority(), Status.ACTIVE);
 
         Question question = QuestionMapper.paramToQuestion(param, topic, seniority);
 
@@ -46,12 +46,10 @@ public class QuestionFacade {
     }
 
     public QuestionDto update(Long id, QuestionParam param) {
-        Topic topic = new Topic();
-        Seniority seniority = new Seniority();
-        //SERVICES NEEDED-------------------------------------
+        Topic topic = topicService.findById(param.getTopic(), Status.ACTIVE);
+        Seniority seniority = seniorityService.findById(param.getSeniority(), Status.ACTIVE);
 
-        Question updateQuestion = service.findById(id,Status.ACTIVE).orElseThrow(
-                () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Question with ID: " + id + " not found."));
+        Question updateQuestion = service.findById(id,Status.ACTIVE);
 
         Question question = QuestionMapper.updateQuestionWithParam(param, updateQuestion, topic, seniority);
 
@@ -59,9 +57,9 @@ public class QuestionFacade {
     }
 
     public void deleteById(Long id) {
-        Question question = service.findById(id, Status.ACTIVE).orElseThrow(
-                () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Question with ID: " + id + " not found."));
+        Question question = service.findById(id, Status.ACTIVE);
         question.setStatus(Status.DEACTIVATED);
+
         service.add(question);
     }
 

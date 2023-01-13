@@ -2,6 +2,7 @@ package testgenerator.model.mapper;
 
 import testgenerator.model.domain.Seniority;
 import testgenerator.model.dto.SeniorityDto;
+import testgenerator.model.enums.Status;
 import testgenerator.model.params.SeniorityParam;
 
 public class SeniorityMapper {
@@ -11,7 +12,10 @@ public class SeniorityMapper {
     }
 
     public static Seniority paramToSeniority(SeniorityParam param){
-       return new Seniority(param.getSeniorityLevel());
+        Seniority seniority = new Seniority(param.getSeniorityLevel());
+        seniority.setStatus(Status.ACTIVE);
+
+       return seniority;
     }
 
     public static Seniority updateSeniorityWithParam(SeniorityParam param, Seniority seniority) {

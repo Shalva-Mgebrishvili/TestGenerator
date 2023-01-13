@@ -3,7 +3,9 @@ package testgenerator.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 import testgenerator.model.domain.Stack;
 import testgenerator.model.enums.Status;
 import testgenerator.repository.StackRepository;
@@ -16,8 +18,12 @@ public class StackService {
 
     private final StackRepository repository;
 
-    public Optional<Stack> findById(Long id, Status status) {
-        return repository.findByIdAndStatus(id, status);
+    public Stack findById(Long id, Status status) {
+        Optional<Stack> stack = repository.findByIdAndStatus(id, status);
+
+        if (stack.isEmpty()) throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Stack with ID: " + id + " not found.");
+
+        return stack.get();
     }
 
     public Page<Stack> findAll(Status status, Pageable pageable) {
