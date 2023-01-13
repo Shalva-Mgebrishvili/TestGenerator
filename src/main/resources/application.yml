@@ -6,7 +6,7 @@ spring:
   datasource:
     driver-class-name: org.postgresql.Driver
     url: jdbc:postgresql://localhost:5432/test
-    username: myusername #${DB_USERNAME}
+    username: myusername
     password: mypassword
   jpa:
     hibernate:
@@ -14,3 +14,4 @@ spring:
     show-sql: true
     database: postgresql
     generate-ddl: true
+#${DB_USERNAME}
