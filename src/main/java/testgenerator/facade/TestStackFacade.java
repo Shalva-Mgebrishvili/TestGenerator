@@ -33,10 +33,9 @@ public class TestStackFacade {
 
     public TestStackDto add(TestStackParam param) {
         Test test = testService.findById(param.getTest(), Status.ACTIVE);
-//        Stack stack = stackService.findById(param.getTest(), Status.ACTIVE).orElseThrow(
-//                () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Question with ID: " + param.getTest() + " not found."));
+        Stack stack = stackService.findById(param.getTest(), Status.ACTIVE);
 
-        TestStack testStack = new TestStack(new Stack(), test);
+        TestStack testStack = new TestStack(stack, test);
         testStack.setStatus(Status.ACTIVE);
         return TestStackMapper.testStackDto(service.add(testStack));
     }
@@ -46,11 +45,10 @@ public class TestStackFacade {
         TestStack updateTestStack = service.findById(id,Status.ACTIVE);
 
         Test test = testService.findById(param.getTest(), Status.ACTIVE);
-//        Stack stack = stackService.findById(param.getTest(), Status.ACTIVE).orElseThrow(
-//                () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Question with ID: " + param.getTest() + " not found."));
+        Stack stack = stackService.findById(param.getTest(), Status.ACTIVE);
 
         updateTestStack.setTest(test);
-        updateTestStack.setStack(new Stack());
+        updateTestStack.setStack(stack);
 
         return TestStackMapper.testStackDto(service.add(updateTestStack));
     }

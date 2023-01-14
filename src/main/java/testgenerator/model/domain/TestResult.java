@@ -13,15 +13,12 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class TestResult extends SuperEntity {
 
-    //    ?????
     @Column(name = "test_start_date")
     private LocalDateTime testStartDate;
 
-    //    ?????
     @Column(name = "test_finish_date")
     private LocalDateTime testFinishDate;
 
-    //    ?????
     @Column(name = "time_needed")
     private Integer timeNeeded;
 

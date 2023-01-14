@@ -1,5 +1,7 @@
 package testgenerator.repository;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -21,5 +23,15 @@ public interface TestRepository extends JpaRepository<Test, Long> {
     Optional<Test> findByIdAndStatus(
             @Param("test_id") Long testId,
             @Param("status") Status status
+    );
+
+    @Query("""
+        SELECT t
+        FROM Test t
+        WHERE t.status = :status
+        """)
+    Page<Test> findAllByStatus(
+            @Param("status") Status status,
+            Pageable pageable
     );
 }
