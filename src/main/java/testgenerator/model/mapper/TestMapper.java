@@ -1,6 +1,7 @@
 package testgenerator.model.mapper;
 
 import testgenerator.model.domain.Test;
+import testgenerator.model.dto.SeniorityDto;
 import testgenerator.model.dto.TestDto;
 import testgenerator.model.enums.Status;
 import testgenerator.model.params.TestParam;
@@ -8,7 +9,9 @@ import testgenerator.model.params.TestParam;
 public class TestMapper {
 
     public static TestDto testDto(Test test){
-        return new TestDto(test.getId(), test.getGivenTime(), test.getSeniority());
+        SeniorityDto seniority = SeniorityMapper.seniorityDto(test.getSeniority());
+
+        return new TestDto(test.getId(), test.getGivenTime(), seniority);
     }
 
     public static Test paramToTest(TestParam param) {
