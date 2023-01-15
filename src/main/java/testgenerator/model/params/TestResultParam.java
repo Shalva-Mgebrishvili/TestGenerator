@@ -1,20 +1,14 @@
-package testgenerator.model.dto;
+package testgenerator.model.params;
 
-import lombok.AllArgsConstructor;
+
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
 
-
 @Getter
 @Setter
-@NoArgsConstructor
-@AllArgsConstructor
-public class TestResultDto {
-
-    private Long id;
+public class TestResultParam {
 
     private LocalDateTime testStartDate;
 
@@ -26,7 +20,7 @@ public class TestResultDto {
 
     private Integer candidateScore;
 
-    private TestDto test;
+    private Long test;
 
-    private UserDto corrector;
+    private Long corrector;
 }

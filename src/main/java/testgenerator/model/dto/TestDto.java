@@ -14,6 +14,6 @@ public class TestDto {
 
     private Integer givenTime;
 
-    private Seniority seniority;
+    private SeniorityDto seniority;
 
 }

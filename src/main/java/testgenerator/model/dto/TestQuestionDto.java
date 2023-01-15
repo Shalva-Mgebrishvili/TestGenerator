@@ -16,10 +16,10 @@ import java.util.List;
 @AllArgsConstructor
 public class TestQuestionDto {
 
-    private Question question;
+    private Long id;
 
-    private Test test;
+    private QuestionDto question;
 
-    private List<CandidateAnswer> candidateAnswers;
+    private TestDto test;
 
 }
