@@ -10,10 +10,12 @@ import testgenerator.model.domain.UserEntity;
 import testgenerator.model.enums.Status;
 import testgenerator.repository.UserRepository;
 
+import javax.transaction.Transactional;
 import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class UserService {
 
     private final UserRepository repository;

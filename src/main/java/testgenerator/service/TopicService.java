@@ -10,10 +10,12 @@ import testgenerator.model.domain.Topic;
 import testgenerator.model.enums.Status;
 import testgenerator.repository.TopicRepository;
 
+import javax.transaction.Transactional;
 import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class TopicService {
 
     private final TopicRepository repository;

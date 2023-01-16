@@ -14,8 +14,11 @@ import testgenerator.service.TestResultService;
 import testgenerator.service.TestService;
 import testgenerator.service.UserService;
 
+import javax.transaction.Transactional;
+
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class TestResultFacade {
 
     private final TestResultService service;

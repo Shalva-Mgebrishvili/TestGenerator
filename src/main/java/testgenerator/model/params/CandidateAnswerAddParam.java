@@ -5,7 +5,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class CandidateAnswerParam {
+public class CandidateAnswerAddParam {
 
     private String answer;
 
@@ -14,5 +14,4 @@ public class CandidateAnswerParam {
     private Long testQuestion;
 
     private Long chosenAnswer;
-
 }

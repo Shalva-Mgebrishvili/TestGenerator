@@ -4,20 +4,21 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import testgenerator.model.domain.CandidateAnswer;
 import testgenerator.model.domain.Question;
 import testgenerator.model.domain.Seniority;
 import testgenerator.model.domain.Topic;
-import testgenerator.model.dto.CandidateAnswerDto;
 import testgenerator.model.dto.QuestionDto;
 import testgenerator.model.enums.Status;
 import testgenerator.model.mapper.QuestionMapper;
 import testgenerator.model.params.QuestionParam;
 import testgenerator.service.*;
 
+import javax.transaction.Transactional;
+
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class QuestionFacade {
 
     private final QuestionService service;

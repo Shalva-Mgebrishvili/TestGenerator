@@ -11,8 +11,11 @@ import testgenerator.model.mapper.TestQuestionMapper;
 import testgenerator.model.params.TestQuestionParam;
 import testgenerator.service.*;
 
+import javax.transaction.Transactional;
+
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class TestQuestionFacade {
 
     private final TestQuestionService service;

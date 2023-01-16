@@ -10,10 +10,12 @@ import testgenerator.model.domain.TestStack;
 import testgenerator.model.enums.Status;
 import testgenerator.repository.TestStackRepository;
 
+import javax.transaction.Transactional;
 import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class TestStackService {
     private final TestStackRepository repository;
 

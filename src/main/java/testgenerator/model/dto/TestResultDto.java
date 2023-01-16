@@ -31,4 +31,5 @@ public class TestResultDto {
     private UserDto corrector;
 
     private CandidateDto candidate;
+
 }

@@ -13,8 +13,11 @@ import testgenerator.model.params.TopicParam;
 import testgenerator.service.StackService;
 import testgenerator.service.TopicService;
 
+import javax.transaction.Transactional;
+
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class TopicFacade {
 
     private final TopicService service;

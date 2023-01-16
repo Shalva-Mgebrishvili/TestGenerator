@@ -9,14 +9,18 @@ import testgenerator.model.domain.TestResult;
 import testgenerator.model.dto.CandidateDto;
 import testgenerator.model.enums.Status;
 import testgenerator.model.mapper.CandidateMapper;
-import testgenerator.model.params.CandidateParam;
+import testgenerator.model.params.CandidateAddParam;
+import testgenerator.model.params.CandidateUpdateParam;
 import testgenerator.service.CandidateService;
 import testgenerator.service.TestResultService;
 
+import javax.transaction.Transactional;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class CandidateFacade {
 
     private final CandidateService service;
@@ -34,16 +38,14 @@ public class CandidateFacade {
         return allCandidates.map(CandidateMapper::candidateDto);
     }
 
-    public CandidateDto add(CandidateParam param) {
-        List<TestResult> testResults = param.getTestResults().stream().map(t -> testResultService.findById(t, Status.ACTIVE)).toList();
-
-        Candidate candidate = new Candidate(param.getName(), param.getSurname(), param.getEmail(), testResults);
+    public CandidateDto add(CandidateAddParam param) {
+        Candidate candidate = new Candidate(param.getName(), param.getSurname(), param.getEmail(), new ArrayList<>());
         candidate.setStatus(Status.ACTIVE);
 
         return CandidateMapper.candidateDto(service.add(candidate));
     }
 
-    public CandidateDto update(Long id, CandidateParam param) {
+    public CandidateDto update(Long id, CandidateUpdateParam param) {
         List<TestResult> testResults = param.getTestResults().stream().map(t -> testResultService.findById(t, Status.ACTIVE)).toList();
 
         Candidate updateCandidate = service.findById(id,Status.ACTIVE);

@@ -13,8 +13,11 @@ import testgenerator.model.params.AnswerParam;
 import testgenerator.service.AnswerService;
 import testgenerator.service.QuestionService;
 
+import javax.transaction.Transactional;
+
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class AnswerFacade {
     private final AnswerService service;
 

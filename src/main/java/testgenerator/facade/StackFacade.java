@@ -13,10 +13,12 @@ import testgenerator.model.params.StackParam;
 import testgenerator.service.StackService;
 import testgenerator.service.TopicService;
 
+import javax.transaction.Transactional;
 import java.util.List;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class StackFacade {
 
     private final StackService service;

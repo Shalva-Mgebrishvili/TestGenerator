@@ -13,8 +13,11 @@ import testgenerator.service.StackService;
 import testgenerator.service.TestService;
 import testgenerator.service.TestStackService;
 
+import javax.transaction.Transactional;
+
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class TestStackFacade {
     private final TestStackService service;
     private final TestService testService;

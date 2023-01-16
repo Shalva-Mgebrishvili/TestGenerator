@@ -10,10 +10,12 @@ import testgenerator.model.domain.Seniority;
 import testgenerator.model.enums.Status;
 import testgenerator.repository.SeniorityRepository;
 
+import javax.transaction.Transactional;
 import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class SeniorityService {
 
     private final SeniorityRepository repository;

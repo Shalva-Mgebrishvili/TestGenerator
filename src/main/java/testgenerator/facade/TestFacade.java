@@ -17,10 +17,12 @@ import testgenerator.service.TestQuestionService;
 import testgenerator.service.TestService;
 import testgenerator.service.TestStackService;
 
+import javax.transaction.Transactional;
 import java.util.List;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class TestFacade {
 
     private final TestService service;

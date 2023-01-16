@@ -11,8 +11,11 @@ import testgenerator.model.mapper.UserMapper;
 import testgenerator.model.params.UserParam;
 import testgenerator.service.UserService;
 
+import javax.transaction.Transactional;
+
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class UserFacade {
 
     private final UserService service;

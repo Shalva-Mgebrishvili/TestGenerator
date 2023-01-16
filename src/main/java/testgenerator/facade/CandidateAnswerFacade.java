@@ -8,11 +8,15 @@ import testgenerator.model.domain.*;
 import testgenerator.model.dto.CandidateAnswerDto;
 import testgenerator.model.enums.Status;
 import testgenerator.model.mapper.CandidateAnswerMapper;
-import testgenerator.model.params.CandidateAnswerParam;
+import testgenerator.model.params.CandidateAnswerAddParam;
+import testgenerator.model.params.CandidateAnswerUpdateParam;
 import testgenerator.service.*;
+
+import javax.transaction.Transactional;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class CandidateAnswerFacade {
 
     private final CandidateAnswerService service;
@@ -31,7 +35,7 @@ public class CandidateAnswerFacade {
         return allCandidateAnswers.map(CandidateAnswerMapper::candidateAnswerDto);
     }
 
-    public CandidateAnswerDto add(CandidateAnswerParam param) {
+    public CandidateAnswerDto add(CandidateAnswerAddParam param) {
         TestQuestion testQuestion = testQuestionService.findById(param.getTestQuestion(), Status.ACTIVE);
         Answer chosenAnswer = answerService.findById(param.getChosenAnswer(), Status.ACTIVE);
 
@@ -40,15 +44,11 @@ public class CandidateAnswerFacade {
         return CandidateAnswerMapper.candidateAnswerDto(service.add(candidateAnswer));
     }
 
-    public CandidateAnswerDto update(Long id, CandidateAnswerParam param) {
-        TestQuestion testQuestion = testQuestionService.findById(param.getTestQuestion(), Status.ACTIVE);
-        Answer chosenAnswer = answerService.findById(param.getChosenAnswer(), Status.ACTIVE);
-
+    public CandidateAnswerDto update(Long id, CandidateAnswerUpdateParam param) {
         CandidateAnswer updateCandidateAnswer = service.findById(id,Status.ACTIVE);
+        updateCandidateAnswer.setCandidatePoint(param.getCandidatePoint());
 
-        CandidateAnswer candidateAnswer = CandidateAnswerMapper.updateCandidateAnswerWithParam(param, updateCandidateAnswer, testQuestion, chosenAnswer);
-
-        return CandidateAnswerMapper.candidateAnswerDto(service.add(candidateAnswer));
+        return CandidateAnswerMapper.candidateAnswerDto(service.add(updateCandidateAnswer));
     }
 
     public void deleteById(Long id) {

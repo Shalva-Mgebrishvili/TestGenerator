@@ -11,8 +11,11 @@ import testgenerator.model.mapper.SeniorityMapper;
 import testgenerator.model.params.SeniorityParam;
 import testgenerator.service.SeniorityService;
 
+import javax.transaction.Transactional;
+
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class SeniorityFacade {
 
     private final SeniorityService service;
