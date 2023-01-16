@@ -21,7 +21,7 @@ public interface QuestionRepository extends JpaRepository<Question, Long> {
         AND q.status = :status
         """)
     Optional<Question> findByIdAndStatus(
-            @Param("question_id") Long QuestionId,
+            @Param("question_id") Long questionId,
             @Param("status") Status status
     );
 
@@ -29,7 +29,6 @@ public interface QuestionRepository extends JpaRepository<Question, Long> {
         SELECT q
         FROM Question q
         WHERE q.status = :status
-        order by q.id 
         """)
     Page<Question> findAllByStatus(
             @Param("status") Status status,

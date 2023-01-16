@@ -16,10 +16,10 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class QuestionService {
 
-    private final QuestionRepository questionRepository;
+    private final QuestionRepository repository;
 
     public Question findById(Long id, Status status) {
-        Optional<Question> question = questionRepository.findByIdAndStatus(id, status);
+        Optional<Question> question = repository.findByIdAndStatus(id, status);
 
         if(question.isEmpty()) throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Question with ID: " + id + " not found.");
 
@@ -27,10 +27,10 @@ public class QuestionService {
     }
 
     public Page<Question> findAll(Status status, Pageable pageable) {
-        return questionRepository.findAllByStatus(status, pageable);
+        return repository.findAllByStatus(status, pageable);
     }
 
     public Question add(Question question) {
-        return questionRepository.save(question);
+        return repository.save(question);
     }
 }

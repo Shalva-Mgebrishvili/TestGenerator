@@ -2,6 +2,8 @@ package testgenerator.model.dto;
 
 import lombok.*;
 
+import java.util.List;
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -15,5 +17,7 @@ public class CandidateDto {
     private String surname;
 
     private String email;
+
+    private List<TestResultDto> testResults;
 
 }

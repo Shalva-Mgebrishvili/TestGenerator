@@ -29,4 +29,6 @@ public class TestResultDto {
     private TestDto test;
 
     private UserDto corrector;
+
+    private CandidateDto candidate;
 }

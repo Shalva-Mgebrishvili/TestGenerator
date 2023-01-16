@@ -5,17 +5,22 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import testgenerator.model.domain.Candidate;
+import testgenerator.model.domain.TestResult;
 import testgenerator.model.dto.CandidateDto;
 import testgenerator.model.enums.Status;
 import testgenerator.model.mapper.CandidateMapper;
 import testgenerator.model.params.CandidateParam;
 import testgenerator.service.CandidateService;
+import testgenerator.service.TestResultService;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
 public class CandidateFacade {
 
     private final CandidateService service;
+    private final TestResultService testResultService;
 
     public CandidateDto findById(Long id) {
         Candidate candidate = service.findById(id, Status.ACTIVE);
@@ -30,19 +35,24 @@ public class CandidateFacade {
     }
 
     public CandidateDto add(CandidateParam param) {
+        List<TestResult> testResults = param.getTestResults().stream().map(t -> testResultService.findById(t, Status.ACTIVE)).toList();
 
-        Candidate candidate = CandidateMapper.paramToCandidate(param);
+        Candidate candidate = new Candidate(param.getName(), param.getSurname(), param.getEmail(), testResults);
+        candidate.setStatus(Status.ACTIVE);
 
         return CandidateMapper.candidateDto(service.add(candidate));
     }
 
     public CandidateDto update(Long id, CandidateParam param) {
+        List<TestResult> testResults = param.getTestResults().stream().map(t -> testResultService.findById(t, Status.ACTIVE)).toList();
 
         Candidate updateCandidate = service.findById(id,Status.ACTIVE);
+        updateCandidate.setName(param.getName());
+        updateCandidate.setSurname(param.getSurname());
+        updateCandidate.setEmail(param.getEmail());
+        updateCandidate.setTestResults(testResults);
 
-        Candidate candidate = CandidateMapper.updateCandidateWithParam(param, updateCandidate);
-
-        return CandidateMapper.candidateDto(service.add(candidate));
+        return CandidateMapper.candidateDto(service.add(updateCandidate));
     }
 
     public void deleteById(Long id) {

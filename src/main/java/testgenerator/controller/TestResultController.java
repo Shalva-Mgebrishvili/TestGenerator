@@ -13,7 +13,7 @@ import testgenerator.model.dto.TestResultDto;
 import testgenerator.model.params.TestResultParam;
 
 @RestController
-@RequestMapping("/testResults")
+@RequestMapping("/test-results")
 @RequiredArgsConstructor
 public class TestResultController {
 

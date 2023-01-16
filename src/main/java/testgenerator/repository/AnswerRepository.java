@@ -29,7 +29,6 @@ public interface AnswerRepository extends JpaRepository<Answer, Long> {
         SELECT a
         FROM Answer a
         WHERE a.status = :status
-        order by a.id 
         """)
     Page<Answer> findAllByStatus(
             @Param("status") Status status,

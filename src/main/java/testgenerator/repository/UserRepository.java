@@ -29,7 +29,6 @@ public interface UserRepository extends JpaRepository<UserEntity, Long> {
         SELECT t
         FROM UserEntity t
         WHERE t.status = :status
-        order by t.id 
         """)
     Page<UserEntity> findAllByStatus(
             @Param("status") Status status,

@@ -36,4 +36,8 @@ public class TestResult extends SuperEntity {
     @JoinColumn(name = "user_id", nullable = false)
     private UserEntity corrector;
 
+    @ManyToOne
+    @JoinColumn(name = "candidate_id", nullable = false)
+    private Candidate candidate;
+
 }

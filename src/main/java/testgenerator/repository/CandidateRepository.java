@@ -29,7 +29,6 @@ public interface CandidateRepository extends JpaRepository<Candidate, Long> {
         SELECT c
         FROM Candidate c
         WHERE c.status = :status
-        order by c.id 
         """)
     Page<Candidate> findAllByStatus(
             @Param("status") Status status,

@@ -29,7 +29,6 @@ public interface TopicRepository extends JpaRepository<Topic, Long> {
         SELECT t
         FROM Topic t
         WHERE t.status = :status
-        order by t.id 
         """)
     Page<Topic> findAllByStatus(
             @Param("status") Status status,

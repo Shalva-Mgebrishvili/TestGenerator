@@ -30,7 +30,6 @@ public interface SeniorityRepository extends JpaRepository<Seniority, Long> {
         SELECT s
         FROM Seniority s
         WHERE s.status = :status
-        order by s.id 
         """)
     Page<Seniority> findAllByStatus(
             @Param("status") Status status,

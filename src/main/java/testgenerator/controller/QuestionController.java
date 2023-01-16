@@ -18,11 +18,11 @@ import testgenerator.model.params.QuestionParam;
 @RequiredArgsConstructor
 public class QuestionController {
 
-    private final QuestionFacade questionFacade;
+    private final QuestionFacade facade;
 
     @GetMapping("/{id}")
     public ResponseEntity<QuestionDto> findById(@PathVariable Long id) {
-        return ResponseEntity.status(HttpStatus.OK).body(questionFacade.findById(id));
+        return ResponseEntity.status(HttpStatus.OK).body(facade.findById(id));
     }
 
     @GetMapping
@@ -34,22 +34,22 @@ public class QuestionController {
 
         Pageable pageable = PageRequest.of(page, size, Sort.by(direction, sort));
 
-        return ResponseEntity.status(HttpStatus.OK).body(questionFacade.findAll(pageable));
+        return ResponseEntity.status(HttpStatus.OK).body(facade.findAll(pageable));
     }
 
     @PostMapping
     public ResponseEntity<QuestionDto> add(@RequestBody QuestionParam param) {
-        return ResponseEntity.status(HttpStatus.OK).body(questionFacade.add(param));
+        return ResponseEntity.status(HttpStatus.OK).body(facade.add(param));
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<QuestionDto> update(@PathVariable Long id, @RequestBody QuestionParam param) {
-        return ResponseEntity.status(HttpStatus.OK).body(questionFacade.update(id, param));
+        return ResponseEntity.status(HttpStatus.OK).body(facade.update(id, param));
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
-        questionFacade.deleteById(id);
+        facade.deleteById(id);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 

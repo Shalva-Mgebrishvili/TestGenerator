@@ -13,7 +13,7 @@ import testgenerator.model.dto.CandidateAnswerDto;
 import testgenerator.model.params.CandidateAnswerParam;
 
 @RestController
-@RequestMapping("/candidateAnswers")
+@RequestMapping("/candidate-answers")
 @RequiredArgsConstructor
 public class CandidateAnswerController {
 

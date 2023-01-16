@@ -29,7 +29,6 @@ public interface StackRepository extends JpaRepository<Stack, Long> {
         SELECT s
         FROM Stack s
         WHERE s.status = :status
-        order by s.id 
         """)
     Page<Stack> findAllByStatus(
             @Param("status") Status status,

@@ -29,7 +29,6 @@ public interface CandidateAnswerRepository extends JpaRepository<CandidateAnswer
         SELECT c
         FROM CandidateAnswer c
         WHERE c.status = :status
-        order by c.id 
         """)
     Page<CandidateAnswer> findAllByStatus(
             @Param("status") Status status,

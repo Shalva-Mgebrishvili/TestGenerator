@@ -22,7 +22,7 @@ public class Candidate extends SuperEntity {
     @Column(name = "email")
     private String email;
 
-    @ManyToMany(mappedBy = "candidates")
-    private List<Test> tests;
+    @OneToMany(mappedBy = "candidate")
+    private List<TestResult> testResults;
 
 }

@@ -13,7 +13,7 @@ import testgenerator.model.dto.TestStackDto;
 import testgenerator.model.params.TestStackParam;
 
 @RestController
-@RequestMapping("/testStacks")
+@RequestMapping("/test-stacks")
 @RequiredArgsConstructor
 public class TestStackController {
     private final TestStackFacade facade;

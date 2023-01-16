@@ -23,4 +23,6 @@ public class TestResultParam {
     private Long test;
 
     private Long corrector;
+
+    private Long candidate;
 }

@@ -9,6 +9,7 @@ import testgenerator.model.dto.TestResultDto;
 import testgenerator.model.enums.Status;
 import testgenerator.model.mapper.TestResultMapper;
 import testgenerator.model.params.TestResultParam;
+import testgenerator.service.CandidateService;
 import testgenerator.service.TestResultService;
 import testgenerator.service.TestService;
 import testgenerator.service.UserService;
@@ -20,6 +21,7 @@ public class TestResultFacade {
     private final TestResultService service;
     private final TestService testService;
     private final UserService userService;
+    private final CandidateService candidateService;
 
     public TestResultDto findById(Long id) {
         TestResult testResult = service.findById(id, Status.ACTIVE);
@@ -36,8 +38,9 @@ public class TestResultFacade {
     public TestResultDto add(TestResultParam param) {
         Test test = testService.findById(param.getTest(), Status.ACTIVE);
         UserEntity user = userService.findById(param.getCorrector(), Status.ACTIVE);
+        Candidate candidate = candidateService.findById(param.getCandidate(), Status.ACTIVE);
 
-        TestResult testResult = TestResultMapper.paramToTestResult(param, test, user);
+        TestResult testResult = TestResultMapper.paramToTestResult(param, test, user, candidate);
 
         return TestResultMapper.testResultDto(service.add(testResult));
     }
@@ -45,10 +48,11 @@ public class TestResultFacade {
     public TestResultDto update(Long id, TestResultParam param) {
         Test test = testService.findById(param.getTest(), Status.ACTIVE);
         UserEntity user = userService.findById(param.getCorrector(), Status.ACTIVE);
+        Candidate candidate = candidateService.findById(param.getCandidate(), Status.ACTIVE);
 
         TestResult updateTestResult = service.findById(id,Status.ACTIVE);
 
-        TestResult testResult = TestResultMapper.updateTestResultWithParam(param, updateTestResult, test, user);
+        TestResult testResult = TestResultMapper.updateTestResultWithParam(param, updateTestResult, test, user, candidate);
 
         return TestResultMapper.testResultDto(service.add(testResult));
     }

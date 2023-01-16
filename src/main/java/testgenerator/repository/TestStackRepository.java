@@ -28,7 +28,6 @@ public interface TestStackRepository extends JpaRepository<TestStack, Long> {
         SELECT ts
         FROM TestStack ts
         WHERE ts.status = :status
-        order by ts.id 
         """)
     Page<TestStack> findAllByStatus(
             @Param("status") Status status,

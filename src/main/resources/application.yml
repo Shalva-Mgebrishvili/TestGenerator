@@ -1,3 +1,5 @@
+APPLICATION_NAME: "test_generator"
+
 server:
   port: 8000
 

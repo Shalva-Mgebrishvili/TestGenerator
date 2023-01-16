@@ -30,7 +30,6 @@ public interface TestQuestionRepository extends JpaRepository<TestQuestion, Long
         SELECT t
         FROM TestQuestion t
         WHERE t.status = :status
-        order by t.id 
         """)
     Page<TestQuestion> findAllByStatus(
             @Param("status") Status status,

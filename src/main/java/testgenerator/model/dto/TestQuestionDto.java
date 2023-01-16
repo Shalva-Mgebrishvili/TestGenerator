@@ -4,6 +4,7 @@ import lombok.*;
 import testgenerator.model.domain.CandidateAnswer;
 import testgenerator.model.domain.Question;
 import testgenerator.model.domain.Test;
+import testgenerator.model.domain.TestQuestion;
 
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;

@@ -1,7 +1,10 @@
 package testgenerator.model.dto;
 
 import lombok.*;
-import testgenerator.model.domain.Seniority;
+import testgenerator.model.domain.TestQuestion;
+import testgenerator.model.domain.TestStack;
+
+import java.util.List;
 
 
 @Getter
@@ -15,5 +18,9 @@ public class TestDto {
     private Integer givenTime;
 
     private SeniorityDto seniority;
+
+    private List<TestStackDto> testStacks;
+
+    private List<TestQuestionDto> testQuestions;
 
 }
