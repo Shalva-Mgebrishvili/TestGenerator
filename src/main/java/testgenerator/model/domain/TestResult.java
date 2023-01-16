@@ -40,4 +40,8 @@ public class TestResult extends SuperEntity {
     @JoinColumn(name = "candidate_id", nullable = false)
     private Candidate candidate;
 
+//    private List<TestQuestion> testQuestions;
+//
+//    private Integer givenTime;
+
 }

@@ -5,17 +5,22 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import testgenerator.model.domain.Stack;
+import testgenerator.model.domain.Topic;
 import testgenerator.model.dto.StackDto;
 import testgenerator.model.enums.Status;
 import testgenerator.model.mapper.StackMapper;
 import testgenerator.model.params.StackParam;
 import testgenerator.service.StackService;
+import testgenerator.service.TopicService;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
 public class StackFacade {
 
     private final StackService service;
+    private final TopicService topicService;
 
     public StackDto findById(Long id) {
         Stack stack = service.findById(id, Status.ACTIVE);
@@ -30,17 +35,21 @@ public class StackFacade {
     }
 
     public StackDto add(StackParam param) {
-        Stack stack = StackMapper.paramToStack(param);
+        List<Topic> topics = param.getTopics().stream().map(t -> topicService.findById(t, Status.ACTIVE)).toList();
+        Stack stack = new Stack(param.getName(), topics);
+        stack.setStatus(Status.ACTIVE);
 
         return StackMapper.stackDto(service.add(stack));
     }
 
     public StackDto update(Long id, StackParam param) {
+        List<Topic> topics = param.getTopics().stream().map(t -> topicService.findById(t, Status.ACTIVE)).toList();
         Stack updateStack = service.findById(id,Status.ACTIVE);
 
-        Stack stack = StackMapper.updateStackWithParam(param, updateStack);
+        updateStack.setName(param.getName());
+        updateStack.setTopics(topics);
 
-        return StackMapper.stackDto(service.add(stack));
+        return StackMapper.stackDto(service.add(updateStack));
     }
 
     public void deleteById(Long id) {
