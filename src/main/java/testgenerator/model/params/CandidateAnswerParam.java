@@ -1,14 +1,11 @@
-package testgenerator.model.dto;
+package testgenerator.model.params;
 
-import lombok.*;
+import lombok.Getter;
+import lombok.Setter;
 
 @Getter
 @Setter
-@NoArgsConstructor
-@AllArgsConstructor
-public class CandidateAnswerDto {
-
-    private Long id;
+public class CandidateAnswerParam {
 
     private String answer;
 
