@@ -1,8 +1,7 @@
-APPLICATION_NAME: "test_generator"
+APPLICATION_NAME: "test-generator"
 
 server:
   port: 8000
-
 
 spring:
   datasource:
@@ -16,4 +15,4 @@ spring:
     show-sql: true
     database: postgresql
     generate-ddl: true
-#${DB_USERNAME}
+
