@@ -8,10 +8,12 @@ import testgenerator.model.domain.*;
 import testgenerator.model.dto.TestQuestionDto;
 import testgenerator.model.enums.Status;
 import testgenerator.model.mapper.TestQuestionMapper;
-import testgenerator.model.params.TestQuestionParam;
+import testgenerator.model.params.TestQuestionAddParam;
+import testgenerator.model.params.TestQuestionUpdateParam;
 import testgenerator.service.*;
 
 import javax.transaction.Transactional;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -36,27 +38,20 @@ public class TestQuestionFacade {
         return allTestQuestions.map(TestQuestionMapper::testQuestionDto);
     }
 
-    public TestQuestionDto add(TestQuestionParam param) {
+    public TestQuestionDto add(TestQuestionAddParam param) {
         Question question = questionService.findById(param.getQuestion(), Status.ACTIVE);
         Test test = testService.findById(param.getTest(), Status.ACTIVE);
-        List<CandidateAnswer> candidateAnswers = param.getCandidateAnswers().stream()
-                .map(a -> candidateAnswerService.findById(a, Status.ACTIVE)).toList();
-
-        TestQuestion testQuestion = new TestQuestion(question, test, candidateAnswers);
+        TestQuestion testQuestion = new TestQuestion(question, test, new ArrayList<>());
         testQuestion.setStatus(Status.ACTIVE);
 
         return TestQuestionMapper.testQuestionDto(service.add(testQuestion));
     }
 
-    public TestQuestionDto update(Long id, TestQuestionParam param) {
-        Question question = questionService.findById(param.getQuestion(), Status.ACTIVE);
-        Test test = testService.findById(param.getTest(), Status.ACTIVE);
+    public TestQuestionDto update(Long id, TestQuestionUpdateParam param) {
         List<CandidateAnswer> candidateAnswers = param.getCandidateAnswers().stream()
                 .map(a -> candidateAnswerService.findById(a, Status.ACTIVE)).toList();
 
         TestQuestion updateTestQuestion = service.findById(id,Status.ACTIVE);
-        updateTestQuestion.setQuestion(question);
-        updateTestQuestion.setTest(test);
         updateTestQuestion.setCandidateAnswers(candidateAnswers);
 
         return TestQuestionMapper.testQuestionDto(service.add(updateTestQuestion));

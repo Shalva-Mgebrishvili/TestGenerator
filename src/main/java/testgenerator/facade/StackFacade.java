@@ -9,7 +9,7 @@ import testgenerator.model.domain.Topic;
 import testgenerator.model.dto.StackDto;
 import testgenerator.model.enums.Status;
 import testgenerator.model.mapper.StackMapper;
-import testgenerator.model.params.StackParam;
+import testgenerator.model.params.StackAddUpdateParam;
 import testgenerator.service.StackService;
 import testgenerator.service.TopicService;
 
@@ -36,7 +36,7 @@ public class StackFacade {
         return allStacks.map(StackMapper::stackDto);
     }
 
-    public StackDto add(StackParam param) {
+    public StackDto add(StackAddUpdateParam param) {
         List<Topic> topics = param.getTopics().stream().map(t -> topicService.findById(t, Status.ACTIVE)).toList();
         Stack stack = new Stack(param.getName(), topics);
         stack.setStatus(Status.ACTIVE);
@@ -44,7 +44,7 @@ public class StackFacade {
         return StackMapper.stackDto(service.add(stack));
     }
 
-    public StackDto update(Long id, StackParam param) {
+    public StackDto update(Long id, StackAddUpdateParam param) {
         List<Topic> topics = param.getTopics().stream().map(t -> topicService.findById(t, Status.ACTIVE)).toList();
         Stack updateStack = service.findById(id,Status.ACTIVE);
 

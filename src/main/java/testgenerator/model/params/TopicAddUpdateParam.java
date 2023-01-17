@@ -5,7 +5,9 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class TestStackParam {
+public class TopicAddUpdateParam {
+
+    private String name;
+
     private Long stack;
-    private Long test;
 }

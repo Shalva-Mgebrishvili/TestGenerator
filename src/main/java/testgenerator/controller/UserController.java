@@ -10,7 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import testgenerator.facade.UserFacade;
 import testgenerator.model.dto.UserDto;
-import testgenerator.model.params.UserParam;
+import testgenerator.model.params.UserAddUpdateParam;
 
 @RestController
 @RequestMapping("/users")
@@ -37,12 +37,12 @@ public class UserController {
     }
 
     @PostMapping
-    public ResponseEntity<UserDto> add(@RequestBody UserParam param) {
+    public ResponseEntity<UserDto> add(@RequestBody UserAddUpdateParam param) {
         return ResponseEntity.status(HttpStatus.OK).body(facade.add(param));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<UserDto> update(@PathVariable Long id, @RequestBody UserParam param) {
+    public ResponseEntity<UserDto> update(@PathVariable Long id, @RequestBody UserAddUpdateParam param) {
         return ResponseEntity.status(HttpStatus.OK).body(facade.update(id, param));
     }
 

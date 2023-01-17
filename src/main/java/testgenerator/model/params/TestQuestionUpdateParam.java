@@ -5,15 +5,9 @@ import lombok.Setter;
 
 import java.util.List;
 
-
 @Getter
 @Setter
-public class TestQuestionParam {
-
-    private Long question;
-
-    private Long test;
+public class TestQuestionUpdateParam {
 
     private List<Long> candidateAnswers;
-
 }

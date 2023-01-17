@@ -8,7 +8,7 @@ import testgenerator.model.domain.*;
 import testgenerator.model.dto.TestStackDto;
 import testgenerator.model.enums.Status;
 import testgenerator.model.mapper.TestStackMapper;
-import testgenerator.model.params.TestStackParam;
+import testgenerator.model.params.TestStackAddParam;
 import testgenerator.service.StackService;
 import testgenerator.service.TestService;
 import testgenerator.service.TestStackService;
@@ -34,26 +34,13 @@ public class TestStackFacade {
         return allTestStacks.map(TestStackMapper::testStackDto);
     }
 
-    public TestStackDto add(TestStackParam param) {
+    public TestStackDto add(TestStackAddParam param) {
         Test test = testService.findById(param.getTest(), Status.ACTIVE);
         Stack stack = stackService.findById(param.getTest(), Status.ACTIVE);
 
         TestStack testStack = new TestStack(stack, test);
         testStack.setStatus(Status.ACTIVE);
         return TestStackMapper.testStackDto(service.add(testStack));
-    }
-
-    public TestStackDto update(Long id, TestStackParam param) {
-
-        TestStack updateTestStack = service.findById(id,Status.ACTIVE);
-
-        Test test = testService.findById(param.getTest(), Status.ACTIVE);
-        Stack stack = stackService.findById(param.getTest(), Status.ACTIVE);
-
-        updateTestStack.setTest(test);
-        updateTestStack.setStack(stack);
-
-        return TestStackMapper.testStackDto(service.add(updateTestStack));
     }
 
     public void deleteById(Long id) {

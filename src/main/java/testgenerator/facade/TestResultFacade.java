@@ -8,7 +8,8 @@ import testgenerator.model.domain.*;
 import testgenerator.model.dto.TestResultDto;
 import testgenerator.model.enums.Status;
 import testgenerator.model.mapper.TestResultMapper;
-import testgenerator.model.params.TestResultParam;
+import testgenerator.model.params.TestResultAddParam;
+import testgenerator.model.params.TestResultUpdateParam;
 import testgenerator.service.CandidateService;
 import testgenerator.service.TestResultService;
 import testgenerator.service.TestService;
@@ -38,26 +39,23 @@ public class TestResultFacade {
         return allTestResults.map(TestResultMapper::testResultDto);
     }
 
-    public TestResultDto add(TestResultParam param) {
+    public TestResultDto add(TestResultAddParam param) {
         Test test = testService.findById(param.getTest(), Status.ACTIVE);
-        UserEntity user = userService.findById(param.getCorrector(), Status.ACTIVE);
         Candidate candidate = candidateService.findById(param.getCandidate(), Status.ACTIVE);
 
-        TestResult testResult = TestResultMapper.paramToTestResult(param, test, user, candidate);
+        TestResult testResult = TestResultMapper.paramToTestResult(param, test, null, candidate);
 
         return TestResultMapper.testResultDto(service.add(testResult));
     }
 
-    public TestResultDto update(Long id, TestResultParam param) {
-        Test test = testService.findById(param.getTest(), Status.ACTIVE);
+    public TestResultDto update(Long id, TestResultUpdateParam param) {
         UserEntity user = userService.findById(param.getCorrector(), Status.ACTIVE);
-        Candidate candidate = candidateService.findById(param.getCandidate(), Status.ACTIVE);
 
         TestResult updateTestResult = service.findById(id,Status.ACTIVE);
+        updateTestResult.setCandidateScore(param.getCandidateScore());
+        updateTestResult.setCorrector(user);
 
-        TestResult testResult = TestResultMapper.updateTestResultWithParam(param, updateTestResult, test, user, candidate);
-
-        return TestResultMapper.testResultDto(service.add(testResult));
+        return TestResultMapper.testResultDto(service.add(updateTestResult));
     }
 
     public void deleteById(Long id) {

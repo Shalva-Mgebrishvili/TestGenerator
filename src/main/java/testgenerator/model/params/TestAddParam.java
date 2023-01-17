@@ -2,17 +2,14 @@ package testgenerator.model.params;
 
 import lombok.Getter;
 import lombok.Setter;
-import testgenerator.model.domain.Seniority;
-import testgenerator.model.domain.TestQuestion;
-import testgenerator.model.domain.TestStack;
 
 import java.util.List;
 
 @Getter
 @Setter
-public class TestParam {
+public class TestAddParam {
 
-    private Integer givenTime;
+    private Long givenTime;
 
     private Long seniority;
 

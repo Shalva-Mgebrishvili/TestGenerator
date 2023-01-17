@@ -3,7 +3,7 @@ package testgenerator.model.mapper;
 import testgenerator.model.domain.UserEntity;
 import testgenerator.model.dto.UserDto;
 import testgenerator.model.enums.Status;
-import testgenerator.model.params.UserParam;
+import testgenerator.model.params.UserAddUpdateParam;
 
 public class UserMapper {
 
@@ -11,14 +11,14 @@ public class UserMapper {
         return new UserDto(user.getId(), user.getName(), user.getSurname(), user.getEmail(), user.getRole());
     }
 
-    public static UserEntity paramToUser(UserParam param) {
+    public static UserEntity paramToUser(UserAddUpdateParam param) {
         UserEntity user = new UserEntity(param.getName(), param.getSurname(), param.getEmail(), param.getRole());
         user.setStatus(Status.ACTIVE);
 
         return user;
     }
 
-    public static UserEntity updateUserWithParam(UserParam param, UserEntity user) {
+    public static UserEntity updateUserWithParam(UserAddUpdateParam param, UserEntity user) {
         user.setName(param.getName());
         user.setSurname(param.getSurname());
         user.setEmail(param.getEmail());

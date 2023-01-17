@@ -14,7 +14,7 @@ import java.util.List;
 public class Test extends SuperEntity {
 
     @Column(name = "given_time")
-    private Integer givenTime;
+    private Long givenTime;
 
     @ManyToOne
     @JoinColumn(name = "seniority_id", nullable = false)
@@ -25,6 +25,5 @@ public class Test extends SuperEntity {
 
     @OneToMany(mappedBy = "test")
     private List<TestQuestion> testQuestions;
-
 
 }

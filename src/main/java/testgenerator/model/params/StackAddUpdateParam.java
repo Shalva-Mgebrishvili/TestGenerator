@@ -7,7 +7,7 @@ import java.util.List;
 
 @Getter
 @Setter
-public class StackParam {
+public class StackAddUpdateParam {
 
     private String name;
 

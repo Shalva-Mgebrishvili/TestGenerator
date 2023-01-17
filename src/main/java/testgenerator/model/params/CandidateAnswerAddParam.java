@@ -9,9 +9,9 @@ public class CandidateAnswerAddParam {
 
     private String answer;
 
-    private Integer candidatePoint;
-
     private Long testQuestion;
 
     private Long chosenAnswer;
+
+    private Long candidate;
 }

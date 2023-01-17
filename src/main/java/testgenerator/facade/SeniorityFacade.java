@@ -8,7 +8,7 @@ import testgenerator.model.domain.Seniority;
 import testgenerator.model.dto.SeniorityDto;
 import testgenerator.model.enums.Status;
 import testgenerator.model.mapper.SeniorityMapper;
-import testgenerator.model.params.SeniorityParam;
+import testgenerator.model.params.SeniorityAddUpdateParam;
 import testgenerator.service.SeniorityService;
 
 import javax.transaction.Transactional;
@@ -32,7 +32,7 @@ public class SeniorityFacade {
         return allSeniorities.map(SeniorityMapper::seniorityDto);
     }
 
-    public SeniorityDto add(SeniorityParam param) {
+    public SeniorityDto add(SeniorityAddUpdateParam param) {
 
         Seniority seniority = SeniorityMapper.paramToSeniority(param);
 
@@ -40,7 +40,7 @@ public class SeniorityFacade {
     }
 
 
-    public SeniorityDto update(Long id, SeniorityParam param) {
+    public SeniorityDto update(Long id, SeniorityAddUpdateParam param) {
 
         Seniority updateSeniority = service.findById(id,Status.ACTIVE);
 

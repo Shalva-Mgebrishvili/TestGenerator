@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import testgenerator.facade.CandidateAnswerFacade;
 import testgenerator.model.dto.CandidateAnswerDto;
 import testgenerator.model.params.CandidateAnswerAddParam;
+import testgenerator.model.params.CandidateAnswerUpdateParam;
 
 @RestController
 @RequestMapping("/candidate-answers")
@@ -42,7 +43,7 @@ public class CandidateAnswerController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<CandidateAnswerDto> update(@PathVariable Long id, @RequestBody CandidateAnswerAddParam param) {
+    public ResponseEntity<CandidateAnswerDto> update(@PathVariable Long id, @RequestBody CandidateAnswerUpdateParam param) {
         return ResponseEntity.status(HttpStatus.OK).body(facade.update(id, param));
     }
 

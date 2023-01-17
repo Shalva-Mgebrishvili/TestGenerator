@@ -9,7 +9,7 @@ import testgenerator.model.domain.Question;
 import testgenerator.model.dto.AnswerDto;
 import testgenerator.model.enums.Status;
 import testgenerator.model.mapper.AnswerMapper;
-import testgenerator.model.params.AnswerParam;
+import testgenerator.model.params.AnswerAddUpdateParam;
 import testgenerator.service.AnswerService;
 import testgenerator.service.QuestionService;
 
@@ -36,7 +36,7 @@ public class AnswerFacade {
         return allQuestions.map(AnswerMapper::answerDto);
     }
 
-    public AnswerDto add(AnswerParam param) {
+    public AnswerDto add(AnswerAddUpdateParam param) {
         Question question = questionService.findById(param.getQuestion(), Status.ACTIVE);
 
         Answer answer = AnswerMapper.paramToAnswer(param, question);
@@ -44,7 +44,7 @@ public class AnswerFacade {
         return AnswerMapper.answerDto(service.add(answer));
     }
 
-    public AnswerDto update(Long id, AnswerParam param) {
+    public AnswerDto update(Long id, AnswerAddUpdateParam param) {
         Question question = questionService.findById(param.getQuestion(), Status.ACTIVE);
 
         Answer updateAnswer = service.findById(id,Status.ACTIVE);

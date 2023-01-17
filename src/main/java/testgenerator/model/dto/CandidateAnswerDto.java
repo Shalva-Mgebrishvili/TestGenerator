@@ -12,10 +12,12 @@ public class CandidateAnswerDto {
 
     private String answer;
 
-    private Integer candidatePoint;
+    private Double candidatePoint;
 
-    private Long testQuestion;
+    private TestQuestionDto testQuestion;
 
-    private Long chosenAnswer;
+    private AnswerDto chosenAnswer;
+
+    private CandidateDto candidate;
 
 }

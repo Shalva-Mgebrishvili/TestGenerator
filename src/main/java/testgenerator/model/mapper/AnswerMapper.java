@@ -5,7 +5,7 @@ import testgenerator.model.domain.Question;
 import testgenerator.model.dto.AnswerDto;
 import testgenerator.model.dto.QuestionDto;
 import testgenerator.model.enums.Status;
-import testgenerator.model.params.AnswerParam;
+import testgenerator.model.params.AnswerAddUpdateParam;
 
 public class AnswerMapper {
     public static AnswerDto answerDto(Answer answer){
@@ -16,7 +16,7 @@ public class AnswerMapper {
 
     }
 
-    public static Answer paramToAnswer(AnswerParam param, Question question) {
+    public static Answer paramToAnswer(AnswerAddUpdateParam param, Question question) {
         Answer answer = new Answer();
 
         answer.setAnswer(param.getAnswer());
@@ -27,7 +27,7 @@ public class AnswerMapper {
         return answer;
     }
 
-    public static Answer updateAnswerWithParam(AnswerParam param, Answer answer, Question question) {
+    public static Answer updateAnswerWithParam(AnswerAddUpdateParam param, Answer answer, Question question) {
         answer.setAnswer(param.getAnswer());
         answer.setIsCorrect(param.getIsCorrect());
         answer.setQuestion(question);

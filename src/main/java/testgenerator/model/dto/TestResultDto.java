@@ -20,11 +20,11 @@ public class TestResultDto {
 
     private LocalDateTime testFinishDate;
 
-    private Integer timeNeeded;
+    private Long timeNeeded;
 
-    private Integer totalPoint;
+    private Double totalPoint;
 
-    private Integer candidateScore;
+    private Double candidateScore;
 
     private TestDto test;
 

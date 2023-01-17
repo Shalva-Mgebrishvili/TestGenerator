@@ -5,9 +5,8 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class TopicParam {
+public class SeniorityAddUpdateParam {
 
-    private String name;
+    private String seniorityLevel;
 
-    private Long stack;
 }

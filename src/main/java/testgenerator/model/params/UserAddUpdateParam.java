@@ -6,7 +6,7 @@ import testgenerator.model.enums.Role;
 
 @Getter
 @Setter
-public class UserParam {
+public class UserAddUpdateParam {
 
     private String name;
 

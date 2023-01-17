@@ -10,7 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import testgenerator.facade.TopicFacade;
 import testgenerator.model.dto.TopicDto;
-import testgenerator.model.params.TopicParam;
+import testgenerator.model.params.TopicAddUpdateParam;
 
 @RestController
 @RequestMapping("/topics")
@@ -37,12 +37,12 @@ public class TopicController {
     }
 
     @PostMapping
-    public ResponseEntity<TopicDto> add(@RequestBody TopicParam param) {
+    public ResponseEntity<TopicDto> add(@RequestBody TopicAddUpdateParam param) {
         return ResponseEntity.status(HttpStatus.OK).body(facade.add(param));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<TopicDto> update(@PathVariable Long id, @RequestBody TopicParam param) {
+    public ResponseEntity<TopicDto> update(@PathVariable Long id, @RequestBody TopicAddUpdateParam param) {
         return ResponseEntity.status(HttpStatus.OK).body(facade.update(id, param));
     }
 

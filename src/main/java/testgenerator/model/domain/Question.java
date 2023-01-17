@@ -22,7 +22,7 @@ public class Question extends SuperEntity {
     private String text;
 
     @Column(name = "point", nullable = false)
-    private Integer point;
+    private Double point;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "question_type", nullable = false)

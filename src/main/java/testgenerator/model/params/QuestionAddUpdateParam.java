@@ -8,11 +8,11 @@ import java.util.List;
 
 @Getter
 @Setter
-public class QuestionParam {
+public class QuestionAddUpdateParam {
 
     private String text;
 
-    private Integer point;
+    private Double point;
 
     private QuestionType questionType;
 

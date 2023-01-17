@@ -10,7 +10,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import testgenerator.facade.TestResultFacade;
 import testgenerator.model.dto.TestResultDto;
-import testgenerator.model.params.TestResultParam;
+import testgenerator.model.params.TestResultAddParam;
+import testgenerator.model.params.TestResultUpdateParam;
 
 @RestController
 @RequestMapping("/test-results")
@@ -37,12 +38,12 @@ public class TestResultController {
     }
 
     @PostMapping
-    public ResponseEntity<TestResultDto> add(@RequestBody TestResultParam param) {
+    public ResponseEntity<TestResultDto> add(@RequestBody TestResultAddParam param) {
         return ResponseEntity.status(HttpStatus.OK).body(facade.add(param));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<TestResultDto> update(@PathVariable Long id, @RequestBody TestResultParam param) {
+    public ResponseEntity<TestResultDto> update(@PathVariable Long id, @RequestBody TestResultUpdateParam param) {
         return ResponseEntity.status(HttpStatus.OK).body(facade.update(id, param));
     }
 

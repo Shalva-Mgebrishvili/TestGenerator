@@ -10,7 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import testgenerator.facade.QuestionFacade;
 import testgenerator.model.dto.QuestionDto;
-import testgenerator.model.params.QuestionParam;
+import testgenerator.model.params.QuestionAddUpdateParam;
 
 
 @RestController
@@ -38,12 +38,12 @@ public class QuestionController {
     }
 
     @PostMapping
-    public ResponseEntity<QuestionDto> add(@RequestBody QuestionParam param) {
+    public ResponseEntity<QuestionDto> add(@RequestBody QuestionAddUpdateParam param) {
         return ResponseEntity.status(HttpStatus.OK).body(facade.add(param));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<QuestionDto> update(@PathVariable Long id, @RequestBody QuestionParam param) {
+    public ResponseEntity<QuestionDto> update(@PathVariable Long id, @RequestBody QuestionAddUpdateParam param) {
         return ResponseEntity.status(HttpStatus.OK).body(facade.update(id, param));
     }
 

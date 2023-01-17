@@ -11,7 +11,7 @@ import testgenerator.model.domain.Topic;
 import testgenerator.model.dto.QuestionDto;
 import testgenerator.model.enums.Status;
 import testgenerator.model.mapper.QuestionMapper;
-import testgenerator.model.params.QuestionParam;
+import testgenerator.model.params.QuestionAddUpdateParam;
 import testgenerator.service.*;
 
 import javax.transaction.Transactional;
@@ -40,7 +40,7 @@ public class QuestionFacade {
         return allQuestions.map(QuestionMapper::questionDto);
     }
 
-    public QuestionDto add(QuestionParam param) {
+    public QuestionDto add(QuestionAddUpdateParam param) {
         Topic topic = topicService.findById(param.getTopic(), Status.ACTIVE);
         Seniority seniority = seniorityService.findById(param.getSeniority(), Status.ACTIVE);
         List<Answer> answers = param.getAnswers().stream().map(a -> answerService.findById(a, Status.ACTIVE)).toList();
@@ -51,7 +51,7 @@ public class QuestionFacade {
         return QuestionMapper.questionDto(service.add(question));
     }
 
-    public QuestionDto update(Long id, QuestionParam param) {
+    public QuestionDto update(Long id, QuestionAddUpdateParam param) {
         Topic topic = topicService.findById(param.getTopic(), Status.ACTIVE);
         Seniority seniority = seniorityService.findById(param.getSeniority(), Status.ACTIVE);
         List<Answer> answers = param.getAnswers().stream().map(a -> answerService.findById(a, Status.ACTIVE)).toList();

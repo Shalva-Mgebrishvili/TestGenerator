@@ -15,7 +15,7 @@ public class QuestionDto {
 
     private String text;
 
-    private Integer point;
+    private Double point;
 
     private QuestionType questionType;
 

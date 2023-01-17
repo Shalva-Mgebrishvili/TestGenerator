@@ -5,8 +5,8 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class SeniorityParam {
-
-    private String seniorityLevel;
+public class TestResultUpdateParam {
+    private Double candidateScore;
+    private Long corrector;
 
 }

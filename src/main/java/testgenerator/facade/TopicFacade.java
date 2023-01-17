@@ -9,7 +9,7 @@ import testgenerator.model.domain.Topic;
 import testgenerator.model.dto.TopicDto;
 import testgenerator.model.enums.Status;
 import testgenerator.model.mapper.TopicMapper;
-import testgenerator.model.params.TopicParam;
+import testgenerator.model.params.TopicAddUpdateParam;
 import testgenerator.service.StackService;
 import testgenerator.service.TopicService;
 
@@ -35,7 +35,7 @@ public class TopicFacade {
         return allTopics.map(TopicMapper::topicDto);
     }
 
-    public TopicDto add(TopicParam param) {
+    public TopicDto add(TopicAddUpdateParam param) {
         Stack stack = stackService.findById(param.getStack(), Status.ACTIVE);
         
         Topic topic = TopicMapper.paramToTopic(param, stack);
@@ -43,7 +43,7 @@ public class TopicFacade {
         return TopicMapper.topicDto(service.add(topic));
     }
 
-    public TopicDto update(Long id, TopicParam param) {
+    public TopicDto update(Long id, TopicAddUpdateParam param) {
         Stack stack = stackService.findById(param.getStack(), Status.ACTIVE);
 
         Topic updateTopic = service.findById(id,Status.ACTIVE);

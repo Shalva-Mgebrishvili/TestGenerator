@@ -8,21 +8,13 @@ import java.time.LocalDateTime;
 
 @Getter
 @Setter
-public class TestResultParam {
+public class TestResultAddParam {
 
     private LocalDateTime testStartDate;
 
     private LocalDateTime testFinishDate;
 
-    private Integer timeNeeded;
-
-    private Integer totalPoint;
-
-    private Integer candidateScore;
-
     private Long test;
-
-    private Long corrector;
 
     private Long candidate;
 }

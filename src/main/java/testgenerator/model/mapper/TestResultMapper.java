@@ -3,7 +3,11 @@ package testgenerator.model.mapper;
 import testgenerator.model.domain.*;
 import testgenerator.model.dto.*;
 import testgenerator.model.enums.Status;
-import testgenerator.model.params.TestResultParam;
+import testgenerator.model.params.TestResultAddParam;
+
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
+import java.util.List;
 
 public class TestResultMapper {
 
@@ -27,33 +31,29 @@ public class TestResultMapper {
         return testResultDto;
     }
 
-    public static TestResult paramToTestResult(TestResultParam param, Test test, UserEntity user, Candidate candidate) {
-        TestResult testResult = new TestResult();
+    public static TestResult paramToTestResult(TestResultAddParam param, Test test, UserEntity user, Candidate candidate) {
+        Long timeNeeded = param.getTestStartDate().until(param.getTestFinishDate(), ChronoUnit.MINUTES);
 
+        Double totalPoint = test.getTestQuestions().stream().map(TestQuestion::getQuestion)
+                        .map(Question::getPoint).toList().stream().mapToDouble(Double::doubleValue).sum();
+
+        List<List<CandidateAnswer>> candidateAnswerList = test.getTestQuestions().stream().map(TestQuestion::getCandidateAnswers).toList();
+        Double candidateScore=0.0;
+
+        for(List<CandidateAnswer> candidateAnswers: candidateAnswerList) {
+            candidateScore+=candidateAnswers.stream().map(CandidateAnswer::getCandidatePoint).toList().stream().mapToDouble(Double::doubleValue).sum();
+        }
+
+        TestResult testResult = new TestResult();
         testResult.setTestFinishDate(param.getTestFinishDate());
         testResult.setTestStartDate(param.getTestStartDate());
-        testResult.setTimeNeeded(param.getTimeNeeded());
-        testResult.setTotalPoint(param.getTotalPoint());
-        testResult.setCandidateScore(param.getCandidateScore());
+        testResult.setTimeNeeded(timeNeeded);
+        testResult.setTotalPoint(totalPoint);
+        testResult.setCandidateScore(candidateScore);
         testResult.setTest(test);
         testResult.setCorrector(user);
         testResult.setCandidate(candidate);
         testResult.setStatus(Status.ACTIVE);
-
-        return testResult;
-    }
-
-    public static TestResult updateTestResultWithParam(TestResultParam param, TestResult testResult,
-                                                       Test test, UserEntity user, Candidate candidate) {
-
-        testResult.setTestFinishDate(param.getTestFinishDate());
-        testResult.setTestStartDate(param.getTestStartDate());
-        testResult.setTimeNeeded(param.getTimeNeeded());
-        testResult.setTotalPoint(param.getTotalPoint());
-        testResult.setCandidateScore(param.getCandidateScore());
-        testResult.setTest(test);
-        testResult.setCorrector(user);
-        testResult.setCandidate(candidate);
 
         return testResult;
     }

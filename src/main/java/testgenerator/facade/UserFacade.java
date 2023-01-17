@@ -8,7 +8,7 @@ import testgenerator.model.domain.UserEntity;
 import testgenerator.model.dto.UserDto;
 import testgenerator.model.enums.Status;
 import testgenerator.model.mapper.UserMapper;
-import testgenerator.model.params.UserParam;
+import testgenerator.model.params.UserAddUpdateParam;
 import testgenerator.service.UserService;
 
 import javax.transaction.Transactional;
@@ -32,13 +32,13 @@ public class UserFacade {
         return allUsers.map(UserMapper::userDto);
     }
 
-    public UserDto add(UserParam param) {
+    public UserDto add(UserAddUpdateParam param) {
         UserEntity user = UserMapper.paramToUser(param);
 
         return UserMapper.userDto(service.add(user));
     }
 
-    public UserDto update(Long id, UserParam param) {
+    public UserDto update(Long id, UserAddUpdateParam param) {
         UserEntity updateUser = service.findById(id,Status.ACTIVE);
 
         UserEntity user = UserMapper.updateUserWithParam(param, updateUser);

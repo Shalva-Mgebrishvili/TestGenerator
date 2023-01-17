@@ -20,13 +20,13 @@ public class TestResult extends SuperEntity {
     private LocalDateTime testFinishDate;
 
     @Column(name = "time_needed")
-    private Integer timeNeeded;
+    private Long timeNeeded;
 
     @Column(name = "total_point")
-    private Integer totalPoint;
+    private Double totalPoint;
 
     @Column(name = "candidate_score")
-    private Integer candidateScore;
+    private Double candidateScore;
 
     @ManyToOne
     @JoinColumn(name = "test_id")
@@ -39,9 +39,5 @@ public class TestResult extends SuperEntity {
     @ManyToOne
     @JoinColumn(name = "candidate_id", nullable = false)
     private Candidate candidate;
-
-//    private List<TestQuestion> testQuestions;
-//
-//    private Integer givenTime;
 
 }

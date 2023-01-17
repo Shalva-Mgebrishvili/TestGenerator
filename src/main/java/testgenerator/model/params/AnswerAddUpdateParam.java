@@ -6,7 +6,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class AnswerParam {
+public class AnswerAddUpdateParam {
     private String answer;
 
     private Boolean isCorrect;

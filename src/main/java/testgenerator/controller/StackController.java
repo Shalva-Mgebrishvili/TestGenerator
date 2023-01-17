@@ -10,7 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import testgenerator.facade.StackFacade;
 import testgenerator.model.dto.StackDto;
-import testgenerator.model.params.StackParam;
+import testgenerator.model.params.StackAddUpdateParam;
 
 @RestController
 @RequestMapping("/stacks")
@@ -37,12 +37,12 @@ public class StackController {
     }
 
     @PostMapping
-    public ResponseEntity<StackDto> add(@RequestBody StackParam param) {
+    public ResponseEntity<StackDto> add(@RequestBody StackAddUpdateParam param) {
         return ResponseEntity.status(HttpStatus.OK).body(facade.add(param));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<StackDto> update(@PathVariable Long id, @RequestBody StackParam param) {
+    public ResponseEntity<StackDto> update(@PathVariable Long id, @RequestBody StackAddUpdateParam param) {
         return ResponseEntity.status(HttpStatus.OK).body(facade.update(id, param));
     }
 

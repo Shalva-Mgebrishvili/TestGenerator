@@ -16,7 +16,7 @@ public class CandidateAnswer extends SuperEntity {
     private String answer;
 
     @Column(name = "candidate_point")
-    private Integer candidatePoint;
+    private Double candidatePoint;
 
     @ManyToOne
     @JoinColumn(name = "test_question_id")
@@ -25,5 +25,9 @@ public class CandidateAnswer extends SuperEntity {
     @ManyToOne
     @JoinColumn(name = "chosen_answer_id")
     private Answer chosenAnswer;
+
+    @ManyToOne
+    @JoinColumn(name = "candidate_id")
+    private Candidate candidate;
 
 }

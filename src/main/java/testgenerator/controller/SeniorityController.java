@@ -10,7 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import testgenerator.facade.SeniorityFacade;
 import testgenerator.model.dto.SeniorityDto;
-import testgenerator.model.params.SeniorityParam;
+import testgenerator.model.params.SeniorityAddUpdateParam;
 
 @RestController
 @RequestMapping("/seniorities")
@@ -37,12 +37,12 @@ public class SeniorityController {
     }
 
     @PostMapping
-    public ResponseEntity<SeniorityDto> add(@RequestBody SeniorityParam param) {
+    public ResponseEntity<SeniorityDto> add(@RequestBody SeniorityAddUpdateParam param) {
         return ResponseEntity.status(HttpStatus.OK).body(facade.add(param));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<SeniorityDto> update(@PathVariable Long id, @RequestBody SeniorityParam param) {
+    public ResponseEntity<SeniorityDto> update(@PathVariable Long id, @RequestBody SeniorityAddUpdateParam param) {
         return ResponseEntity.status(HttpStatus.OK).body(facade.update(id, param));
     }
 
