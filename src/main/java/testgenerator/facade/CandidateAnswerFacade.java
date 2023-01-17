@@ -9,7 +9,6 @@ import testgenerator.model.dto.CandidateAnswerDto;
 import testgenerator.model.enums.Status;
 import testgenerator.model.mapper.CandidateAnswerMapper;
 import testgenerator.model.params.CandidateAnswerAddParam;
-import testgenerator.model.params.CandidateAnswerUpdateParam;
 import testgenerator.service.*;
 
 import javax.transaction.Transactional;
@@ -44,7 +43,7 @@ public class CandidateAnswerFacade {
         return CandidateAnswerMapper.candidateAnswerDto(service.add(candidateAnswer));
     }
 
-    public CandidateAnswerDto update(Long id, CandidateAnswerUpdateParam param) {
+    public CandidateAnswerDto update(Long id, CandidateAnswerAddParam param) {
         CandidateAnswer updateCandidateAnswer = service.findById(id,Status.ACTIVE);
         updateCandidateAnswer.setCandidatePoint(param.getCandidatePoint());
 

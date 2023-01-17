@@ -7,6 +7,7 @@ import lombok.Setter;
 import testgenerator.model.enums.QuestionType;
 
 import javax.persistence.*;
+import java.util.List;
 
 
 @Entity
@@ -34,5 +35,8 @@ public class Question extends SuperEntity {
     @ManyToOne
     @JoinColumn(name = "seniority_id", nullable = false)
     private Seniority seniority;
+
+    @OneToMany(mappedBy = "question")
+    private List<Answer> answers;
 
 }

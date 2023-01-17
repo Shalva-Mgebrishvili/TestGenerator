@@ -1,11 +1,8 @@
 package testgenerator.model.mapper;
 
 import testgenerator.model.domain.Candidate;
-import testgenerator.model.domain.TestResult;
 import testgenerator.model.dto.CandidateDto;
 import testgenerator.model.dto.TestResultDto;
-import testgenerator.model.enums.Status;
-import testgenerator.model.params.CandidateParam;
 
 import java.util.List;
 
