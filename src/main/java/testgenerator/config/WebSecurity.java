@@ -12,6 +12,8 @@ import org.springframework.security.web.SecurityFilterChain;
 //@EnableGlobalMethodSecurity
 public class WebSecurity {
 
+//    private final KeycloakLogoutHandler keycloakLogoutHandler;
+
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
