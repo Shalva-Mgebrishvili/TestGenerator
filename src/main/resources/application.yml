@@ -22,8 +22,13 @@ spring:
         registration:
           keycloak:
             client-id: test-generator
+            client-secret: jRiF6MHazv6nqTFitmLTgltvQcGF1Y3v
             authorization-grant-type: authorization_code
-            scope: openid
+            scope: openid, profile, roles
+            redirect-uri: http://localhost:8000/*
         provider:
           keycloak:
             issuer-uri: http://localhost:8080/realms/testgeneratorapp
+keycloak:
+  auth-server-url: http://localhost:8080
+  realm: testgeneratorapp
