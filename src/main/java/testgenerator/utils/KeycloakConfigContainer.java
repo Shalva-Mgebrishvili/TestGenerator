@@ -8,14 +8,6 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class KeycloakConfigContainer {
 
-    @Value("${keycloak:\n" +
-            "  auth-server-url}")
-    private String serverUrl;
-
-    @Value("${keycloak:\n" +
-            "  realm}")
-    private String realm;
-
     @Value("${  security:\n" +
             "    oauth2:\n" +
             "      client:\n" +
