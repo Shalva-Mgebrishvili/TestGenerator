@@ -11,6 +11,7 @@ import org.springframework.security.oauth2.server.resource.authentication.JwtAut
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 import testgenerator.config.KeycloakConfig;
+import testgenerator.constants.AppConstants;
 import testgenerator.model.domain.UserEntity;
 import testgenerator.utils.KeycloakConfigContainer;
 
@@ -25,7 +26,7 @@ public class KeycloakService {
     private final KeycloakConfigContainer keycloakConfigContainer;
 
     public void addUser(UserEntity user, CharSequence password) {
-        UsersResource usersResource = KeycloakConfig.getInstance(keycloakConfigContainer).realm(keycloakConfigContainer.getRealm()).users();
+        UsersResource usersResource = KeycloakConfig.getInstance(keycloakConfigContainer).realm(AppConstants.REALM).users();
 
         CredentialRepresentation credentialRepresentation = createPasswordCredentials(password);
 
@@ -53,7 +54,7 @@ public class KeycloakService {
     }
 
     public void logout(String sessionId) {
-        KeycloakConfig.getInstance(keycloakConfigContainer).realm(keycloakConfigContainer.getRealm()).deleteSession(sessionId);
+        KeycloakConfig.getInstance(keycloakConfigContainer).realm(AppConstants.REALM).deleteSession(sessionId);
     }
 
     private static CredentialRepresentation createPasswordCredentials(CharSequence password) {
