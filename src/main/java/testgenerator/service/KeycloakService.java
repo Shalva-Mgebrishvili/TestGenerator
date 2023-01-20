@@ -2,13 +2,16 @@ package testgenerator.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.keycloak.admin.client.Keycloak;
 import org.keycloak.admin.client.resource.UsersResource;
 import org.keycloak.representations.idm.CredentialRepresentation;
 import org.keycloak.representations.idm.UserRepresentation;
+import org.springframework.http.HttpStatus;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 import testgenerator.config.KeycloakConfig;
-import testgenerator.model.dto.KeycloakUserDto;
+import testgenerator.model.domain.UserEntity;
 import testgenerator.utils.KeycloakConfigContainer;
 
 import java.util.Collections;
@@ -20,52 +23,46 @@ import java.util.Collections;
 public class KeycloakService {
 
     private final KeycloakConfigContainer keycloakConfigContainer;
-//    private final AuthzClient authzClient;
-    private final Keycloak keycloakClient;
 
-    public void addUser(KeycloakUserDto user) {
+    public void addUser(UserEntity user, CharSequence password) {
         UsersResource usersResource = KeycloakConfig.getInstance(keycloakConfigContainer).realm(keycloakConfigContainer.getRealm()).users();
 
-        CredentialRepresentation credentialRepresentation = createPasswordCredentials(user.getPassword());
+        CredentialRepresentation credentialRepresentation = createPasswordCredentials(password);
 
-        UserRepresentation kcUser = new UserRepresentation();
-        kcUser.setUsername(user.getEmail());
+        UserRepresentation keycloakUser = new UserRepresentation();
+        keycloakUser.setUsername(user.getEmail());
 
-        kcUser.setCredentials(Collections.singletonList(credentialRepresentation));
-        kcUser.setFirstName(user.getName());
-        kcUser.setLastName(user.getSurname());
-        kcUser.setEmail(user.getEmail());
-        kcUser.setEnabled(true);
-        kcUser.setEmailVerified(false);
-        usersResource.create(kcUser);
+        keycloakUser.setCredentials(Collections.singletonList(credentialRepresentation));
+        keycloakUser.setFirstName(user.getName());
+        keycloakUser.setLastName(user.getSurname());
+        keycloakUser.setEmail(user.getEmail());
+        keycloakUser.setEnabled(true);
+        keycloakUser.setEmailVerified(false);
+        usersResource.create(keycloakUser);
     }
 
-    private static CredentialRepresentation createPasswordCredentials(String password) {
+    public String getSessionId() {
+        JwtAuthenticationToken jwt = (JwtAuthenticationToken) SecurityContextHolder.getContext().getAuthentication();
+        String sessionId = (String) jwt.getTokenAttributes().getOrDefault("session_state", "NOT");
+
+        if (sessionId.equals("NOT")) {
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Can't find sessionId in token.");
+        }
+
+        return sessionId;
+    }
+
+    public void logout(String sessionId) {
+        KeycloakConfig.getInstance(keycloakConfigContainer).realm(keycloakConfigContainer.getRealm()).deleteSession(sessionId);
+    }
+
+    private static CredentialRepresentation createPasswordCredentials(CharSequence password) {
         CredentialRepresentation passwordCredentials = new CredentialRepresentation();
+
         passwordCredentials.setTemporary(false);
         passwordCredentials.setType(CredentialRepresentation.PASSWORD);
-        passwordCredentials.setValue(password);
+        passwordCredentials.setValue(password.toString());
+
         return passwordCredentials;
     }
-
-//    public AccessTokenResponse login(LoginParam loginParam) {
-//
-//        String scope = loginParam.isRememberMe() ? "offline_access" : null;
-//
-//        AccessTokenResponse response;
-//
-//        try {
-//            response = authzClient.authorization(loginParam.getEmail(), loginParam.getPassword().toString(), scope).authorize();
-//        } catch (Exception e) {
-//            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid user credentials");
-//        }
-//
-//        return response;
-//    }
-
-//    public void logout(String sessionId) {
-//        try {
-//            keycloakClient.realm()
-//        }
-//    }
 }

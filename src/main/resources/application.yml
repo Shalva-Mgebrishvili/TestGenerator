@@ -20,15 +20,20 @@ spring:
     oauth2:
       client:
         registration:
-          keycloak:
+          test-generator:
             client-id: test-generator
             client-secret: jRiF6MHazv6nqTFitmLTgltvQcGF1Y3v
             authorization-grant-type: authorization_code
             scope: openid, profile, roles
-            redirect-uri: http://localhost:8000/*
+            redirect-uri: http://localhost:8080/login/oauth2/code/testgenerator
         provider:
-          keycloak:
+          test-generator:
             issuer-uri: http://localhost:8080/realms/testgeneratorapp
+
+      resource-server:
+        jwt:
+          jwk-set-uri: http://localhost:8080/realms/testgeneratorapp/protocol/openid-connect/certs
+
 keycloak:
   auth-server-url: http://localhost:8080
   realm: testgeneratorapp

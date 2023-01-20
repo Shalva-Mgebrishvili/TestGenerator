@@ -35,4 +35,10 @@ public class UserService {
     public UserEntity add(UserEntity user) {
         return repository.save(user);
     }
+
+    public boolean existsByEmail(String email, Status status) {
+        Optional<UserEntity> user = repository.existsByEmailAndStatus(email, status);
+
+        return user.isPresent();
+    }
 }

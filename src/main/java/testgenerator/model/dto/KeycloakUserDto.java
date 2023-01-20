@@ -10,4 +10,5 @@ public class KeycloakUserDto {
     private String surname;
     private String password;
     private String email;
+
 }

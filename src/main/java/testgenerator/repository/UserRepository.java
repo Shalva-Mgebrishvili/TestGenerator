@@ -26,12 +26,23 @@ public interface UserRepository extends JpaRepository<UserEntity, Long> {
     );
 
     @Query("""
-        SELECT t
-        FROM UserEntity t
-        WHERE t.status = :status
+        SELECT u
+        FROM UserEntity u
+        WHERE u.status = :status
         """)
     Page<UserEntity> findAllByStatus(
             @Param("status") Status status,
             Pageable pageable
+    );
+
+    @Query("""
+        SELECT u
+        FROM UserEntity u
+        WHERE u.email = :email
+        AND u.status = :status
+        """)
+    Optional<UserEntity> existsByEmailAndStatus(
+        @Param("email") String email,
+        @Param("status") Status status
     );
 }

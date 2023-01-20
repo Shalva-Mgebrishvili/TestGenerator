@@ -2,7 +2,9 @@ package testgenerator.model.mapper;
 
 import testgenerator.model.domain.UserEntity;
 import testgenerator.model.dto.UserDto;
+import testgenerator.model.enums.Role;
 import testgenerator.model.enums.Status;
+import testgenerator.model.params.SignUpParam;
 import testgenerator.model.params.UserAddUpdateParam;
 
 public class UserMapper {
@@ -23,6 +25,13 @@ public class UserMapper {
         user.setSurname(param.getSurname());
         user.setEmail(param.getEmail());
         user.setRole(param.getRole());
+
+        return user;
+    }
+
+    public static UserEntity signUpParamToUser(SignUpParam param) {
+        UserEntity user = new UserEntity(param.getName(), param.getSurname(), param.getEmail(), Role.USER);
+        user.setStatus(Status.ACTIVE);
 
         return user;
     }

@@ -22,9 +22,22 @@ public class WebSecurity {
 
         return http.csrf().disable()
                 .authorizeRequests()
+                .antMatchers(
+                        "/swagger-ui/**",
+                        "/v2/api-docs/**",
+                        "/v3/api-docs/**",
+                        "/swagger-resources/**",
+                        "/webjars/**",
+                        "/actuator/**",
+                        "/swagger-ui.html/**"
+                ).permitAll()
                 .anyRequest()
-                .permitAll()
+                .authenticated()
                 .and()
-                .build();
+                .oauth2ResourceServer()
+                .jwt().jwkSetUri("http://localhost:8080/realms/testgeneratorapp/protocol/openid-connect/certs")
+                .jwtAuthenticationConverter(jwtAuthenticationConverter)
+                .and()
+                .and().build();
     }
 }
