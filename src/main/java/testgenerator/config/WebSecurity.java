@@ -23,6 +23,7 @@ public class WebSecurity {
         return http.csrf().disable()
                 .authorizeRequests()
                 .antMatchers(
+                        "/auth/signup",
                         "/swagger-ui/**",
                         "/v2/api-docs/**",
                         "/v3/api-docs/**",
