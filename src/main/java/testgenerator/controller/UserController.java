@@ -7,6 +7,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.*;
 import testgenerator.facade.UserFacade;
 import testgenerator.model.dto.UserDto;
@@ -19,11 +22,13 @@ public class UserController {
 
     private final UserFacade facade;
 
+    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_SUPER_ADMIN') or #id == authentication.principal.id")
     @GetMapping("/{id}")
-    public ResponseEntity<UserDto> findById(@PathVariable Long id) {
+    public ResponseEntity<UserDto> findById(@PathVariable Long id, @AuthenticationPrincipal Jwt jwt) {
         return ResponseEntity.status(HttpStatus.OK).body(facade.findById(id));
     }
 
+    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_SUPER_ADMIN')")
     @GetMapping
     public ResponseEntity<Page<UserDto>> findAll(
             @RequestParam(value = "page", defaultValue = "0", required = false) Integer page,
@@ -36,10 +41,12 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.OK).body(facade.findAll(pageable));
     }
 
-    @PostMapping
-    public ResponseEntity<UserDto> add(@RequestBody UserAddUpdateParam param) {
-        return ResponseEntity.status(HttpStatus.OK).body(facade.add(param));
-    }
+//    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_SUPER_ADMIN')")
+//    @PreAuthorize("permitAll()")
+//    @PostMapping
+//    public ResponseEntity<UserDto> add(@RequestBody UserAddUpdateParam param) {
+//        return ResponseEntity.status(HttpStatus.OK).body(facade.add(param));
+//    }
 
     @PutMapping("/{id}")
     public ResponseEntity<UserDto> update(@PathVariable Long id, @RequestBody UserAddUpdateParam param) {
@@ -51,4 +58,6 @@ public class UserController {
         facade.deleteById(id);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
+
+
 }

@@ -3,11 +3,13 @@ package testgenerator.controller;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import testgenerator.facade.AuthFacade;
+import testgenerator.model.dto.UserDto;
 import testgenerator.model.params.SignUpParam;
 
 import javax.validation.Valid;
@@ -26,8 +28,8 @@ public class AuthController {
     }
 
     @PostMapping("/signup")
-    public ResponseEntity<Void> signUp(@RequestBody @Valid SignUpParam param) {
-        facade.signUp(param);
-        return ResponseEntity.status(HttpStatus.CREATED).build();
+    @PreAuthorize("permitAll()")
+    public ResponseEntity<UserDto> signUp(@RequestBody @Valid SignUpParam param) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(facade.signUp(param));
     }
 }

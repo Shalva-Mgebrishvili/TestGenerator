@@ -2,6 +2,7 @@ package testgenerator.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.keycloak.admin.client.Keycloak;
 import org.keycloak.admin.client.resource.UsersResource;
 import org.keycloak.representations.idm.CredentialRepresentation;
 import org.keycloak.representations.idm.UserRepresentation;
@@ -13,8 +14,10 @@ import org.springframework.web.server.ResponseStatusException;
 import testgenerator.config.KeycloakConfig;
 import testgenerator.constants.AppConstants;
 import testgenerator.model.domain.UserEntity;
+import testgenerator.model.params.SignUpParam;
 import testgenerator.utils.KeycloakConfigContainer;
 
+import javax.ws.rs.core.Response;
 import java.util.Collections;
 
 
@@ -23,23 +26,23 @@ import java.util.Collections;
 @RequiredArgsConstructor
 public class KeycloakService {
 
-    private final KeycloakConfigContainer keycloakConfigContainer;
+    private final Keycloak keycloak;
 
-    public void addUser(UserEntity user, CharSequence password) {
-        UsersResource usersResource = KeycloakConfig.getInstance(keycloakConfigContainer).realm(AppConstants.REALM).users();
+    public Response addUser(SignUpParam param, CharSequence password) {
+        UsersResource usersResource = keycloak.realm(AppConstants.REALM).users();
 
         CredentialRepresentation credentialRepresentation = createPasswordCredentials(password);
 
         UserRepresentation keycloakUser = new UserRepresentation();
-        keycloakUser.setUsername(user.getEmail());
+        keycloakUser.setUsername(param.getEmail());
 
         keycloakUser.setCredentials(Collections.singletonList(credentialRepresentation));
-        keycloakUser.setFirstName(user.getName());
-        keycloakUser.setLastName(user.getSurname());
-        keycloakUser.setEmail(user.getEmail());
+        keycloakUser.setFirstName(param.getName());
+        keycloakUser.setLastName(param.getSurname());
+        keycloakUser.setEmail(param.getEmail());
         keycloakUser.setEnabled(true);
         keycloakUser.setEmailVerified(false);
-        usersResource.create(keycloakUser);
+        return usersResource.create(keycloakUser);
     }
 
     public String getSessionId() {
@@ -54,7 +57,7 @@ public class KeycloakService {
     }
 
     public void logout(String sessionId) {
-        KeycloakConfig.getInstance(keycloakConfigContainer).realm(AppConstants.REALM).deleteSession(sessionId);
+        keycloak.realm(AppConstants.REALM).deleteSession(sessionId);
     }
 
     private static CredentialRepresentation createPasswordCredentials(CharSequence password) {

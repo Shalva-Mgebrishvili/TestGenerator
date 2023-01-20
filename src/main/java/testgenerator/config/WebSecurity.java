@@ -31,6 +31,7 @@ public class WebSecurity {
                         "/webjars/**",
                         "/actuator/**",
                         "/swagger-ui.html/**"
+
                 ).permitAll()
                 .anyRequest()
                 .authenticated()

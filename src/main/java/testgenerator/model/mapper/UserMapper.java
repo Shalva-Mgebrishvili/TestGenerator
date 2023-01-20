@@ -14,7 +14,7 @@ public class UserMapper {
     }
 
     public static UserEntity paramToUser(UserAddUpdateParam param) {
-        UserEntity user = new UserEntity(param.getName(), param.getSurname(), param.getEmail(), param.getRole());
+        UserEntity user = new UserEntity(param.getName(), param.getSurname(), param.getEmail(), Role.USER);
         user.setStatus(Status.ACTIVE);
 
         return user;
@@ -24,7 +24,6 @@ public class UserMapper {
         user.setName(param.getName());
         user.setSurname(param.getSurname());
         user.setEmail(param.getEmail());
-        user.setRole(param.getRole());
 
         return user;
     }

@@ -14,5 +14,4 @@ public class UserAddUpdateParam {
 
     private String email;
 
-    private Role role;
 }
