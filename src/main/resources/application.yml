@@ -21,9 +21,9 @@ spring:
       client:
         registration:
           test-generator:
-            client-id: test-generator
-            client-secret: jRiF6MHazv6nqTFitmLTgltvQcGF1Y3v
-            authorization-grant-type: authorization_code
+            client-id: ${CLIENT_ID}
+            client-secret: ${CLIENT_SECRET}
+            authorization-grant-type: client_credentials
             scope: openid, profile, roles
             redirect-uri: http://localhost:8080/login/oauth2/code/testgenerator
         provider:

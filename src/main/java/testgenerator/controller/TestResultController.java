@@ -7,6 +7,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import testgenerator.facade.TestResultFacade;
 import testgenerator.model.dto.TestResultDto;
@@ -20,11 +21,14 @@ public class TestResultController {
 
     private final TestResultFacade facade;
 
+    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_SUPER_ADMIN') or " +
+            "@testResultFacade.findById(#id).candidate.id == authentication.principal.id")
     @GetMapping("/{id}")
     public ResponseEntity<TestResultDto> findById(@PathVariable Long id) {
         return ResponseEntity.status(HttpStatus.OK).body(facade.findById(id));
     }
 
+    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_SUPER_ADMIN')")
     @GetMapping
     public ResponseEntity<Page<TestResultDto>> findAll(
             @RequestParam(value = "page", defaultValue = "0", required = false) Integer page,
@@ -37,16 +41,19 @@ public class TestResultController {
         return ResponseEntity.status(HttpStatus.OK).body(facade.findAll(pageable));
     }
 
+    @PreAuthorize("hasRole('ROLE_USER') or hasRole('ROLE_ADMIN') or hasRole('ROLE_SUPER_ADMIN')")
     @PostMapping
     public ResponseEntity<TestResultDto> add(@RequestBody TestResultAddParam param) {
         return ResponseEntity.status(HttpStatus.OK).body(facade.add(param));
     }
 
+    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_SUPER_ADMIN')")
     @PutMapping("/{id}")
     public ResponseEntity<TestResultDto> update(@PathVariable Long id, @RequestBody TestResultUpdateParam param) {
         return ResponseEntity.status(HttpStatus.OK).body(facade.update(id, param));
     }
 
+    @PreAuthorize("hasRole('ROLE_SUPER_ADMIN')")
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
         facade.deleteById(id);

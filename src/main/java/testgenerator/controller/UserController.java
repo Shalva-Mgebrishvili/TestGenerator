@@ -24,7 +24,7 @@ public class UserController {
 
     @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_SUPER_ADMIN') or #id == authentication.principal.id")
     @GetMapping("/{id}")
-    public ResponseEntity<UserDto> findById(@PathVariable Long id, @AuthenticationPrincipal Jwt jwt) {
+    public ResponseEntity<UserDto> findById(@PathVariable Long id) {
         return ResponseEntity.status(HttpStatus.OK).body(facade.findById(id));
     }
 
@@ -41,11 +41,13 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.OK).body(facade.findAll(pageable));
     }
 
+    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_SUPER_ADMIN')")
     @PutMapping("/{id}")
     public ResponseEntity<UserDto> update(@PathVariable Long id, @RequestBody UserAddUpdateParam param) {
         return ResponseEntity.status(HttpStatus.OK).body(facade.update(id, param));
     }
 
+    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_SUPER_ADMIN') or #id == authentication.principal.id")
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
         facade.deleteById(id);
