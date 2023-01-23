@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.*;
 import testgenerator.facade.CandidateAnswerFacade;
 import testgenerator.model.dto.CandidateAnswerDto;
 import testgenerator.model.params.CandidateAnswerAddParam;
-import testgenerator.model.params.CandidateAnswerUpdateParam;
 
 @RestController
 @RequestMapping("/candidate-answers")
@@ -28,7 +27,6 @@ public class CandidateAnswerController {
     }
 
     @PreAuthorize("hasRole('ADMIN') or hasRole('SUPER_ADMIN')")
-    @GetMapping
     public ResponseEntity<Page<CandidateAnswerDto>> findAll(
             @RequestParam(value = "page", defaultValue = "0", required = false) Integer page,
             @RequestParam(value = "size", defaultValue = "20", required = false) Integer size,
@@ -46,16 +44,4 @@ public class CandidateAnswerController {
         return ResponseEntity.status(HttpStatus.OK).body(facade.add(param));
     }
 
-
-//    @PutMapping("/{id}")
-//    public ResponseEntity<CandidateAnswerDto> update(@PathVariable Long id, @RequestBody CandidateAnswerUpdateParam param) {
-//        return ResponseEntity.status(HttpStatus.OK).body(facade.update(id, param));
-//    }
-//
-//    @DeleteMapping("/{id}")
-//    public ResponseEntity<Void> delete(@PathVariable Long id) {
-//        facade.deleteById(id);
-//
-//        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
-//    }
 }

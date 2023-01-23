@@ -15,10 +15,8 @@ public class CandidateAnswerMapper {
         AnswerDto chosenAnswer = AnswerMapper.answerDto(candidateAnswer.getChosenAnswer());
         CandidateDto candidate = CandidateMapper.candidateDto(candidateAnswer.getCandidate());
 
-        CandidateAnswerDto candidateAnswerDto = new CandidateAnswerDto(candidateAnswer.getId(), candidateAnswer.getAnswer(),
+        return new CandidateAnswerDto(candidateAnswer.getId(), candidateAnswer.getAnswer(),
                 candidateAnswer.getCandidatePoint(), testQuestion, chosenAnswer, candidate);
-
-        return candidateAnswerDto;
     }
 
     public static CandidateAnswer paramToCandidateAnswer(CandidateAnswerAddParam param, TestQuestion testQuestion,
@@ -30,8 +28,9 @@ public class CandidateAnswerMapper {
 
         if(!correctList.isEmpty()){
             for(Answer answer: correctList) {
-                if(answer.getAnswer().equals(chosenAnswer.getAnswer())){
-                    candidatePoint=maxPoint/size;
+                if (answer.getAnswer().equals(chosenAnswer.getAnswer())) {
+                    candidatePoint = maxPoint / size;
+                    break;
                 }
             }
         }

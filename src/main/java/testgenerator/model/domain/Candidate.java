@@ -1,9 +1,13 @@
 package testgenerator.model.domain;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-import javax.persistence.*;
-import java.util.List;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Table;
 
 @Entity
 @Table(name = "candidate")
@@ -21,8 +25,5 @@ public class Candidate extends SuperEntity {
 
     @Column(name = "email")
     private String email;
-
-    @OneToMany(mappedBy = "candidate")
-    private List<TestResult> testResults;
 
 }
