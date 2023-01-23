@@ -1,9 +1,6 @@
 package testgenerator.model.domain;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import testgenerator.model.enums.QuestionType;
 
 import javax.persistence.*;
@@ -16,6 +13,7 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@EqualsAndHashCode
 public class Question extends SuperEntity {
 
     @Column(name = "text", nullable = false)

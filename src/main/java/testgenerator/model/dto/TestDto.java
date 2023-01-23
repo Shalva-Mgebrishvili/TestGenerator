@@ -15,6 +15,12 @@ public class TestDto {
 
     private Long givenTime;
 
+    private Integer numberOfOpenQuestions;
+
+    private Integer numberOfMultipleChoiceTestQuestions;
+
+    private Integer numberOfSingleChoiceTestQuestions;
+
     private SeniorityDto seniority;
 
     private List<TestStackDto> testStacks;

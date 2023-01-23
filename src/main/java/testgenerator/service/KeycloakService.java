@@ -16,6 +16,7 @@ import testgenerator.model.params.SignUpParam;
 
 import javax.ws.rs.core.Response;
 import java.util.Collections;
+import java.util.List;
 
 
 @Service
@@ -66,4 +67,13 @@ public class KeycloakService {
 
         return passwordCredentials;
     }
+
+//    public Response deleteUser(String email) {
+//        UsersResource usersResource = keycloak.realm(AppConstants.REALM).users();
+//        List<UserRepresentation> search = usersResource.search(email, true);
+//
+//        if (search.isEmpty()) throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Keycloak user with this username doesn't exist");
+//
+////        usersResource.delete();
+//    }
 }

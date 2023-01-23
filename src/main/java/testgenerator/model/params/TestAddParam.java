@@ -11,9 +11,15 @@ public class TestAddParam {
 
     private Long givenTime;
 
+    private Integer numberOfOpenQuestions;
+
+    private Integer numberOfMultipleChoiceTestQuestions;
+
+    private Integer numberOfSingleChoiceTestQuestions;
+
     private Long seniority;
 
     private List<Long> testStacks;
 
-    private List<Long> testQuestions;
+    private List<Long> topics;
 }

@@ -46,15 +46,4 @@ public class TestController {
     public ResponseEntity<TestDto> add(@RequestBody TestAddParam param) {
         return ResponseEntity.status(HttpStatus.OK).body(facade.add(param));
     }
-
-//    @PutMapping("/{id}")
-//    public ResponseEntity<TestDto> update(@PathVariable Long id, @RequestBody TestUpdateParam param) {
-//        return ResponseEntity.status(HttpStatus.OK).body(facade.update(id, param));
-//    }
-
-//    @DeleteMapping("/{id}")
-//    public ResponseEntity<Void> delete(@PathVariable Long id) {
-//        facade.deleteById(id);
-//        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
-//    }
 }

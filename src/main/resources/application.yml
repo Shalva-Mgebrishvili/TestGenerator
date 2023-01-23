@@ -16,20 +16,20 @@ spring:
     database: postgresql
     generate-ddl: true
 
-  security:
-    oauth2:
-      client:
-        registration:
-          test-generator:
-            client-id: ${CLIENT_ID}
-            client-secret: ${CLIENT_SECRET}
-            authorization-grant-type: authorization_code
-            scope: openid, profile, roles
-            redirect-uri: http://localhost:8080/login/oauth2/code/testgenerator
-        provider:
-          test-generator:
-            issuer-uri: http://localhost:8080/realms/testgeneratorapp
-
-      resource-server:
-        jwt:
-          jwk-set-uri: http://localhost:8080/realms/testgeneratorapp/protocol/openid-connect/certs
+#  security:
+#    oauth2:
+#      client:
+#        registration:
+#          test-generator:
+#            client-id: ${CLIENT_ID}
+#            client-secret: ${CLIENT_SECRET}
+#            authorization-grant-type: authorization_code
+#            scope: openid, profile, roles
+#            redirect-uri: http://localhost:8080/login/oauth2/code/testgenerator
+#        provider:
+#          test-generator:
+#            issuer-uri: http://localhost:8080/realms/testgeneratorapp
+#
+#      resource-server:
+#        jwt:
+#          jwk-set-uri: http://localhost:8080/realms/testgeneratorapp/protocol/openid-connect/certs

@@ -1,20 +1,24 @@
 package testgenerator.facade;
 
+import com.sun.mail.util.QEncoderStream;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import testgenerator.model.domain.*;
 import testgenerator.model.dto.TestDto;
+import testgenerator.model.enums.QuestionType;
 import testgenerator.model.enums.Status;
 import testgenerator.model.mapper.TestMapper;
 import testgenerator.model.params.TestAddParam;
-import testgenerator.model.params.TestUpdateParam;
 import testgenerator.service.*;
 
 import javax.transaction.Transactional;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -24,8 +28,8 @@ public class TestFacade {
     private final TestService service;
     private final SeniorityService seniorityService;
     private final TestStackService testStackService;
-    private final TestQuestionService testQuestionService;
-    private final TestResultService testResultService;
+    private final QuestionService questionService;
+    private final TopicService topicService;
 
     public TestDto findById(Long id) {
         Test test = service.findById(id, Status.ACTIVE);
@@ -41,30 +45,22 @@ public class TestFacade {
 
     public TestDto add(TestAddParam param) {
         Seniority seniority = seniorityService.findById(param.getSeniority(), Status.ACTIVE);
-        List<TestQuestion> testQuestionList = param.getTestQuestions().stream().map(t -> testQuestionService.findById(t, Status.ACTIVE)).toList();
         List<TestStack> testStackList = param.getTestStacks().stream().map(t -> testStackService.findById(t, Status.ACTIVE)).toList();
+        List<Topic> topicList = param.getTopics().stream().map(t -> topicService.findById(t, Status.ACTIVE)).toList();
+        Set<Question> questionList = new HashSet<>();
 
-        Test test = new Test(param.getGivenTime(), seniority, testStackList, testQuestionList);
-        test.setStatus(Status.ACTIVE);
+        questionService.findQuestionsForTest(Status.ACTIVE, QuestionType.OPEN_QUESTION, topicList, seniority, param.getNumberOfOpenQuestions(), questionList);
+        questionService.findQuestionsForTest(Status.ACTIVE, QuestionType.SINGLE_CHOICE_TEST, topicList, seniority, param.getNumberOfSingleChoiceTestQuestions(), questionList);
+        questionService.findQuestionsForTest(Status.ACTIVE, QuestionType.MULTIPLE_CHOICE_TEST, topicList, seniority, param.getNumberOfMultipleChoiceTestQuestions(), questionList);
 
-        return TestMapper.testDto(service.add(test));
-    }
+        List<TestQuestion> testQuestionList = new ArrayList<>();
+        Test test = new Test();
 
-    public TestDto update(Long id, TestUpdateParam param) {
-        Seniority seniority = seniorityService.findById(param.getSeniority(), Status.ACTIVE);
+        for(Question question: questionList) {
+            TestQuestion testQuestion = new TestQuestion(question, test, new ArrayList<>());
+            testQuestionList.add(testQuestion);
+        }
 
-        Test updateTest = service.findById(id, Status.ACTIVE);
-
-        updateTest.setSeniority(seniority);
-
-        return TestMapper.testDto(service.add(updateTest));
-    }
-
-    public void deleteById(Long id) {
-        Test test = service.findById(id, Status.ACTIVE);
-
-        test.setStatus(Status.DEACTIVATED);
-
-        service.add(test);
+        return TestMapper.testDto(service.add(TestMapper.paramToTest(test, param, seniority, testStackList, testQuestionList)));
     }
 }
