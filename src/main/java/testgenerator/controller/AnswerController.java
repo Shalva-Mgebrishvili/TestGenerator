@@ -7,6 +7,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import testgenerator.facade.AnswerFacade;
 import testgenerator.model.dto.AnswerDto;
@@ -14,6 +15,7 @@ import testgenerator.model.params.AnswerAddUpdateParam;
 
 @RestController
 @RequestMapping ("/answers")
+@PreAuthorize("hasRole('ADMIN') or hasRole('SUPER_ADMIN')")
 @RequiredArgsConstructor
 public class AnswerController {
 
