@@ -7,8 +7,8 @@ spring:
   datasource:
     driver-class-name: org.postgresql.Driver
     url: jdbc:postgresql://localhost:5432/test
-    username: postgres
-    password: password
+    username: ${POSTGRES_USERNAME}
+    password: ${POSTGRES_PASSWORD}
   jpa:
     hibernate:
       ddl-auto: update
@@ -23,7 +23,7 @@ spring:
           test-generator:
             client-id: ${CLIENT_ID}
             client-secret: ${CLIENT_SECRET}
-            authorization-grant-type: client_credentials
+            authorization-grant-type: authorization_code
             scope: openid, profile, roles
             redirect-uri: http://localhost:8080/login/oauth2/code/testgenerator
         provider:

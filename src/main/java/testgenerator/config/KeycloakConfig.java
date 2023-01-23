@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import testgenerator.constants.AppConstants;
-import testgenerator.utils.KeycloakConfigContainer;
 
 @Configuration
 public class KeycloakConfig  {
@@ -19,7 +18,7 @@ public class KeycloakConfig  {
     private String clientSecret;
 
     @Bean
-    public Keycloak getInstance(KeycloakConfigContainer keycloakConfigContainer){
+    public Keycloak getInstance(){
         return KeycloakBuilder.builder()
                 .serverUrl(AppConstants.AUTH_SERVER_URL)
                 .realm(AppConstants.REALM)

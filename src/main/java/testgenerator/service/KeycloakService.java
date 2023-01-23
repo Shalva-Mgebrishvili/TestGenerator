@@ -11,11 +11,8 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
-import testgenerator.config.KeycloakConfig;
 import testgenerator.constants.AppConstants;
-import testgenerator.model.domain.UserEntity;
 import testgenerator.model.params.SignUpParam;
-import testgenerator.utils.KeycloakConfigContainer;
 
 import javax.ws.rs.core.Response;
 import java.util.Collections;
