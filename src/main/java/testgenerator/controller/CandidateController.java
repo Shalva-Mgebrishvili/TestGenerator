@@ -11,7 +11,9 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import testgenerator.facade.CandidateFacade;
 import testgenerator.model.dto.CandidateDto;
-import testgenerator.model.params.CandidateAddUpdateParam;
+import testgenerator.model.params.CandidateAddParam;
+import testgenerator.model.params.CandidateUpdateParam;
+
 
 @RestController
 @RequestMapping("/candidates")
@@ -40,13 +42,13 @@ public class CandidateController {
 
     @PreAuthorize("hasRole('USER') or hasRole('ADMIN') or hasRole('SUPER_ADMIN')")
     @PostMapping
-    public ResponseEntity<CandidateDto> add(@RequestBody CandidateAddUpdateParam param) {
+    public ResponseEntity<CandidateDto> add(@RequestBody CandidateAddParam param) {
         return ResponseEntity.status(HttpStatus.OK).body(facade.add(param));
     }
 
     @PreAuthorize("hasRole('ADMIN') or hasRole('SUPER_ADMIN')")
     @PutMapping("/{id}")
-    public ResponseEntity<CandidateDto> update(@PathVariable Long id, @RequestBody CandidateAddUpdateParam param) {
+    public ResponseEntity<CandidateDto> update(@PathVariable Long id, @RequestBody CandidateUpdateParam param) {
         return ResponseEntity.status(HttpStatus.OK).body(facade.update(id, param));
     }
 

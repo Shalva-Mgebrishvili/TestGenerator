@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import java.util.List;
 
 @Getter
 @Setter
@@ -18,5 +19,7 @@ public class CandidateDto {
     private String surname;
 
     private String email;
+
+    private List<TestResultDto> testResults;
 
 }

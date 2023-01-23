@@ -5,7 +5,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class CandidateAddUpdateParam {
+public class CandidateAddParam {
 
     private String name;
 
