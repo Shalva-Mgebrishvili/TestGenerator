@@ -41,13 +41,6 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.OK).body(facade.findAll(pageable));
     }
 
-//    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_SUPER_ADMIN')")
-//    @PreAuthorize("permitAll()")
-//    @PostMapping
-//    public ResponseEntity<UserDto> add(@RequestBody UserAddUpdateParam param) {
-//        return ResponseEntity.status(HttpStatus.OK).body(facade.add(param));
-//    }
-
     @PutMapping("/{id}")
     public ResponseEntity<UserDto> update(@PathVariable Long id, @RequestBody UserAddUpdateParam param) {
         return ResponseEntity.status(HttpStatus.OK).body(facade.update(id, param));
