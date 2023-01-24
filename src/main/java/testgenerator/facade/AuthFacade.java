@@ -27,15 +27,26 @@ public class AuthFacade {
 
     @Transactional
     public UserDto signUp(SignUpParam param) {
-
         if (userService.existsByEmail(param.getEmail(), Status.ACTIVE)){
             throw new ResponseStatusException(HttpStatus.CONFLICT, "User with this email already exists.");
         }
 
-        Response response = keycloakService.addUser(param, param.getPassword());
+        Response response = keycloakService.addUserInKeycloak(param, param.getPassword());
+
         if(response.getStatus() != HttpStatus.CREATED.value()){
           throw new ResponseStatusException(HttpStatus.CONFLICT, "User creation failed on keycloak");
         }
+
+        keycloakService.changeUserKeycloakRole(UserMapper.signUpParamToUser(param), "USER");
+
         return UserMapper.userDto(userService.add(UserMapper.signUpParamToUser(param)));
     }
+
+//    public void changePassword (PasswordChangeParam param) {
+//        if(param.getNewPassword().equals(param.getOldPassword())) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Passwords match");
+//
+//        String keycloakId = keycloakService.getPrincipalKeycloakId();
+//
+//        if(keycloakService.checkOldPassword(param, keycloakId));
+//    }
 }

@@ -44,10 +44,4 @@ public class TestStackController {
         return ResponseEntity.status(HttpStatus.OK).body(facade.add(param));
     }
 
-//    @DeleteMapping("/{id}")
-//    public ResponseEntity<Void> delete(@PathVariable Long id) {
-//        facade.deleteById(id);
-//        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
-//    }
-
 }

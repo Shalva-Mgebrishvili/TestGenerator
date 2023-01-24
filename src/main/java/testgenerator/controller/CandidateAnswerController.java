@@ -34,23 +34,16 @@ public class CandidateAnswerController {
         Pageable pageable = PageRequest.of(page, size, Sort.by(direction, sort));
         return ResponseEntity.status(HttpStatus.OK).body(facade.findAll(pageable));
     }
+
     @PreAuthorize("hasRole('ADMIN') or hasRole('SUPER_ADMIN')")
     @PostMapping
     public ResponseEntity<CandidateAnswerDto> add(@RequestBody CandidateAnswerAddParam param) {
         return ResponseEntity.status(HttpStatus.OK).body(facade.add(param));
     }
 
-
     @PreAuthorize("hasRole('ADMIN') or hasRole('SUPER_ADMIN')")
     @PutMapping("/{id}")
     public ResponseEntity<CandidateAnswerDto> update(@PathVariable Long id, @RequestBody CandidateAnswerUpdateParam param) {
         return ResponseEntity.status(HttpStatus.OK).body(facade.update(id, param));
     }
-
-//    @DeleteMapping("/{id}")
-//    public ResponseEntity<Void> delete(@PathVariable Long id) {
-//        facade.deleteById(id);
-//
-//        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
-//    }
 }

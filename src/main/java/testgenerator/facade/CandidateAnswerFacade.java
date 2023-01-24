@@ -65,12 +65,4 @@ public class CandidateAnswerFacade {
         return CandidateAnswerMapper.candidateAnswerDto(service.add(updateCandidateAnswer));
     }
 
-    public void deleteById(Long id) {
-        CandidateAnswer candidateAnswer = service.findById(id, Status.ACTIVE);
-
-        candidateAnswer.setStatus(Status.DEACTIVATED);
-
-        service.add(candidateAnswer);
-    }
-
 }

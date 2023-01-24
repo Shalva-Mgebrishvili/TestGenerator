@@ -1,7 +1,8 @@
 package testgenerator.model.enums;
 
 public enum QuestionType {
-    MULTIPLE_CHOICE_TEST,
+    OPEN_QUESTION,
     SINGLE_CHOICE_TEST,
-    OPEN_QUESTION
+    MULTIPLE_CHOICE_TEST
+
 }

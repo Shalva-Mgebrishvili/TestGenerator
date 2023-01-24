@@ -15,13 +15,19 @@ public class EmailValidatorImpl implements ConstraintValidator<Email, String> {
     public boolean isValid(String value, ConstraintValidatorContext context) {
 
         if (value.isBlank()) {
-            return ValidationError.throwError(context, "Email must not be blank.");
+            context.buildConstraintViolationWithTemplate("Email must not be blank.")
+                    .addConstraintViolation()
+                    .disableDefaultConstraintViolation();
+            return false;
         }
 
         Pattern pattern = Pattern.compile("[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$");
 
         if(!pattern.matcher(value).matches()) {
-            return ValidationError.throwError(context, "Invalid email format.");
+            context.buildConstraintViolationWithTemplate("Invalid mail format.")
+                    .addConstraintViolation()
+                    .disableDefaultConstraintViolation();
+            return false;
         }
 
         return true;

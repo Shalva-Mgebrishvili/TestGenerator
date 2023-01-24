@@ -9,12 +9,14 @@ import testgenerator.model.domain.Question;
 import testgenerator.model.domain.Seniority;
 import testgenerator.model.domain.Topic;
 import testgenerator.model.dto.QuestionDto;
+import testgenerator.model.enums.QuestionType;
 import testgenerator.model.enums.Status;
 import testgenerator.model.mapper.QuestionMapper;
 import testgenerator.model.params.QuestionAddUpdateParam;
 import testgenerator.service.*;
 
 import javax.transaction.Transactional;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -43,7 +45,11 @@ public class QuestionFacade {
     public QuestionDto add(QuestionAddUpdateParam param) {
         Topic topic = topicService.findById(param.getTopic(), Status.ACTIVE);
         Seniority seniority = seniorityService.findById(param.getSeniority(), Status.ACTIVE);
-        List<Answer> answers = param.getAnswers().stream().map(a -> answerService.findById(a, Status.ACTIVE)).toList();
+        List<Answer> answers = new ArrayList<>();
+
+        if(param.getQuestionType() != QuestionType.OPEN_QUESTION) {
+            answers = param.getAnswers().stream().map(a -> answerService.findById(a, Status.ACTIVE)).toList();
+        }
 
         Question question = new Question(param.getText(), param.getPoint(), param.getQuestionType(), topic, seniority, answers);
         question.setStatus(Status.ACTIVE);

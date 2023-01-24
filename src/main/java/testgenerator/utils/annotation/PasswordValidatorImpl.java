@@ -27,9 +27,11 @@ public class PasswordValidatorImpl implements ConstraintValidator<Password, Char
 
         PasswordValidator validator = validator();
         RuleResult result = validator.validate(new PasswordData(charSequence.toString()));
+
         if (result.isValid()) {
             return true;
         }
+
         List<String> messages = validator.getMessages(result);
 
         String messageTemplate = String.join("\n", messages);

@@ -1,5 +1,6 @@
 package testgenerator.config;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
@@ -14,11 +15,15 @@ import testgenerator.utils.KeycloakRoleConvertor;
 @EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true)
 public class WebSecurity {
 
+    @Value ("${jwk-set-uri}")
+    String jwk;
+
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
         JwtAuthenticationConverter jwtAuthenticationConverter = new JwtAuthenticationConverter();
         jwtAuthenticationConverter.setJwtGrantedAuthoritiesConverter((new KeycloakRoleConvertor()));
+
 
         return http.csrf().disable()
                 .authorizeRequests()
@@ -37,7 +42,7 @@ public class WebSecurity {
                 .authenticated()
                 .and()
                 .oauth2ResourceServer()
-                .jwt().jwkSetUri("http://localhost:8080/realms/testgeneratorapp/protocol/openid-connect/certs")
+                .jwt().jwkSetUri(jwk)
                 .jwtAuthenticationConverter(jwtAuthenticationConverter)
                 .and()
                 .and().build();

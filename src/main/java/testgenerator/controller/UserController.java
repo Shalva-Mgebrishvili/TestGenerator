@@ -11,7 +11,10 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import testgenerator.facade.UserFacade;
 import testgenerator.model.dto.UserDto;
+import testgenerator.model.params.ChangeRoleParam;
 import testgenerator.model.params.UserAddUpdateParam;
+
+import javax.validation.Valid;
 
 @RestController
 @RequestMapping("/users")
@@ -41,7 +44,7 @@ public class UserController {
 
     @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_SUPER_ADMIN') or #id == authentication.principal.id")
     @PutMapping("/{id}")
-    public ResponseEntity<UserDto> update(@PathVariable Long id, @RequestBody UserAddUpdateParam param) {
+    public ResponseEntity<UserDto> update(@PathVariable Long id, @RequestBody @Valid UserAddUpdateParam param) {
         return ResponseEntity.status(HttpStatus.OK).body(facade.update(id, param));
     }
 
@@ -50,6 +53,12 @@ public class UserController {
     public ResponseEntity<Void> delete(@PathVariable Long id) {
         facade.deleteById(id);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+    }
+
+    @PreAuthorize("hasRole('ROLE_SUPER_ADMIN')")
+    @PostMapping("/{id}/change-role")
+    public ResponseEntity<UserDto> changeRole (@PathVariable Long id, @RequestBody ChangeRoleParam param) {
+        return ResponseEntity.status(HttpStatus.OK).body(facade.changeRole(id, param));
     }
 
 

@@ -29,7 +29,7 @@ public class Test extends SuperEntity {
     @JoinColumn(name = "seniority_id", nullable = false)
     private Seniority seniority;
 
-    @OneToMany(mappedBy = "test")
+    @OneToMany(mappedBy = "test", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     private List<TestStack> testStacks;
 
     @OneToMany(mappedBy = "test", cascade = {CascadeType.PERSIST, CascadeType.MERGE} )

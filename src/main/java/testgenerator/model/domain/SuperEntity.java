@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 @MappedSuperclass
 @Getter
 @Setter
-public class SuperEntity {
+public abstract class SuperEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

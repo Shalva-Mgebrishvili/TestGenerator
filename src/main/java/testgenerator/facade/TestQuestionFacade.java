@@ -56,11 +56,4 @@ public class TestQuestionFacade {
 
         return TestQuestionMapper.testQuestionDto(service.add(updateTestQuestion));
     }
-
-    public void deleteById(Long id) {
-        TestQuestion testQuestion = service.findById(id, Status.ACTIVE);
-        testQuestion.setStatus(Status.DEACTIVATED);
-
-        service.add(testQuestion);
-    }
 }

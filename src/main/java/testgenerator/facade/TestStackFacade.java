@@ -21,7 +21,6 @@ import javax.transaction.Transactional;
 public class TestStackFacade {
     private final TestStackService service;
     private final TestService testService;
-
     private final StackService stackService;
 
     public TestStackDto findById(Long id) {
@@ -41,12 +40,6 @@ public class TestStackFacade {
         TestStack testStack = new TestStack(stack, test);
         testStack.setStatus(Status.ACTIVE);
         return TestStackMapper.testStackDto(service.add(testStack));
-    }
-
-    public void deleteById(Long id) {
-        TestStack testStack = service.findById(id, Status.ACTIVE);
-        testStack.setStatus(Status.DEACTIVATED);
-        service.add(testStack);
     }
 
 }

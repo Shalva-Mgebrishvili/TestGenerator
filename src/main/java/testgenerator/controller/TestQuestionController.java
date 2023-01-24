@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import testgenerator.facade.TestQuestionFacade;
 import testgenerator.model.dto.TestQuestionDto;
 import testgenerator.model.params.TestQuestionAddParam;
+import testgenerator.model.params.TestQuestionUpdateParam;
 
 @RestController
 @RequestMapping("/test-questions")
@@ -46,14 +47,8 @@ public class TestQuestionController {
         return ResponseEntity.status(HttpStatus.OK).body(facade.add(param));
     }
 
-//    @PutMapping("/{id}")
-//    public ResponseEntity<TestQuestionDto> update(@PathVariable Long id, @RequestBody TestQuestionUpdateParam param) {
-//        return ResponseEntity.status(HttpStatus.OK).body(facade.update(id, param));
-//    }
-
-//    @DeleteMapping("/{id}")
-//    public ResponseEntity<Void> delete(@PathVariable Long id) {
-//        facade.deleteById(id);
-//        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
-//    }
+    @PutMapping("/{id}")
+    public ResponseEntity<TestQuestionDto> update(@PathVariable Long id, @RequestBody TestQuestionUpdateParam param) {
+        return ResponseEntity.status(HttpStatus.OK).body(facade.update(id, param));
+    }
 }

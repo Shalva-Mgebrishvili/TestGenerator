@@ -15,7 +15,7 @@ public class Topic extends  SuperEntity {
     @Column(name = "name", nullable = false)
     private String name;
 
-    @ManyToOne
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinColumn(name = "stack_id")
     private Stack stack;
 
