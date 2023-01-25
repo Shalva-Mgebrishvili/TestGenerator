@@ -16,9 +16,9 @@ public class TestResultDto {
 
     private Long id;
 
-    private LocalDateTime testStartDate;
+    private LocalDateTime candidateTestStartDate;
 
-    private LocalDateTime testFinishDate;
+    private LocalDateTime candidateTestFinishDate;
 
     private Long timeNeeded;
 

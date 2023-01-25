@@ -2,7 +2,6 @@ package testgenerator.model.params;
 
 import lombok.Getter;
 import lombok.Setter;
-import testgenerator.model.enums.Role;
 import testgenerator.utils.annotation.Email;
 
 @Getter

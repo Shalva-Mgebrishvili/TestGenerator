@@ -6,13 +6,20 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
+import testgenerator.model.domain.Candidate;
+import testgenerator.model.domain.Stack;
+import testgenerator.model.domain.Topic;
 import testgenerator.model.domain.UserEntity;
+import testgenerator.model.dto.TopicDto;
 import testgenerator.model.dto.UserDto;
 import testgenerator.model.enums.Role;
 import testgenerator.model.enums.Status;
+import testgenerator.model.mapper.TopicMapper;
 import testgenerator.model.mapper.UserMapper;
 import testgenerator.model.params.ChangeRoleParam;
+import testgenerator.model.params.TopicAddUpdateParam;
 import testgenerator.model.params.UserAddUpdateParam;
+import testgenerator.service.CandidateService;
 import testgenerator.service.KeycloakService;
 import testgenerator.service.UserService;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,6 +33,7 @@ public class UserFacade {
 
     private final UserService service;
     private final KeycloakService keycloakService;
+    private final CandidateService candidateService;
 
     public UserDto findById(Long id) {
         UserEntity user = service.findById(id, Status.ACTIVE);
@@ -37,6 +45,15 @@ public class UserFacade {
         Page<UserEntity> allUsers = service.findAll(Status.ACTIVE, pageable);
 
         return allUsers.map(UserMapper::userDto);
+    }
+
+    public UserDto add(UserAddUpdateParam param) {
+//        Stack stack = stackService.findById(param.getStack(), Status.ACTIVE);
+//
+//        Topic topic = TopicMapper.paramToTopic(param, stack);
+//
+//        return TopicMapper.topicDto(service.add(topic));
+        return  null;
     }
 
     @Transactional
@@ -53,7 +70,10 @@ public class UserFacade {
     @Transactional
     public void deleteById(Long id) {
         UserEntity user = service.findById(id, Status.ACTIVE);
-        user.setStatus(Status.DEACTIVATED);
+
+        Candidate candidate = user.getCandidate();
+        candidate.setStatus(Status.DEACTIVATED);
+        candidateService.add(user.getCandidate());
 
         Response response = keycloakService.deleteUserInKeycloak(user.getEmail());
 
@@ -61,7 +81,9 @@ public class UserFacade {
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "An error occurred while trying to delete employee in authorization server!");
         }
 
+        user.setStatus(Status.DEACTIVATED);
         service.add(user);
+
     }
 
     @Transactional

@@ -7,11 +7,11 @@ import java.util.List;
 @Getter
 @Setter
 public class CandidateUpdateParam {
-    private String name;
+//    private String name;
+//
+//    private String surname;
+//
+//    private String email;
 
-    private String surname;
-
-    private String email;
-
-    private List<Long> testResults;
+    private Long testResult;
 }

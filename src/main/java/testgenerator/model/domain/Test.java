@@ -3,6 +3,7 @@ package testgenerator.model.domain;
 import lombok.*;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
@@ -13,8 +14,14 @@ import java.util.List;
 @AllArgsConstructor
 public class Test extends SuperEntity {
 
-    @Column(name = "given_time")
-    private Long givenTime;
+    @Column(name = "given_time_in_minutes", nullable = false)
+    private Long givenTimeInMinutes;
+
+    @Column(name = "given_test_start_date", nullable = false)
+    private LocalDateTime givenTestStartDate;
+
+    @Column(name = "given_test_end_date", nullable = false)
+    private LocalDateTime givenTestEndDate;
 
     @Column(name = "number_of_open_questions")
     private Integer numberOfOpenQuestions;
@@ -32,7 +39,10 @@ public class Test extends SuperEntity {
     @OneToMany(mappedBy = "test", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     private List<TestStack> testStacks;
 
-    @OneToMany(mappedBy = "test", cascade = {CascadeType.PERSIST, CascadeType.MERGE} )
+    @OneToMany(mappedBy = "test", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     private List<TestQuestion> testQuestions;
+
+    @OneToMany(mappedBy = "test", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    private List<TestResult> testResults;
 
 }

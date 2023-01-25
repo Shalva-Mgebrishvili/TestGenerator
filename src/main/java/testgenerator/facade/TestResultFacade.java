@@ -43,19 +43,18 @@ public class TestResultFacade {
         Test test = testService.findById(param.getTest(), Status.ACTIVE);
         Candidate candidate = candidateService.findById(param.getCandidate(), Status.ACTIVE);
 
-        TestResult testResult = TestResultMapper.paramToTestResult(param, test, null, candidate);
+        TestResult testResult = TestResultMapper.paramToTestResult(param, test, candidate);
 
         return TestResultMapper.testResultDto(service.add(testResult));
     }
 
     public TestResultDto update(Long id, TestResultUpdateParam param) {
-        UserEntity user = userService.findById(param.getCorrector(), Status.ACTIVE);
+        UserEntity corrector = userService.findById(param.getCorrector(), Status.ACTIVE);
 
         TestResult updateTestResult = service.findById(id,Status.ACTIVE);
-        updateTestResult.setCandidateScore(param.getCandidateScore());
-        updateTestResult.setCorrector(user);
+        Test test = updateTestResult.getTest();
 
-        return TestResultMapper.testResultDto(service.add(updateTestResult));
+        return TestResultMapper.testResultDto(service.add(TestResultMapper.updateTestResultWithParam(updateTestResult, param, corrector, test)));
     }
 
     public void deleteById(Long id) {

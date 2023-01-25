@@ -5,6 +5,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
+import testgenerator.model.domain.UserEntity;
 import testgenerator.model.dto.UserDto;
 import testgenerator.model.enums.Status;
 import testgenerator.model.mapper.UserMapper;
@@ -37,16 +38,11 @@ public class AuthFacade {
           throw new ResponseStatusException(HttpStatus.CONFLICT, "User creation failed on keycloak");
         }
 
-        keycloakService.changeUserKeycloakRole(UserMapper.signUpParamToUser(param), "USER");
+        UserEntity user = UserMapper.signUpParamToUser(param);
 
-        return UserMapper.userDto(userService.add(UserMapper.signUpParamToUser(param)));
+        keycloakService.changeUserKeycloakRole(user, "USER");
+
+        return UserMapper.userDto(userService.add(user));
     }
 
-//    public void changePassword (PasswordChangeParam param) {
-//        if(param.getNewPassword().equals(param.getOldPassword())) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Passwords match");
-//
-//        String keycloakId = keycloakService.getPrincipalKeycloakId();
-//
-//        if(keycloakService.checkOldPassword(param, keycloakId));
-//    }
 }

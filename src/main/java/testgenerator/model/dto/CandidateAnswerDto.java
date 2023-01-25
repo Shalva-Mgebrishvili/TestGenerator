@@ -14,10 +14,10 @@ public class CandidateAnswerDto {
 
     private Double candidatePoint;
 
-    private TestQuestionDto testQuestion;
+//    private TestQuestionDto testQuestion;
 
     private AnswerDto chosenAnswer;
 
-    private CandidateDto candidate;
+//    private CandidateDto candidate;
 
 }

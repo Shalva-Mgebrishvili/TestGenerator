@@ -7,7 +7,14 @@ public class TestStackMapper {
     public static TestStackDto testStackDto(TestStack testStack){
         StackDto stackDto = StackMapper.stackDto(testStack.getStack());
         TestDto testDto = TestMapper.testDto(testStack.getTest());
+
         return new TestStackDto(testStack.getId(), stackDto, testDto);
+    }
+
+    public static TestStackShortDto testStackShortDto(TestStack testStack){
+        StackDto stackDto = StackMapper.stackDto(testStack.getStack());
+
+        return new TestStackShortDto(testStack.getId(), stackDto);
     }
 
 }

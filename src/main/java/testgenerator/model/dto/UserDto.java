@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import testgenerator.model.domain.Candidate;
 import testgenerator.model.enums.Role;
 
 @Getter
@@ -21,5 +22,7 @@ public class UserDto {
     private String email;
 
     private Role role;
+
+    private CandidateDto candidate;
 
 }

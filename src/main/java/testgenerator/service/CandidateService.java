@@ -1,8 +1,6 @@
 package testgenerator.service;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
@@ -26,10 +24,10 @@ public class CandidateService {
 
         return candidate.get();
     }
-
-    public Page<Candidate> findAll(Status status, Pageable pageable) {
-        return repository.findAllByStatus(status, pageable);
-    }
+//
+//    public Page<Candidate> findAll(Status status, Pageable pageable) {
+//        return repository.findAllByStatus(status, pageable);
+//    }
 
     public Candidate add(Candidate candidate) {
         return repository.save(candidate);

@@ -2,6 +2,7 @@ package testgenerator.model.dto;
 
 import lombok.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 
@@ -15,15 +16,19 @@ public class TestDto {
 
     private Long givenTime;
 
-    private Integer numberOfOpenQuestions;
+    private LocalDateTime givenTestStartDate;
 
-    private Integer numberOfMultipleChoiceTestQuestions;
+    private LocalDateTime givenTestEndDate;
+
+    private Integer numberOfOpenQuestions;
 
     private Integer numberOfSingleChoiceTestQuestions;
 
+    private Integer numberOfMultipleChoiceTestQuestions;
+
     private SeniorityDto seniority;
 
-    private List<TestStackDto> testStacks;
+    private List<TestStackShortDto> testStacks;
 
     private List<TestQuestionDto> testQuestions;
 

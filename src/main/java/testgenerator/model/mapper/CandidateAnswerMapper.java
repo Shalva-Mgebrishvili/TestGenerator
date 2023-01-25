@@ -11,12 +11,12 @@ public class CandidateAnswerMapper {
 
     public static CandidateAnswerDto candidateAnswerDto(CandidateAnswer candidateAnswer){
 
-        TestQuestionDto testQuestion = TestQuestionMapper.testQuestionDto(candidateAnswer.getTestQuestion());
+//        TestQuestionDto testQuestion = TestQuestionMapper.testQuestionDto(candidateAnswer.getTestQuestion());
         AnswerDto chosenAnswer = AnswerMapper.answerDto(candidateAnswer.getChosenAnswer());
-        CandidateDto candidate = CandidateMapper.candidateDto(candidateAnswer.getCandidate());
+//        CandidateDto candidate = CandidateMapper.candidateDto(candidateAnswer.getCandidate());
 
         return new CandidateAnswerDto(candidateAnswer.getId(), candidateAnswer.getAnswer(),
-                candidateAnswer.getCandidatePoint(), testQuestion, chosenAnswer, candidate);
+                candidateAnswer.getCandidatePoint(), chosenAnswer);
     }
 
     public static CandidateAnswer paramToCandidateAnswer(CandidateAnswerAddParam param, TestQuestion testQuestion,

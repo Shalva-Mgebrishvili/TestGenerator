@@ -11,7 +11,8 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import testgenerator.facade.AnswerFacade;
 import testgenerator.model.dto.AnswerDto;
-import testgenerator.model.params.AnswerAddUpdateParam;
+import testgenerator.model.params.AnswerAddParam;
+import testgenerator.model.params.AnswerUpdateParam;
 
 @RestController
 @RequestMapping ("/answers")
@@ -39,12 +40,12 @@ public class AnswerController {
     }
 
     @PostMapping
-    public ResponseEntity<AnswerDto> add(@RequestBody AnswerAddUpdateParam param) {
+    public ResponseEntity<AnswerDto> add(@RequestBody AnswerAddParam param) {
         return ResponseEntity.status(HttpStatus.OK).body(facade.add(param));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<AnswerDto> update(@PathVariable Long id, @RequestBody AnswerAddUpdateParam param) {
+    public ResponseEntity<AnswerDto> update(@PathVariable Long id, @RequestBody AnswerUpdateParam param) {
         return ResponseEntity.status(HttpStatus.OK).body(facade.update(id, param));
     }
 

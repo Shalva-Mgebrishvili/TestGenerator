@@ -26,4 +26,8 @@ public class UserEntity extends  SuperEntity {
     @Column(name = "role")
     private Role role;
 
+    @OneToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @JoinColumn(name = "candidate_id")
+    private Candidate candidate;
+
 }

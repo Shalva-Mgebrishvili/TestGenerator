@@ -14,6 +14,6 @@ public class AnswerDto {
 
     private Boolean isCorrect;
 
-    private QuestionDto question;
+//    private QuestionDto question;
 
 }

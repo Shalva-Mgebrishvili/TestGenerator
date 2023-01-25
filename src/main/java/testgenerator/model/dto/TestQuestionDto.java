@@ -13,7 +13,7 @@ public class TestQuestionDto {
 
     private QuestionDto question;
 
-    private TestDto test;
+//    private TestDto test;
 
     private List<CandidateAnswerDto> candidateAnswers;
 

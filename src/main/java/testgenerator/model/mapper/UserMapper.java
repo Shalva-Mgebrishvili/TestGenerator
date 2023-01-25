@@ -1,6 +1,8 @@
 package testgenerator.model.mapper;
 
+import testgenerator.model.domain.Candidate;
 import testgenerator.model.domain.UserEntity;
+import testgenerator.model.dto.CandidateDto;
 import testgenerator.model.dto.UserDto;
 import testgenerator.model.enums.Role;
 import testgenerator.model.enums.Status;
@@ -10,14 +12,9 @@ import testgenerator.model.params.UserAddUpdateParam;
 public class UserMapper {
 
     public static UserDto userDto(UserEntity user) {
-        return new UserDto(user.getId(), user.getName(), user.getSurname(), user.getEmail(), user.getRole());
-    }
+        CandidateDto candidate = CandidateMapper.candidateDto(user.getCandidate());
 
-    public static UserEntity paramToUser(UserAddUpdateParam param) {
-        UserEntity user = new UserEntity(param.getName(), param.getSurname(), param.getEmail(), Role.USER);
-        user.setStatus(Status.ACTIVE);
-
-        return user;
+        return new UserDto(user.getId(), user.getName(), user.getSurname(), user.getEmail(), user.getRole(), candidate);
     }
 
     public static UserEntity updateUserWithParam(UserAddUpdateParam param, UserEntity user) {
@@ -29,7 +26,7 @@ public class UserMapper {
     }
 
     public static UserEntity signUpParamToUser(SignUpParam param) {
-        UserEntity user = new UserEntity(param.getName(), param.getSurname(), param.getEmail(), Role.USER);
+        UserEntity user = new UserEntity(param.getName(), param.getSurname(), param.getEmail(), Role.USER, new Candidate());
         user.setStatus(Status.ACTIVE);
 
         return user;

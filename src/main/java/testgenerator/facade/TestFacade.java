@@ -3,7 +3,9 @@ package testgenerator.facade;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 import testgenerator.model.domain.*;
 import testgenerator.model.dto.TestDto;
 import testgenerator.model.enums.QuestionType;
@@ -25,7 +27,7 @@ public class TestFacade {
 
     private final TestService service;
     private final SeniorityService seniorityService;
-    private final TestStackService testStackService;
+    private final StackService stackService;
     private final QuestionService questionService;
     private final TopicService topicService;
 
@@ -43,20 +45,37 @@ public class TestFacade {
 
     public TestDto add(TestAddParam param) {
         Seniority seniority = seniorityService.findById(param.getSeniority(), Status.ACTIVE);
-        List<TestStack> testStackList = param.getTestStacks().stream().map(t -> testStackService.findById(t, Status.ACTIVE)).toList();
+        List<Stack> stacks = param.getStacks().stream().map(s -> stackService.findById(s, Status.ACTIVE)).toList();
         List<Topic> topicList = param.getTopics().stream().map(t -> topicService.findById(t, Status.ACTIVE)).toList();
         Set<Question> questionList = new HashSet<>();
+
+        topicList.forEach(topic -> {
+            if(!stacks.contains(topic.getStack())) {
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, topic + " topic does not belong to given stacks");
+            }
+        });
 
         questionService.findQuestionsForTest(Status.ACTIVE, QuestionType.OPEN_QUESTION, topicList, seniority, param.getNumberOfOpenQuestions(), questionList);
         questionService.findQuestionsForTest(Status.ACTIVE, QuestionType.SINGLE_CHOICE_TEST, topicList, seniority, param.getNumberOfSingleChoiceTestQuestions(), questionList);
         questionService.findQuestionsForTest(Status.ACTIVE, QuestionType.MULTIPLE_CHOICE_TEST, topicList, seniority, param.getNumberOfMultipleChoiceTestQuestions(), questionList);
 
         List<TestQuestion> testQuestionList = new ArrayList<>();
+
         Test test = new Test();
+        service.add(TestMapper.paramToTest(test, param, seniority, new ArrayList<>(), new ArrayList<>()));
 
         for(Question question: questionList) {
             TestQuestion testQuestion = new TestQuestion(question, test, new ArrayList<>());
+            testQuestion.setStatus(Status.ACTIVE);
             testQuestionList.add(testQuestion);
+        }
+
+        List<TestStack> testStackList = new ArrayList<>();
+
+        for(Stack stack: stacks) {
+            TestStack testStack = new TestStack(stack, test);
+            testStack.setStatus(Status.ACTIVE);
+            testStackList.add(testStack);
         }
 
         return TestMapper.testDto(service.add(TestMapper.paramToTest(test, param, seniority, testStackList, testQuestionList)));

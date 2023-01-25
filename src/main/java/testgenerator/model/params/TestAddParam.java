@@ -3,6 +3,7 @@ package testgenerator.model.params;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Getter
@@ -11,15 +12,19 @@ public class TestAddParam {
 
     private Long givenTime;
 
-    private Integer numberOfOpenQuestions;
+    private LocalDateTime givenTestStartDate;
 
-    private Integer numberOfMultipleChoiceTestQuestions;
+    private LocalDateTime givenTestEndDate;
+
+    private Integer numberOfOpenQuestions;
 
     private Integer numberOfSingleChoiceTestQuestions;
 
+    private Integer numberOfMultipleChoiceTestQuestions;
+
     private Long seniority;
 
-    private List<Long> testStacks;
+    private List<Long> stacks;
 
     private List<Long> topics;
 }
