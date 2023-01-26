@@ -32,17 +32,17 @@ public class AuthFacade {
             throw new ResponseStatusException(HttpStatus.CONFLICT, "User with this email already exists.");
         }
 
-        Response response = keycloakService.addUserInKeycloak(param, param.getPassword());
+        UserEntity user = userService.add(UserMapper.signUpParamToUser(param));
+
+        Response response = keycloakService.addUserInKeycloak(user, param.getPassword());
 
         if(response.getStatus() != HttpStatus.CREATED.value()){
           throw new ResponseStatusException(HttpStatus.CONFLICT, "User creation failed on keycloak");
         }
 
-        UserEntity user = UserMapper.signUpParamToUser(param);
-
         keycloakService.changeUserKeycloakRole(user, "USER");
 
-        return UserMapper.userDto(userService.add(user));
+        return UserMapper.userDto(user);
     }
 
 }

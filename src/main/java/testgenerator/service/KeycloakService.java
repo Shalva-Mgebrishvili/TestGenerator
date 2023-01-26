@@ -19,9 +19,11 @@ import testgenerator.model.params.SignUpParam;
 import testgenerator.model.params.UserAddUpdateParam;
 
 import javax.ws.rs.core.Response;
+import javax.xml.crypto.Data;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 
 @Service
@@ -30,19 +32,25 @@ import java.util.List;
 public class KeycloakService {
 
     private final Keycloak keycloak;
+    private final String DATABASE_ID = "database_id";
 
-    public Response addUserInKeycloak(SignUpParam param, CharSequence password) {
+    public Response addUserInKeycloak(UserEntity user, CharSequence password) {
         UsersResource usersResource = keycloak.realm(AppConstants.REALM).users();
 
         CredentialRepresentation credentialRepresentation = createPasswordCredentials(password);
 
         UserRepresentation keycloakUser = new UserRepresentation();
 
+        Map<String, List<String>> attributes = Map.of(
+                DATABASE_ID, List.of(user.getId().toString())
+        );
+
         keycloakUser.setCredentials(Collections.singletonList(credentialRepresentation));
-        keycloakUser.setFirstName(param.getName());
-        keycloakUser.setLastName(param.getSurname());
-        keycloakUser.setEmail(param.getEmail());
+        keycloakUser.setFirstName(user.getName());
+        keycloakUser.setLastName(user.getSurname());
+        keycloakUser.setEmail(user.getEmail());
         keycloakUser.setRealmRoles(Collections.singletonList("USER"));
+        keycloakUser.setAttributes(attributes);
         keycloakUser.setEnabled(true);
         keycloakUser.setEmailVerified(false);
 
@@ -58,6 +66,18 @@ public class KeycloakService {
         }
 
         return sessionId;
+    }
+
+    public Long getUserId() {
+        JwtAuthenticationToken jwt = (JwtAuthenticationToken) SecurityContextHolder.getContext().getAuthentication();
+        Long userId = (Long)jwt.getToken().getClaims().get(DATABASE_ID);
+
+        if (userId == null) {
+            log.error("Unable to find database id in token for: {}", jwt.getName());
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Unexpected situation, please contact support");
+        }
+
+        return userId;
     }
 
     public void logout(String sessionId) {

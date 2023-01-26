@@ -11,6 +11,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import testgenerator.facade.UserFacade;
 import testgenerator.model.dto.UserDto;
+import testgenerator.model.dto.UserShortDto;
 import testgenerator.model.params.ChangeRoleParam;
 import testgenerator.model.params.UserAddUpdateParam;
 
@@ -23,10 +24,16 @@ public class UserController {
 
     private final UserFacade facade;
 
-    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_SUPER_ADMIN') or #id == authentication.principal.id")
+    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_SUPER_ADMIN') or hasRole('ROLE_CORRECTOR')")
     @GetMapping("/{id}")
     public ResponseEntity<UserDto> findById(@PathVariable Long id) {
         return ResponseEntity.status(HttpStatus.OK).body(facade.findById(id));
+    }
+
+   // @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_SUPER_ADMIN') or hasRole('ROLE_CORRECTOR') or #id == authentication.principal.id")
+    @GetMapping("/profile")
+    public ResponseEntity<UserShortDto> currentUserProfile() {
+        return ResponseEntity.status(HttpStatus.OK).body(facade.currentUserProfile());
     }
 
     @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_SUPER_ADMIN')")

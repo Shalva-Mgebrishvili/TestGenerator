@@ -44,7 +44,7 @@ public class StackFacade {
 
         return StackMapper.stackDto(service.add(stack));
     }
-
+//id
     public StackDto update(Long id, StackAddUpdateParam param) {
         List<Topic> topics = param.getTopics().stream().map(t -> topicService.findById(t, Status.ACTIVE)).toList();
         Stack updateStack = service.findById(id,Status.ACTIVE);

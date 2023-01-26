@@ -16,18 +16,10 @@ import java.util.List;
 @AllArgsConstructor
 public class Candidate extends SuperEntity {
 
-//    @Column(name = "name")
-//    private String name;
-//
-//    @Column(name = "surname")
-//    private String surname;
-//
-//    @Column(name = "email")
-//    private String email;
-
     @OneToMany(mappedBy = "candidate")
     private List<TestResult> testResults;
 
-    @OneToOne(mappedBy = "candidate")
+    @OneToOne()
+    @JoinColumn(name = "user_id")
     private UserEntity user;
 }

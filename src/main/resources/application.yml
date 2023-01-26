@@ -16,6 +16,8 @@ spring:
     database: postgresql
     generate-ddl: true
 
+
+
   security:
     oauth2:
       client:

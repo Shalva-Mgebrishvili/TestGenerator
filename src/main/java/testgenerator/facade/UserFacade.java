@@ -12,6 +12,7 @@ import testgenerator.model.domain.Topic;
 import testgenerator.model.domain.UserEntity;
 import testgenerator.model.dto.TopicDto;
 import testgenerator.model.dto.UserDto;
+import testgenerator.model.dto.UserShortDto;
 import testgenerator.model.enums.Role;
 import testgenerator.model.enums.Status;
 import testgenerator.model.mapper.TopicMapper;
@@ -39,6 +40,14 @@ public class UserFacade {
         UserEntity user = service.findById(id, Status.ACTIVE);
 
         return UserMapper.userDto(user);
+    }
+
+    public UserShortDto currentUserProfile() {
+
+        Long userId = keycloakService.getUserId();
+        UserEntity user = service.findById(userId, Status.ACTIVE);
+
+        return UserMapper.userShortDto(user);
     }
 
     public Page<UserDto> findAll(Pageable pageable){
@@ -71,9 +80,9 @@ public class UserFacade {
     public void deleteById(Long id) {
         UserEntity user = service.findById(id, Status.ACTIVE);
 
-        Candidate candidate = user.getCandidate();
-        candidate.setStatus(Status.DEACTIVATED);
-        candidateService.add(user.getCandidate());
+//        Candidate candidate = user.getCandidate();
+//        candidate.setStatus(Status.DEACTIVATED);
+//        candidateService.add(user.getCandidate());
 
         Response response = keycloakService.deleteUserInKeycloak(user.getEmail());
 
