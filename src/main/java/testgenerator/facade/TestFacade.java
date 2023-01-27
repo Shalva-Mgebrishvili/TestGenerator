@@ -31,17 +31,17 @@ public class TestFacade {
     private final QuestionService questionService;
     private final TopicService topicService;
 
-    public TestDto findById(Long id) {
-        Test test = service.findById(id, Status.ACTIVE);
-
-        return TestMapper.testDto(test);
-    }
-
-    public Page<TestDto> findAll(Pageable pageable) {
-        Page<Test> allTests = service.findAll(Status.ACTIVE, pageable);
-
-        return allTests.map(TestMapper::testDto);
-    }
+//    public TestDto findById(Long id) {
+//        Test test = service.findById(id, Status.ACTIVE);
+//
+//        return TestMapper.testDto(test);
+//    }
+//
+//    public Page<TestDto> findAll(Pageable pageable) {
+//        Page<Test> allTests = service.findAll(Status.ACTIVE, pageable);
+//
+//        return allTests.map(TestMapper::testDto);
+//    }
 
     public TestDto add(TestAddParam param) {
         Seniority seniority = seniorityService.findById(param.getSeniority(), Status.ACTIVE);

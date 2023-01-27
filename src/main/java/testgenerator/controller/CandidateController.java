@@ -7,7 +7,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import testgenerator.facade.CandidateFacade;
 import testgenerator.model.dto.CandidateDto;
-import testgenerator.model.params.CandidateUpdateParam;
+import testgenerator.model.params.CandidateAddParam;
 
 
 @RestController
@@ -36,17 +36,17 @@ public class CandidateController {
 //        return ResponseEntity.status(HttpStatus.OK).body(facade.findAll(pageable));
 //    }
 
-//    @PreAuthorize("hasRole('USER') or hasRole('ADMIN') or hasRole('SUPER_ADMIN')")
-//    @PostMapping
-//    public ResponseEntity<CandidateDto> add(@RequestBody CandidateAddParam param) {
-//        return ResponseEntity.status(HttpStatus.OK).body(facade.add(param));
-//    }
-
-    @PreAuthorize("hasRole('ADMIN') or hasRole('SUPER_ADMIN')")
-    @PutMapping("/{id}")
-    public ResponseEntity<CandidateDto> update(@PathVariable Long id, @RequestBody CandidateUpdateParam param) {
-        return ResponseEntity.status(HttpStatus.OK).body(facade.update(id, param));
+    @PreAuthorize("hasRole('USER') or hasRole('ADMIN') or hasRole('SUPER_ADMIN') or hasRole('CORRECTOR')")
+    @PostMapping
+    public ResponseEntity<CandidateDto> add(@RequestBody CandidateAddParam param) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(facade.add(param));
     }
+
+//    @PreAuthorize("hasRole('ADMIN') or hasRole('SUPER_ADMIN')")
+//    @PutMapping("/{id}")
+//    public ResponseEntity<CandidateDto> update(@PathVariable Long id, @RequestBody CandidateUpdateParam param) {
+//        return ResponseEntity.status(HttpStatus.OK).body(facade.update(id, param));
+//    }
 
 //    @PreAuthorize("hasRole('ADMIN') or hasRole('SUPER_ADMIN')")
 //    @DeleteMapping("/{id}")

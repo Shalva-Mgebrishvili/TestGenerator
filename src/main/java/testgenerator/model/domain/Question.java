@@ -34,7 +34,7 @@ public class Question extends SuperEntity {
     @JoinColumn(name = "seniority_id", nullable = false)
     private Seniority seniority;
 
-    @OneToMany(mappedBy = "question")
+    @OneToMany(mappedBy = "question", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     private List<Answer> answers;
 
 }

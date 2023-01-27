@@ -4,6 +4,7 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Table(name = "test_result")
@@ -32,12 +33,18 @@ public class TestResult extends SuperEntity {
     @JoinColumn(name = "test_id")
     private Test test;
 
-    @ManyToOne
-    @JoinColumn(name = "user_id", nullable = false)
-    private UserEntity corrector;
+    @ManyToMany
+    @JoinTable(name = "corrector_testResult",
+    joinColumns = @JoinColumn(name = "testResult_id"),
+    inverseJoinColumns = @JoinColumn(name = "corrector_id"))
+    private List<UserEntity> corrector;
 
     @ManyToOne
-    @JoinColumn(name = "candidate_id", nullable = false)
+    @JoinColumn(name = "user_id", nullable = false)
+    private UserEntity user;
+
+    @OneToOne
+    @JoinColumn(name = "candidate_id")
     private Candidate candidate;
 
 }

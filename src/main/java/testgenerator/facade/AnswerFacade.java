@@ -5,14 +5,11 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import testgenerator.model.domain.Answer;
-import testgenerator.model.domain.Question;
 import testgenerator.model.dto.AnswerDto;
 import testgenerator.model.enums.Status;
 import testgenerator.model.mapper.AnswerMapper;
-import testgenerator.model.params.AnswerAddParam;
-import testgenerator.model.params.AnswerUpdateParam;
+import testgenerator.model.params.AnswerAddUpdateParam;
 import testgenerator.service.AnswerService;
-import testgenerator.service.QuestionService;
 
 import javax.transaction.Transactional;
 
@@ -21,9 +18,6 @@ import javax.transaction.Transactional;
 @Transactional
 public class AnswerFacade {
     private final AnswerService service;
-
-    private final QuestionService questionService;
-
 
     public AnswerDto findById(Long id) {
         Answer answer = service.findById(id, Status.ACTIVE);
@@ -37,15 +31,7 @@ public class AnswerFacade {
         return allQuestions.map(AnswerMapper::answerDto);
     }
 
-    public AnswerDto add(AnswerAddParam param) {
-        Question question = questionService.findById(param.getQuestion(), Status.ACTIVE);
-
-        Answer answer = AnswerMapper.paramToAnswer(param, question);
-
-        return AnswerMapper.answerDto(service.add(answer));
-    }
-
-    public AnswerDto update(Long id, AnswerUpdateParam param) {
+    public AnswerDto update(Long id, AnswerAddUpdateParam param) {
 
         Answer updateAnswer = service.findById(id,Status.ACTIVE);
 

@@ -21,14 +21,14 @@ public class TestResultController {
 
     private final TestResultFacade facade;
 
-    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_SUPER_ADMIN') or " +
+    @PreAuthorize("hasRole('ADMIN') or hasRole('SUPER_ADMIN') or hasRole('CORRECTOR') or " +
             "@testResultFacade.findById(#id).candidate.id == authentication.principal.id")
     @GetMapping("/{id}")
     public ResponseEntity<TestResultDto> findById(@PathVariable Long id) {
         return ResponseEntity.status(HttpStatus.OK).body(facade.findById(id));
     }
 
-    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_SUPER_ADMIN')")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('SUPER_ADMIN') or hasRole('CORRECTOR')")
     @GetMapping
     public ResponseEntity<Page<TestResultDto>> findAll(
             @RequestParam(value = "page", defaultValue = "0", required = false) Integer page,
@@ -41,11 +41,11 @@ public class TestResultController {
         return ResponseEntity.status(HttpStatus.OK).body(facade.findAll(pageable));
     }
 
-    @PreAuthorize("hasRole('ROLE_USER') or hasRole('ROLE_ADMIN') or hasRole('ROLE_SUPER_ADMIN')")
-    @PostMapping
-    public ResponseEntity<TestResultDto> add(@RequestBody TestResultAddParam param) {
-        return ResponseEntity.status(HttpStatus.OK).body(facade.add(param));
-    }
+//    @PreAuthorize("hasRole('ROLE_USER') or hasRole('ROLE_ADMIN') or hasRole('ROLE_SUPER_ADMIN')")
+//    @PostMapping
+//    public ResponseEntity<TestResultDto> add(@RequestBody TestResultAddParam param) {
+//        return ResponseEntity.status(HttpStatus.OK).body(facade.add(param));
+//    }
 
     @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_SUPER_ADMIN')")
     @PutMapping("/{id}")

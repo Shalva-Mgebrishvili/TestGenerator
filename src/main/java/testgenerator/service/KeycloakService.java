@@ -15,11 +15,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 import testgenerator.constants.AppConstants;
 import testgenerator.model.domain.UserEntity;
-import testgenerator.model.params.SignUpParam;
-import testgenerator.model.params.UserAddUpdateParam;
+import testgenerator.model.enums.Role;
+import testgenerator.model.params.UserUpdateParam;
 
 import javax.ws.rs.core.Response;
-import javax.xml.crypto.Data;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
@@ -41,16 +40,22 @@ public class KeycloakService {
 
         UserRepresentation keycloakUser = new UserRepresentation();
 
-        Map<String, List<String>> attributes = Map.of(
-                DATABASE_ID, List.of(user.getId().toString())
-        );
+        if(user.getRole() != Role.CANDIDATE) {
+            Map<String, List<String>> attributes = Map.of(
+                    DATABASE_ID, List.of(user.getId().toString())
+            );
+
+            keycloakUser.setAttributes(attributes);
+            keycloakUser.setRealmRoles(Collections.singletonList("USER"));
+        }else {
+            keycloakUser.setRealmRoles(Collections.singletonList("CANDIDATE"));
+        }
 
         keycloakUser.setCredentials(Collections.singletonList(credentialRepresentation));
+        keycloakUser.setUsername(user.getUsername());
         keycloakUser.setFirstName(user.getName());
         keycloakUser.setLastName(user.getSurname());
         keycloakUser.setEmail(user.getEmail());
-        keycloakUser.setRealmRoles(Collections.singletonList("USER"));
-        keycloakUser.setAttributes(attributes);
         keycloakUser.setEnabled(true);
         keycloakUser.setEmailVerified(false);
 
@@ -94,14 +99,15 @@ public class KeycloakService {
         return passwordCredentials;
     }
 
-    public void updateUserInKeycloak(UserEntity user, UserAddUpdateParam param) {
+    public void updateUserInKeycloak(UserEntity user, UserUpdateParam param) {
         UsersResource usersResource = keycloak.realm(AppConstants.REALM).users();
 
         UserResource userResource = keycloak.realm(AppConstants.REALM).users()
-                .get(searchUserIdInKeycloakByEmail(user.getEmail(), usersResource));
+                .get(searchUserIdInKeycloakByUsername(user.getUsername(), usersResource));
 
         UserRepresentation userRepresentation = userResource.toRepresentation();
 
+        userRepresentation.setUsername(param.getUsername());
         userRepresentation.setEmail(param.getEmail());
         userRepresentation.setFirstName(param.getName());
         userRepresentation.setLastName(param.getSurname());
@@ -109,25 +115,25 @@ public class KeycloakService {
         userResource.update(userRepresentation);
     }
 
-    public Response deleteUserInKeycloak(String email) {
+    public Response deleteUserInKeycloak(String username) {
         UsersResource usersResource = keycloak.realm(AppConstants.REALM).users();
 
-        return usersResource.delete(searchUserIdInKeycloakByEmail(email, usersResource));
+        return usersResource.delete(searchUserIdInKeycloakByUsername(username, usersResource));
     }
 
-    public String searchUserIdInKeycloakByEmail(String email, UsersResource usersResource) {
-        List<UserRepresentation> search = usersResource.search(email, true);
+    public String searchUserIdInKeycloakByUsername(String username, UsersResource usersResource) {
+        List<UserRepresentation> search = usersResource.search(username, true);
 
-        if (search.isEmpty()) throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Keycloak user with this email doesn't exist");
+        if (search.isEmpty()) throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Keycloak user with this username doesn't exist");
 
-        return usersResource.search(email, true).get(0).getId();
+        return usersResource.search(username, true).get(0).getId();
     }
 
     public void changeUserKeycloakRole (UserEntity user, String role) {
         UsersResource usersResource = keycloak.realm(AppConstants.REALM).users();
 
         UserResource userResource = keycloak.realm(AppConstants.REALM).users()
-                .get(searchUserIdInKeycloakByEmail(user.getEmail(), usersResource));
+                .get(searchUserIdInKeycloakByUsername(user.getUsername(), usersResource));
 
         removeKeycloakRoleFromUser(user.getRole().name(), userResource);
 

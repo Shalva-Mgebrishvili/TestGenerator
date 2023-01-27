@@ -18,13 +18,14 @@ import testgenerator.model.params.CandidateAnswerUpdateParam;
 @RequiredArgsConstructor
 public class CandidateAnswerController {
     private final CandidateAnswerFacade facade;
-    @PreAuthorize("hasRole('ADMIN') or hasRole('SUPER_ADMIN')")
+
+    @PreAuthorize("hasRole('ADMIN') or hasRole('SUPER_ADMIN') or hasRole('CORRECTOR')")
     @GetMapping("/{id}")
     public ResponseEntity<CandidateAnswerDto> findById(@PathVariable Long id) {
         return ResponseEntity.status(HttpStatus.OK).body(facade.findById(id));
     }
 
-    @PreAuthorize("hasRole('ADMIN') or hasRole('SUPER_ADMIN')")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('SUPER_ADMIN') or hasRole('CORRECTOR')")
     @GetMapping
     public ResponseEntity<Page<CandidateAnswerDto>> findAll(
             @RequestParam(value = "page", defaultValue = "0", required = false) Integer page,
@@ -35,13 +36,13 @@ public class CandidateAnswerController {
         return ResponseEntity.status(HttpStatus.OK).body(facade.findAll(pageable));
     }
 
-    @PreAuthorize("hasRole('ADMIN') or hasRole('SUPER_ADMIN')")
-    @PostMapping
-    public ResponseEntity<CandidateAnswerDto> add(@RequestBody CandidateAnswerAddParam param) {
-        return ResponseEntity.status(HttpStatus.OK).body(facade.add(param));
-    }
+//    @PreAuthorize("hasRole('ADMIN') or hasRole('SUPER_ADMIN')")
+//    @PostMapping
+//    public ResponseEntity<CandidateAnswerDto> add(@RequestBody CandidateAnswerAddParam param) {
+//        return ResponseEntity.status(HttpStatus.OK).body(facade.add(param));
+//    }
 
-    @PreAuthorize("hasRole('ADMIN') or hasRole('SUPER_ADMIN')")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('SUPER_ADMIN') or hasRole('CORRECTOR')")
     @PutMapping("/{id}")
     public ResponseEntity<CandidateAnswerDto> update(@PathVariable Long id, @RequestBody CandidateAnswerUpdateParam param) {
         return ResponseEntity.status(HttpStatus.OK).body(facade.update(id, param));

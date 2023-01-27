@@ -10,7 +10,7 @@ import java.util.List;
 @Setter
 public class TestAddParam {
 
-    private Long givenTime;
+    private Long givenTimeInMinutes;
 
     private LocalDateTime givenTestStartDate;
 

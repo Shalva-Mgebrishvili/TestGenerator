@@ -6,7 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.util.List;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "candidate")
@@ -16,10 +16,14 @@ import java.util.List;
 @AllArgsConstructor
 public class Candidate extends SuperEntity {
 
-    @OneToMany(mappedBy = "candidate")
-    private List<TestResult> testResults;
+    @Column(name = "one_time_username")
+    private String oneTimeUsername;
 
-    @OneToOne()
+    @Column(name = "one_time_password")
+    private String oneTimePassword;
+
+    @OneToOne
     @JoinColumn(name = "user_id")
     private UserEntity user;
+
 }

@@ -20,7 +20,6 @@ public class QuestionAddUpdateParam {
 
     private Long seniority;
 
-    //param
-    private List<Long> answers;
+    private List<AnswerAddUpdateParam> answers;
 
 }

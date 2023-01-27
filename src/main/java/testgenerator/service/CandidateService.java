@@ -32,4 +32,10 @@ public class CandidateService {
     public Candidate add(Candidate candidate) {
         return repository.save(candidate);
     }
+
+    public boolean existsByUserIdAndStatus(Long id, Status status) {
+        Optional<Candidate> candidate = repository.existsByUserIdAndStatus(id, status);
+
+        return candidate.isPresent();
+    }
 }

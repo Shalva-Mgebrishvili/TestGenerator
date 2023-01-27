@@ -11,12 +11,11 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import testgenerator.facade.AnswerFacade;
 import testgenerator.model.dto.AnswerDto;
-import testgenerator.model.params.AnswerAddParam;
-import testgenerator.model.params.AnswerUpdateParam;
+import testgenerator.model.params.AnswerAddUpdateParam;
 
 @RestController
 @RequestMapping ("/answers")
-@PreAuthorize("hasRole('ADMIN') or hasRole('SUPER_ADMIN')")
+@PreAuthorize("hasRole('ADMIN') or hasRole('SUPER_ADMIN') or hasRole('CORRECTOR')")
 @RequiredArgsConstructor
 public class AnswerController {
 
@@ -39,13 +38,13 @@ public class AnswerController {
         return ResponseEntity.status(HttpStatus.OK).body(facade.findAll(pageable));
     }
 
-    @PostMapping
-    public ResponseEntity<AnswerDto> add(@RequestBody AnswerAddParam param) {
-        return ResponseEntity.status(HttpStatus.OK).body(facade.add(param));
-    }
+//    @PostMapping
+//    public ResponseEntity<AnswerDto> add(@RequestBody AnswerAddParam param) {
+//        return ResponseEntity.status(HttpStatus.OK).body(facade.add(param));
+//    }
 
     @PutMapping("/{id}")
-    public ResponseEntity<AnswerDto> update(@PathVariable Long id, @RequestBody AnswerUpdateParam param) {
+    public ResponseEntity<AnswerDto> update(@PathVariable Long id, @RequestBody AnswerAddUpdateParam param) {
         return ResponseEntity.status(HttpStatus.OK).body(facade.update(id, param));
     }
 

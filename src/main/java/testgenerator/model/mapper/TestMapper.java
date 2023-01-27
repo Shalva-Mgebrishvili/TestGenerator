@@ -31,7 +31,7 @@ public class TestMapper {
         test.setNumberOfMultipleChoiceTestQuestions(param.getNumberOfMultipleChoiceTestQuestions());
         test.setNumberOfSingleChoiceTestQuestions(param.getNumberOfSingleChoiceTestQuestions());
         test.setNumberOfOpenQuestions(param.getNumberOfOpenQuestions());
-        test.setGivenTimeInMinutes(param.getGivenTime());
+        test.setGivenTimeInMinutes(param.getGivenTimeInMinutes());
         test.setStatus(Status.ACTIVE);
 
         return test;

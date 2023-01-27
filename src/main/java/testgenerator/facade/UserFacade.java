@@ -6,20 +6,14 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
-import testgenerator.model.domain.Candidate;
-import testgenerator.model.domain.Stack;
-import testgenerator.model.domain.Topic;
 import testgenerator.model.domain.UserEntity;
-import testgenerator.model.dto.TopicDto;
 import testgenerator.model.dto.UserDto;
 import testgenerator.model.dto.UserShortDto;
 import testgenerator.model.enums.Role;
 import testgenerator.model.enums.Status;
-import testgenerator.model.mapper.TopicMapper;
 import testgenerator.model.mapper.UserMapper;
 import testgenerator.model.params.ChangeRoleParam;
-import testgenerator.model.params.TopicAddUpdateParam;
-import testgenerator.model.params.UserAddUpdateParam;
+import testgenerator.model.params.UserUpdateParam;
 import testgenerator.service.CandidateService;
 import testgenerator.service.KeycloakService;
 import testgenerator.service.UserService;
@@ -34,7 +28,6 @@ public class UserFacade {
 
     private final UserService service;
     private final KeycloakService keycloakService;
-    private final CandidateService candidateService;
 
     public UserDto findById(Long id) {
         UserEntity user = service.findById(id, Status.ACTIVE);
@@ -43,7 +36,6 @@ public class UserFacade {
     }
 
     public UserShortDto currentUserProfile() {
-
         Long userId = keycloakService.getUserId();
         UserEntity user = service.findById(userId, Status.ACTIVE);
 
@@ -56,17 +48,12 @@ public class UserFacade {
         return allUsers.map(UserMapper::userDto);
     }
 
-    public UserDto add(UserAddUpdateParam param) {
-//        Stack stack = stackService.findById(param.getStack(), Status.ACTIVE);
-//
-//        Topic topic = TopicMapper.paramToTopic(param, stack);
-//
-//        return TopicMapper.topicDto(service.add(topic));
-        return  null;
-    }
+//    public UserDto add(UserAddUpdateParam param) {
+//        return  null;
+//    }
 
     @Transactional
-    public UserDto update(Long id, UserAddUpdateParam param) {
+    public UserDto update(Long id, UserUpdateParam param) {
         UserEntity updateUser = service.findById(id,Status.ACTIVE);
 
         keycloakService.updateUserInKeycloak(updateUser, param);
@@ -80,11 +67,7 @@ public class UserFacade {
     public void deleteById(Long id) {
         UserEntity user = service.findById(id, Status.ACTIVE);
 
-//        Candidate candidate = user.getCandidate();
-//        candidate.setStatus(Status.DEACTIVATED);
-//        candidateService.add(user.getCandidate());
-
-        Response response = keycloakService.deleteUserInKeycloak(user.getEmail());
+        Response response = keycloakService.deleteUserInKeycloak(user.getUsername());
 
         if(response.getStatus() != HttpStatus.NO_CONTENT.value()) {
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "An error occurred while trying to delete employee in authorization server!");

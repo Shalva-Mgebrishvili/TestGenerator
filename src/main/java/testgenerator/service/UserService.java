@@ -41,4 +41,10 @@ public class UserService {
 
         return user.isPresent();
     }
+
+    public boolean existsByUsername(String username, Status status) {
+        Optional<UserEntity> user = repository.existsByUsernameAndStatus(username, status);
+
+        return user.isPresent();
+    }
 }

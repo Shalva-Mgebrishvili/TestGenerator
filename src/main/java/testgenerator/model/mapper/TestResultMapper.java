@@ -13,7 +13,7 @@ public class TestResultMapper {
 
     public static TestResultDto testResultDto(TestResult testResult){
         TestDto test = TestMapper.testDto(testResult.getTest());
-        UserDto user = UserMapper.userDto(testResult.getCorrector());
+//        UserDto user = UserMapper.userDto(testResult.getCorrector());
         CandidateDto candidate = CandidateMapper.candidateDto(testResult.getCandidate());
 
         TestResultDto testResultDto = new TestResultDto();
@@ -25,7 +25,7 @@ public class TestResultMapper {
         testResultDto.setTotalPoint(testResult.getTotalPoint());
         testResultDto.setCandidateScore(testResult.getCandidateScore());
         testResultDto.setTest(test);
-        testResultDto.setCorrector(user);
+//        testResultDto.setCorrector(user);
         testResultDto.setCandidate(candidate);
 
         return testResultDto;
@@ -60,7 +60,7 @@ public class TestResultMapper {
         testResult.setCandidateTestStartDate(param.getCandidateTestStartDate());
         testResult.setTimeNeeded(timeNeeded);
         testResult.setCandidateScore(candidateScore);
-        testResult.setCorrector(user);
+//        testResult.setCorrector(user);
 
         return testResult;
     }

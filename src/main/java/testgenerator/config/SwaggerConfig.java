@@ -7,6 +7,7 @@ import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Info;
 import io.swagger.v3.oas.models.security.*;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -14,8 +15,11 @@ import org.springframework.context.annotation.Configuration;
 @OpenAPIDefinition
 public class SwaggerConfig {
 
+    @Value("${authorization_url}")
+    private String authorizationUrl;
 
-
+    @Value("${token_url}")
+    private String tokenUrl;
 
     @Bean
     public OpenAPI openAPI() {
@@ -62,9 +66,9 @@ public class SwaggerConfig {
 
     private OAuthFlow authorizationCodeFlow() {
         return new OAuthFlow()
-                .authorizationUrl("http://localhost:8080/realms/testgeneratorapp/protocol/openid-connect/auth")
-                .tokenUrl("http://localhost:8080/realms/testgeneratorapp/protocol/openid-connect/token")
-                .refreshUrl("http://localhost:8080/realms/testgeneratorapp/protocol/openid-connect/token")
+                .authorizationUrl(authorizationUrl)
+                .tokenUrl(tokenUrl)
+                .refreshUrl(tokenUrl)
                 .scopes(scopes());
     }
 

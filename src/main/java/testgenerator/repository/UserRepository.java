@@ -45,4 +45,15 @@ public interface UserRepository extends JpaRepository<UserEntity, Long> {
         @Param("email") String email,
         @Param("status") Status status
     );
+
+    @Query("""
+        SELECT u
+        FROM UserEntity u
+        WHERE u.username = :username
+        AND u.status = :status
+        """)
+    Optional<UserEntity> existsByUsernameAndStatus(
+            @Param("username") String username,
+            @Param("status") Status status
+    );
 }
