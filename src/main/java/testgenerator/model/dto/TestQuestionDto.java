@@ -11,9 +11,7 @@ public class TestQuestionDto {
 
     private Long id;
 
-    private QuestionDto question;
-
-//    private TestDto test;
+    private QuestionForTestDto question;
 
     private List<CandidateAnswerDto> candidateAnswers;
 

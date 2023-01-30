@@ -6,6 +6,8 @@ import org.passay.CharacterData;
 import org.passay.CharacterRule;
 import org.passay.EnglishCharacterData;
 import org.passay.PasswordGenerator;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -35,17 +37,17 @@ public class CandidateFacade {
     private final KeycloakService keycloakService;
 
 
-//    public CandidateDto findById(Long id) {
-//        Candidate candidate = service.findById(id, Status.ACTIVE);
-//
-//        return CandidateMapper.candidateDto(candidate);
-//    }
-//
-//    public Page<CandidateDto> findAll(Pageable pageable){
-//        Page<Candidate> allCandidates = service.findAll(Status.ACTIVE, pageable);
-//
-//        return allCandidates.map(CandidateMapper::candidateDto);
-//    }
+    public CandidateDto findById(Long id) {
+        Candidate candidate = service.findById(id, Status.ACTIVE);
+
+        return CandidateMapper.candidateDto(candidate);
+    }
+
+    public Page<CandidateDto> findAll(Pageable pageable){
+        Page<Candidate> allCandidates = service.findAll(Status.ACTIVE, pageable);
+
+        return allCandidates.map(CandidateMapper::candidateDto);
+    }
 
     @Transactional
     public CandidateDto add(CandidateAddParam param) {
@@ -58,11 +60,11 @@ public class CandidateFacade {
         candidate.setStatus(Status.ACTIVE);
         service.add(candidate);
 
-        UserEntity candidateUser = new UserEntity(oneTimeUsername(), user.getName(), user.getSurname(),
+        UserEntity candidateUser = new UserEntity(candidate.getOneTimeUsername(), user.getName(), user.getSurname(),
                 user.getEmail(), Role.CANDIDATE, new ArrayList<>(), new ArrayList<>());
-        candidateUser.setId(candidate.getId());
 
         Response response = keycloakService.addUserInKeycloak(candidateUser, candidate.getOneTimePassword());
+        keycloakService.changeUserKeycloakRole(candidateUser, "CANDIDATE");
 
         if(response.getStatus() != HttpStatus.CREATED.value())
             throw new ResponseStatusException(HttpStatus.CONFLICT, "User creation failed on keycloak");

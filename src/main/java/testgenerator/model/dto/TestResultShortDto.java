@@ -6,31 +6,20 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
-import java.util.List;
-
 
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class TestResultDto {
-
-    private Long id;
+public class TestResultShortDto {
 
     private LocalDateTime candidateTestStartDate;
 
     private LocalDateTime candidateTestFinishDate;
 
-    private Long timeNeeded;
-
     private Double totalPoint;
 
     private Double candidateScore;
 
-    private TestDto test;
-
-    private List<UserShortDto> corrector;
-
-    private UserShortDto user;
-
+    private TestShortDto test;
 }

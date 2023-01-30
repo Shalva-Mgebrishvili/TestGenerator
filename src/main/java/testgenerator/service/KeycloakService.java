@@ -19,10 +19,7 @@ import testgenerator.model.enums.Role;
 import testgenerator.model.params.UserUpdateParam;
 
 import javax.ws.rs.core.Response;
-import java.util.Collections;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 
 @Service
@@ -46,9 +43,6 @@ public class KeycloakService {
             );
 
             keycloakUser.setAttributes(attributes);
-            keycloakUser.setRealmRoles(Collections.singletonList("USER"));
-        }else {
-            keycloakUser.setRealmRoles(Collections.singletonList("CANDIDATE"));
         }
 
         keycloakUser.setCredentials(Collections.singletonList(credentialRepresentation));

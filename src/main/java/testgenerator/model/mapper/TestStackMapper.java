@@ -12,9 +12,9 @@ public class TestStackMapper {
     }
 
     public static TestStackShortDto testStackShortDto(TestStack testStack){
-        StackDto stackDto = StackMapper.stackDto(testStack.getStack());
+        StackShortDto stackShortDto = StackMapper.stackShortDto(testStack.getStack());
 
-        return new TestStackShortDto(testStack.getId(), stackDto);
+        return new TestStackShortDto(stackShortDto);
     }
 
 }

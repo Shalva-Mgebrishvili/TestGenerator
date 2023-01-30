@@ -34,4 +34,16 @@ public interface TestResultRepository extends JpaRepository<TestResult, Long> {
             @Param("status") Status status,
             Pageable pageable
     );
+
+    @Query("""
+        SELECT t
+        FROM TestResult t
+        WHERE t.status = :status
+        AND t.user.id = :user_id
+        """)
+    Page<TestResult> findAllByUserId(
+            @Param("status") Status status,
+            @Param("user_id") Long userId,
+            Pageable pageable
+    );
 }

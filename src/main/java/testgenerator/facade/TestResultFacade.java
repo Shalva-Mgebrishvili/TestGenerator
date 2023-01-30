@@ -6,13 +6,11 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import testgenerator.model.domain.*;
 import testgenerator.model.dto.TestResultDto;
+import testgenerator.model.dto.TestResultShortDto;
 import testgenerator.model.enums.Status;
 import testgenerator.model.mapper.TestResultMapper;
-import testgenerator.model.params.TestResultAddParam;
 import testgenerator.model.params.TestResultUpdateParam;
-import testgenerator.service.CandidateService;
 import testgenerator.service.TestResultService;
-import testgenerator.service.TestService;
 import testgenerator.service.UserService;
 
 import javax.transaction.Transactional;
@@ -23,9 +21,7 @@ import javax.transaction.Transactional;
 public class TestResultFacade {
 
     private final TestResultService service;
-    private final TestService testService;
     private final UserService userService;
-    private final CandidateService candidateService;
 
     public TestResultDto findById(Long id) {
         TestResult testResult = service.findById(id, Status.ACTIVE);
@@ -39,22 +35,30 @@ public class TestResultFacade {
         return allTestResults.map(TestResultMapper::testResultDto);
     }
 
-    public TestResultDto add(TestResultAddParam param) {
-        Test test = testService.findById(param.getTest(), Status.ACTIVE);
-        Candidate candidate = candidateService.findById(param.getCandidate(), Status.ACTIVE);
+    public Page<TestResultShortDto> findAllByUserId(Long userId, Pageable pageable) {
+        userService.findById(userId, Status.ACTIVE);
 
-        TestResult testResult = TestResultMapper.paramToTestResult(param, test, candidate);
+        Page<TestResult> allUserTestResults = service.findAllByUserId(Status.ACTIVE, userId, pageable);
 
-        return TestResultMapper.testResultDto(service.add(testResult));
+        return allUserTestResults.map(TestResultMapper::testResultShortDto);
     }
+
+//    public TestResultDto add(TestResultAddParam param) {
+//        Test test = testService.findById(param.getTest(), Status.ACTIVE);
+//        Candidate candidate = candidateService.findById(param.getCandidate(), Status.ACTIVE);
+//
+//        TestResult testResult = TestResultMapper.paramToTestResult(param, test, candidate);
+//
+//        return TestResultMapper.testResultDto(service.add(testResult));
+//    }
 
     public TestResultDto update(Long id, TestResultUpdateParam param) {
         UserEntity corrector = userService.findById(param.getCorrector(), Status.ACTIVE);
 
         TestResult updateTestResult = service.findById(id,Status.ACTIVE);
-        Test test = updateTestResult.getTest();
+        updateTestResult.getCorrector().add(corrector);
 
-        return TestResultMapper.testResultDto(service.add(TestResultMapper.updateTestResultWithParam(updateTestResult, param, corrector, test)));
+        return TestResultMapper.testResultDto(service.add(updateTestResult));
     }
 
     public void deleteById(Long id) {

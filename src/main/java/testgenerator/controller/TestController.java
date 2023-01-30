@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import testgenerator.facade.TestFacade;
 import testgenerator.model.dto.TestDto;
 import testgenerator.model.params.TestAddParam;
+import testgenerator.model.params.TestSubmitParam;
 
 @RestController
 @RequestMapping("/tests")
@@ -25,7 +26,7 @@ public class TestController {
 //    public ResponseEntity<TestDto> findById(@PathVariable Long id) {
 //        return ResponseEntity.status(HttpStatus.OK).body(facade.findById(id));
 //    }
-
+//
 //    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_SUPER_ADMIN') or hasRole('CORRECTOR')")
 //    @GetMapping
 //    public ResponseEntity<Page<TestDto>> findAll(
@@ -43,5 +44,11 @@ public class TestController {
     @PostMapping
     public ResponseEntity<TestDto> add(@RequestBody TestAddParam param) {
         return ResponseEntity.status(HttpStatus.OK).body(facade.add(param));
+    }
+
+    @PostMapping("/submit")
+    public ResponseEntity<Void> submit(@RequestBody TestSubmitParam param) {
+        facade
+        return ResponseEntity.status(HttpStatus.OK).build();
     }
 }

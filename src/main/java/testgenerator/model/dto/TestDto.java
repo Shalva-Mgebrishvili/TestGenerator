@@ -14,7 +14,7 @@ public class TestDto {
 
     private Long id;
 
-    private Long givenTime;
+    private Long givenTimeInMinutes;
 
     private LocalDateTime givenTestStartDate;
 

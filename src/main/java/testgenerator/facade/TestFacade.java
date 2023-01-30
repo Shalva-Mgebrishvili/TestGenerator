@@ -1,8 +1,6 @@
 package testgenerator.facade;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
@@ -12,6 +10,7 @@ import testgenerator.model.enums.QuestionType;
 import testgenerator.model.enums.Status;
 import testgenerator.model.mapper.TestMapper;
 import testgenerator.model.params.TestAddParam;
+import testgenerator.model.params.TestSubmitParam;
 import testgenerator.service.*;
 
 import javax.transaction.Transactional;
@@ -30,6 +29,7 @@ public class TestFacade {
     private final StackService stackService;
     private final QuestionService questionService;
     private final TopicService topicService;
+    private final TestResultService testResultService;
 
 //    public TestDto findById(Long id) {
 //        Test test = service.findById(id, Status.ACTIVE);
@@ -79,5 +79,10 @@ public class TestFacade {
         }
 
         return TestMapper.testDto(service.add(TestMapper.paramToTest(test, param, seniority, testStackList, testQuestionList)));
+    }
+
+    public void submit(TestSubmitParam param) {
+        TestResult testResult = testResultService.findById(param.getTestResultId(), Status.ACTIVE);
+
     }
 }

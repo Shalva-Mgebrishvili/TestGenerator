@@ -18,10 +18,10 @@ import java.util.Optional;
 @Transactional
 public class TestResultService {
 
-    private final TestResultRepository testResultRepository;
+    private final TestResultRepository repository;
 
     public TestResult findById(Long id, Status status) {
-        Optional<TestResult> testResult = testResultRepository.findByIdAndStatus(id, status);
+        Optional<TestResult> testResult = repository.findByIdAndStatus(id, status);
 
         if(testResult.isEmpty()) throw new ResponseStatusException(HttpStatus.NOT_FOUND, "TestResult with ID: " + id + " not found.");
 
@@ -29,10 +29,14 @@ public class TestResultService {
     }
 
     public Page<TestResult> findAll(Status status, Pageable pageable) {
-        return testResultRepository.findAllByStatus(status, pageable);
+        return repository.findAllByStatus(status, pageable);
+    }
+
+    public Page<TestResult> findAllByUserId(Status status, Long userId, Pageable pageable) {
+        return repository.findAllByUserId(status, userId, pageable);
     }
 
     public TestResult add(TestResult testResult) {
-        return testResultRepository.save(testResult);
+        return repository.save(testResult);
     }
 }

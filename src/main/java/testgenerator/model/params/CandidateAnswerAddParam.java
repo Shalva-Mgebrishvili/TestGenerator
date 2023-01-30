@@ -12,6 +12,4 @@ public class CandidateAnswerAddParam {
     private Long testQuestion;
 
     private Long chosenAnswer;
-
-    private Long candidate;
 }

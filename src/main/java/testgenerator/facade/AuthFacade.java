@@ -37,6 +37,8 @@ public class AuthFacade {
         UserEntity user = userService.add(UserMapper.signUpParamToUser(param));
 
         Response response = keycloakService.addUserInKeycloak(user, param.getPassword());
+        keycloakService.changeUserKeycloakRole(user, user.getRole().name());
+
 
         if(response.getStatus() != HttpStatus.CREATED.value())
           throw new ResponseStatusException(HttpStatus.CONFLICT, "User creation failed on keycloak");

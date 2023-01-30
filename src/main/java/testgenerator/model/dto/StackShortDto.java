@@ -9,6 +9,6 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class TestStackShortDto {
-    private StackShortDto Stack;
+public class StackShortDto {
+    private String name;
 }

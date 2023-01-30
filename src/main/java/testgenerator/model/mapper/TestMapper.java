@@ -36,4 +36,13 @@ public class TestMapper {
 
         return test;
     }
+
+    public static TestShortDto testShortDto(Test test){
+        SeniorityDto seniority = SeniorityMapper.seniorityDto(test.getSeniority());
+        List<TestStackShortDto> testStackShortDtos = test.getTestStacks().stream().map(TestStackMapper::testStackShortDto).toList();
+        List<TestQuestionShortDto> testQuestionShortDtos = test.getTestQuestions().stream().map(TestQuestionMapper::testQuestionShortDto).toList();
+
+        return new TestShortDto(test.getGivenTimeInMinutes(),
+                seniority, testStackShortDtos, testQuestionShortDtos);
+    }
 }

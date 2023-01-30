@@ -5,6 +5,7 @@ import testgenerator.model.dto.*;
 import testgenerator.model.enums.Status;
 import testgenerator.model.params.TestResultAddParam;
 import testgenerator.model.params.TestResultUpdateParam;
+import testgenerator.model.params.TestSubmitParam;
 
 import java.time.temporal.ChronoUnit;
 import java.util.List;
@@ -13,8 +14,8 @@ public class TestResultMapper {
 
     public static TestResultDto testResultDto(TestResult testResult){
         TestDto test = TestMapper.testDto(testResult.getTest());
-//        UserDto user = UserMapper.userDto(testResult.getCorrector());
-        CandidateDto candidate = CandidateMapper.candidateDto(testResult.getCandidate());
+        UserShortDto user = UserMapper.userShortDto(testResult.getUser());
+        List<UserShortDto> correctors = testResult.getCorrector().stream().map(UserMapper::userShortDto).toList();
 
         TestResultDto testResultDto = new TestResultDto();
 
@@ -25,8 +26,8 @@ public class TestResultMapper {
         testResultDto.setTotalPoint(testResult.getTotalPoint());
         testResultDto.setCandidateScore(testResult.getCandidateScore());
         testResultDto.setTest(test);
-//        testResultDto.setCorrector(user);
-        testResultDto.setCandidate(candidate);
+        testResultDto.setCorrector(correctors);
+        testResultDto.setUser(user);
 
         return testResultDto;
     }
@@ -46,10 +47,11 @@ public class TestResultMapper {
         return testResult;
     }
 
-    public static TestResult updateTestResultWithParam(TestResult testResult, TestResultUpdateParam param, UserEntity user, Test test) {
+    public static TestResult updateTestResultWithParam(TestResult testResult, TestSubmitParam param) {
         Long timeNeeded = param.getCandidateTestStartDate().until(param.getCandidateTestFinishDate(), ChronoUnit.MINUTES);
 
-        List<List<CandidateAnswer>> candidateAnswerList = test.getTestQuestions().stream().map(TestQuestion::getCandidateAnswers).toList();
+        List<List<CandidateAnswer>> candidateAnswerList = param.getCandidateAnswerList().stream()
+                .map(CandidateAnswerMapper::paramToCandidateAnswer).toList();
         Double candidateScore=0.0;
 
         for(List<CandidateAnswer> candidateAnswers: candidateAnswerList) {
@@ -60,8 +62,15 @@ public class TestResultMapper {
         testResult.setCandidateTestStartDate(param.getCandidateTestStartDate());
         testResult.setTimeNeeded(timeNeeded);
         testResult.setCandidateScore(candidateScore);
-//        testResult.setCorrector(user);
+        testResult.setCorrector(user);
 
         return testResult;
+    }
+
+    public static TestResultShortDto testResultShortDto(TestResult testResult){
+        TestShortDto test = TestMapper.testShortDto(testResult.getTest());
+
+        return new TestResultShortDto(testResult.getCandidateTestStartDate(), testResult.getCandidateTestFinishDate(),
+                testResult.getTotalPoint(), testResult.getCandidateScore(), test);
     }
 }

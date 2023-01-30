@@ -14,7 +14,6 @@ import testgenerator.model.enums.Status;
 import testgenerator.model.mapper.UserMapper;
 import testgenerator.model.params.ChangeRoleParam;
 import testgenerator.model.params.UserUpdateParam;
-import testgenerator.service.CandidateService;
 import testgenerator.service.KeycloakService;
 import testgenerator.service.UserService;
 import org.springframework.transaction.annotation.Transactional;
@@ -48,10 +47,6 @@ public class UserFacade {
         return allUsers.map(UserMapper::userDto);
     }
 
-//    public UserDto add(UserAddUpdateParam param) {
-//        return  null;
-//    }
-
     @Transactional
     public UserDto update(Long id, UserUpdateParam param) {
         UserEntity updateUser = service.findById(id,Status.ACTIVE);
@@ -69,9 +64,9 @@ public class UserFacade {
 
         Response response = keycloakService.deleteUserInKeycloak(user.getUsername());
 
-        if(response.getStatus() != HttpStatus.NO_CONTENT.value()) {
+        if(response.getStatus() != HttpStatus.NO_CONTENT.value())
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "An error occurred while trying to delete employee in authorization server!");
-        }
+
 
         user.setStatus(Status.DEACTIVATED);
         service.add(user);

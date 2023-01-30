@@ -18,7 +18,7 @@ public class CandidateAnswer extends SuperEntity {
     @Column(name = "candidate_point")
     private Double candidatePoint;
 
-    @ManyToOne
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinColumn(name = "test_question_id")
     private TestQuestion testQuestion;
 
@@ -26,8 +26,8 @@ public class CandidateAnswer extends SuperEntity {
     @JoinColumn(name = "chosen_answer_id")
     private Answer chosenAnswer;
 
-    @ManyToOne
-    @JoinColumn(name = "candidate_id")
-    private Candidate candidate;
+//    @ManyToOne
+//    @JoinColumn(name = "candidate_id")
+//    private Candidate candidate;
 
 }
