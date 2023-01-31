@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import testgenerator.facade.TestFacade;
 import testgenerator.model.dto.TestDto;
 import testgenerator.model.params.TestAddParam;
+import testgenerator.model.params.TestCorrectionParam;
 import testgenerator.model.params.TestSubmitParam;
 
 @RestController
@@ -46,5 +47,11 @@ public class TestController {
     public ResponseEntity<Void> submit(@RequestBody TestSubmitParam param) {
         facade.submit(param);
         return ResponseEntity.status(HttpStatus.OK).build();
+    }
+
+    @PreAuthorize("hasRole('USER') or hasRole('ADMIN') or hasRole('SUPER_ADMIN') or hasRole('CORRECTOR')")
+    @PutMapping("/correction")
+    public ResponseEntity<TestDto> correction(@RequestBody TestCorrectionParam param) {
+        return ResponseEntity.status(HttpStatus.OK).body(facade.correction(param));
     }
 }

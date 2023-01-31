@@ -3,19 +3,21 @@ package testgenerator.facade;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 import testgenerator.model.domain.*;
 import testgenerator.model.dto.TestDto;
 import testgenerator.model.enums.QuestionType;
 import testgenerator.model.enums.Status;
+import testgenerator.model.enums.TestStatus;
 import testgenerator.model.mapper.CandidateAnswerMapper;
 import testgenerator.model.mapper.TestMapper;
 import testgenerator.model.mapper.TestResultMapper;
 import testgenerator.model.params.TestAddParam;
+import testgenerator.model.params.TestCorrectionParam;
 import testgenerator.model.params.TestSubmitParam;
 import testgenerator.service.*;
 
-import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -34,6 +36,10 @@ public class TestFacade {
     private final TestResultService testResultService;
     private final TestQuestionService testQuestionService;
     private final AnswerService answerService;
+    private final CandidateAnswerService candidateAnswerService;
+    private final UserService userService;
+    private final CandidateService candidateService;
+    private final KeycloakService keycloakService;
 
 //    public TestDto findById(Long id) {
 //        Test test = service.findById(id, Status.ACTIVE);
@@ -89,9 +95,12 @@ public class TestFacade {
         testResult.setStatus(Status.ACTIVE);
         testResultService.add(testResult);
 
+        test.setTestStatus(TestStatus.CREATED);
+
         return TestMapper.testDto(service.add(test));
     }
 
+    @Transactional
     public void submit(TestSubmitParam param) {
         TestResult testResult = testResultService.findById(param.getTestResultId(), Status.ACTIVE);
         List<CandidateAnswer> candidateAnswerList = new ArrayList<>();
@@ -108,6 +117,36 @@ public class TestFacade {
                     testQuestion, chosenAnswer));
         });
 
-        TestResultMapper.updateTestResultWithParam(testResult, param, candidateAnswerList);
+        Candidate candidate = testResult.getCandidate();
+        candidate.setStatus(Status.DEACTIVATED);
+        candidateService.add(candidate);
+        keycloakService.deleteUserInKeycloak(candidate.getOneTimeUsername());
+
+        testResult.getTest().setTestStatus(TestStatus.READY_FOR_CORRECTION);
+
+        testResultService.add(TestResultMapper.updateTestResultWithParam(testResult, param, candidateAnswerList));
+    }
+
+    @Transactional
+    public TestDto correction(TestCorrectionParam param) {
+        TestResult testResult = testResultService.findById(param.getTestResultId(),Status.ACTIVE);
+        UserEntity corrector = userService.findById(param.getCorrectorId(), Status.ACTIVE);
+        Test test = testResult.getTest();
+
+        testResult.getCorrector().add(corrector);
+        testResultService.add(testResult);
+
+
+        param.getCandidateAnswerUpdateParamList().forEach(candidateAnswerUpdateParam -> {
+            CandidateAnswer candidateAnswer =
+                    candidateAnswerService.findById(candidateAnswerUpdateParam.getId(), Status.ACTIVE);
+            candidateAnswer.setCandidatePoint(candidateAnswerUpdateParam.getCandidatePoint());
+
+            candidateAnswerService.add(candidateAnswer);
+        });
+
+        test.setTestStatus(param.getTestStatus());
+
+        return TestMapper.testDto(service.add(test));
     }
 }

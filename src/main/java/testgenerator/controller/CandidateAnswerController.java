@@ -10,8 +10,6 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import testgenerator.facade.CandidateAnswerFacade;
 import testgenerator.model.dto.CandidateAnswerDto;
-import testgenerator.model.params.CandidateAnswerAddParam;
-import testgenerator.model.params.CandidateAnswerUpdateParam;
 
 @RestController
 @RequestMapping("/candidate-answers")
@@ -42,9 +40,9 @@ public class CandidateAnswerController {
 //        return ResponseEntity.status(HttpStatus.OK).body(facade.add(param));
 //    }
 
-    @PreAuthorize("hasRole('ADMIN') or hasRole('SUPER_ADMIN') or hasRole('CORRECTOR')")
-    @PutMapping("/{id}")
-    public ResponseEntity<CandidateAnswerDto> update(@PathVariable Long id, @RequestBody CandidateAnswerUpdateParam param) {
-        return ResponseEntity.status(HttpStatus.OK).body(facade.update(id, param));
-    }
+//    @PreAuthorize("hasRole('ADMIN') or hasRole('SUPER_ADMIN') or hasRole('CORRECTOR')")
+//    @PutMapping("/{id}")
+//    public ResponseEntity<CandidateAnswerDto> update(@PathVariable Long id, @RequestBody CandidateAnswerUpdateParam param) {
+//        return ResponseEntity.status(HttpStatus.OK).body(facade.update(id, param));
+//    }
 }

@@ -27,7 +27,7 @@ public class TestQuestionMapper {
         if(maxPoint==candidatePoint) {
             candidateAnswerCorrectness = CandidateAnswerCorrectness.CORRECT;
         }else if(candidatePoint>0) {
-            candidateAnswerCorrectness = CandidateAnswerCorrectness.PARTLY_CORRECT;
+            candidateAnswerCorrectness = CandidateAnswerCorrectness.PARTIALLY_CORRECT;
         }
 
         return new TestQuestionShortDto(question, candidateAnswerCorrectness);

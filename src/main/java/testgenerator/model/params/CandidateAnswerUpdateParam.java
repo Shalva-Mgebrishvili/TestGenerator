@@ -6,5 +6,6 @@ import lombok.Setter;
 @Getter
 @Setter
 public class CandidateAnswerUpdateParam {
+    private Long id;
     private Double candidatePoint;
 }

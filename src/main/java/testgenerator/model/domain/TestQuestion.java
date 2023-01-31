@@ -17,7 +17,7 @@ public class TestQuestion extends SuperEntity {
     @JoinColumn(name = "question_id", nullable = false)
     private Question question;
 
-    @ManyToOne
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinColumn(name = "test_id", nullable = false)
     private Test test;
 

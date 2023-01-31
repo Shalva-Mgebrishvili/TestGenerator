@@ -8,12 +8,9 @@ import testgenerator.model.domain.*;
 import testgenerator.model.dto.CandidateAnswerDto;
 import testgenerator.model.enums.Status;
 import testgenerator.model.mapper.CandidateAnswerMapper;
-import testgenerator.model.params.CandidateAnswerAddParam;
-import testgenerator.model.params.CandidateAnswerUpdateParam;
 import testgenerator.service.*;
 
 import javax.transaction.Transactional;
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -21,11 +18,6 @@ import java.util.List;
 public class CandidateAnswerFacade {
 
     private final CandidateAnswerService service;
-    private final TestQuestionService testQuestionService;
-    private final AnswerService answerService;
-    private final CandidateService candidateService;
-    private final TestService testService;
-
 
     public CandidateAnswerDto findById(Long id) {
         CandidateAnswer candidateAnswer = service.findById(id, Status.ACTIVE);
@@ -49,7 +41,7 @@ public class CandidateAnswerFacade {
 //        return CandidateAnswerMapper.candidateAnswerDto(service.add(candidateAnswer));
 //    }
 
-    public CandidateAnswerDto update(Long id, CandidateAnswerUpdateParam param) {
+//    public CandidateAnswerDto update(Long id, CandidateAnswerUpdateParam param) {
 //        CandidateAnswer updateCandidateAnswer = service.findById(id,Status.ACTIVE);
 //        Test test = testService.findById(updateCandidateAnswer.getTestQuestion().getTest().getId(), Status.ACTIVE);
 //        List<TestResult> testResults = updateCandidateAnswer.getCandidate().getTestResults();
@@ -63,7 +55,7 @@ public class CandidateAnswerFacade {
 //        updateCandidateAnswer.setCandidatePoint(param.getCandidatePoint());
 //
 //        return CandidateAnswerMapper.candidateAnswerDto(service.add(updateCandidateAnswer));
-        return null;
-    }
+//        return null;
+//    }
 
 }
