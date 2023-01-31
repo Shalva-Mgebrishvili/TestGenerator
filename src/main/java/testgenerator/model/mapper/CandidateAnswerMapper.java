@@ -2,9 +2,11 @@ package testgenerator.model.mapper;
 
 import testgenerator.model.domain.*;
 import testgenerator.model.dto.*;
+import testgenerator.model.enums.QuestionType;
 import testgenerator.model.enums.Status;
 import testgenerator.model.params.CandidateAnswerAddParam;
-import testgenerator.model.params.TestSubmitParam;
+import testgenerator.service.AnswerService;
+import testgenerator.service.TestQuestionService;
 
 import java.util.List;
 
@@ -20,13 +22,15 @@ public class CandidateAnswerMapper {
                 candidateAnswer.getCandidatePoint(), chosenAnswer);
     }
 
-    public static CandidateAnswer paramToCandidateAnswer(TestSubmitParam param, TestQuestion testQuestion, Answer chosenAnswer) {
-        Double candidatePoint=0.0;
-        Double maxPoint=testQuestion.getQuestion().getPoint();
-        List<Answer> correctList = testQuestion.getQuestion().getAnswers().stream().filter(Answer::getIsCorrect).toList();
-        Integer size = correctList.size();
+    public static CandidateAnswer paramToCandidateAnswer(CandidateAnswerAddParam param, TestQuestion testQuestion,
+                                                         Answer chosenAnswer) {
 
-        if(!correctList.isEmpty()){
+        double candidatePoint=0.0;
+        if(chosenAnswer != null) {
+            double maxPoint=testQuestion.getQuestion().getPoint();
+            List<Answer> correctList = testQuestion.getQuestion().getAnswers().stream().filter(Answer::getIsCorrect).toList();
+            Integer size = correctList.size();
+
             for(Answer answer: correctList) {
                 if (answer.getAnswer().equals(chosenAnswer.getAnswer())) {
                     candidatePoint = maxPoint / size;
@@ -34,6 +38,7 @@ public class CandidateAnswerMapper {
                 }
             }
         }
+
 
         CandidateAnswer candidateAnswer = new CandidateAnswer(param.getAnswer(), candidatePoint, testQuestion, chosenAnswer);
         candidateAnswer.setStatus(Status.ACTIVE);

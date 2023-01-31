@@ -3,8 +3,8 @@ package testgenerator.model.mapper;
 import testgenerator.model.domain.*;
 import testgenerator.model.dto.*;
 import testgenerator.model.enums.Status;
+import testgenerator.model.enums.TestStatus;
 import testgenerator.model.params.TestResultAddParam;
-import testgenerator.model.params.TestResultUpdateParam;
 import testgenerator.model.params.TestSubmitParam;
 
 import java.time.temporal.ChronoUnit;
@@ -47,22 +47,21 @@ public class TestResultMapper {
         return testResult;
     }
 
-    public static TestResult updateTestResultWithParam(TestResult testResult, TestSubmitParam param) {
+    public static TestResult updateTestResultWithParam(TestResult testResult, TestSubmitParam param,
+                                                       List<CandidateAnswer> candidateAnswerList) {
+
         Long timeNeeded = param.getCandidateTestStartDate().until(param.getCandidateTestFinishDate(), ChronoUnit.MINUTES);
 
-        List<List<CandidateAnswer>> candidateAnswerList = param.getCandidateAnswerList().stream()
-                .map(CandidateAnswerMapper::paramToCandidateAnswer).toList();
-        Double candidateScore=0.0;
+        double candidateScore=0.0;
 
-        for(List<CandidateAnswer> candidateAnswers: candidateAnswerList) {
-            candidateScore+=candidateAnswers.stream().map(CandidateAnswer::getCandidatePoint).toList().stream().mapToDouble(Double::doubleValue).sum();
+        for(CandidateAnswer candidateAnswer: candidateAnswerList) {
+            candidateScore+=candidateAnswer.getCandidatePoint();
         }
 
         testResult.setCandidateTestFinishDate(param.getCandidateTestFinishDate());
         testResult.setCandidateTestStartDate(param.getCandidateTestStartDate());
         testResult.setTimeNeeded(timeNeeded);
         testResult.setCandidateScore(candidateScore);
-        testResult.setCorrector(user);
 
         return testResult;
     }

@@ -8,7 +8,9 @@ import testgenerator.model.domain.*;
 import testgenerator.model.dto.TestDto;
 import testgenerator.model.enums.QuestionType;
 import testgenerator.model.enums.Status;
+import testgenerator.model.mapper.CandidateAnswerMapper;
 import testgenerator.model.mapper.TestMapper;
+import testgenerator.model.mapper.TestResultMapper;
 import testgenerator.model.params.TestAddParam;
 import testgenerator.model.params.TestSubmitParam;
 import testgenerator.service.*;
@@ -30,6 +32,8 @@ public class TestFacade {
     private final QuestionService questionService;
     private final TopicService topicService;
     private final TestResultService testResultService;
+    private final TestQuestionService testQuestionService;
+    private final AnswerService answerService;
 
 //    public TestDto findById(Long id) {
 //        Test test = service.findById(id, Status.ACTIVE);
@@ -78,11 +82,32 @@ public class TestFacade {
             testStackList.add(testStack);
         }
 
-        return TestMapper.testDto(service.add(TestMapper.paramToTest(test, param, seniority, testStackList, testQuestionList)));
+        TestMapper.paramToTest(test, param, seniority, testStackList, testQuestionList);
+
+        TestResult testResult = new TestResult(null, null, null,
+                3.0, null, test, new ArrayList<>(), null,null);
+        testResult.setStatus(Status.ACTIVE);
+        testResultService.add(testResult);
+
+        return TestMapper.testDto(service.add(test));
     }
 
     public void submit(TestSubmitParam param) {
         TestResult testResult = testResultService.findById(param.getTestResultId(), Status.ACTIVE);
+        List<CandidateAnswer> candidateAnswerList = new ArrayList<>();
 
+        param.getCandidateAnswerList().forEach(candidateAnswerAddParam -> {
+            TestQuestion testQuestion = testQuestionService.findById(candidateAnswerAddParam.getTestQuestion(), Status.ACTIVE);
+            Answer chosenAnswer = null;
+
+            if(testQuestion.getQuestion().getQuestionType() != QuestionType.OPEN_QUESTION) {
+                chosenAnswer = answerService.findById(candidateAnswerAddParam.getChosenAnswer(), Status.ACTIVE);
+            }
+
+            candidateAnswerList.add(CandidateAnswerMapper.paramToCandidateAnswer(candidateAnswerAddParam,
+                    testQuestion, chosenAnswer));
+        });
+
+        TestResultMapper.updateTestResultWithParam(testResult, param, candidateAnswerList);
     }
 }

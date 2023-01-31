@@ -1,6 +1,7 @@
 package testgenerator.model.domain;
 
 import lombok.*;
+import testgenerator.model.enums.TestStatus;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -44,5 +45,9 @@ public class Test extends SuperEntity {
 
     @OneToMany(mappedBy = "test", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     private List<TestResult> testResults;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "test_status")
+    private TestStatus testStatus;
 
 }

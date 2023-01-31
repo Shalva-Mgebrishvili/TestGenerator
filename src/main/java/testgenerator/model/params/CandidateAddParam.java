@@ -9,4 +9,6 @@ public class CandidateAddParam {
 
     private Long user;
 
+    private Long TestResult;
+
 }

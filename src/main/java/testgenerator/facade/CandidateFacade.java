@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 import testgenerator.model.domain.Candidate;
+import testgenerator.model.domain.TestResult;
 import testgenerator.model.domain.UserEntity;
 import testgenerator.model.dto.CandidateDto;
 import testgenerator.model.enums.Role;
@@ -21,6 +22,7 @@ import testgenerator.model.mapper.CandidateMapper;
 import testgenerator.model.params.CandidateAddParam;
 import testgenerator.service.CandidateService;
 import testgenerator.service.KeycloakService;
+import testgenerator.service.TestResultService;
 import testgenerator.service.UserService;
 
 
@@ -35,6 +37,7 @@ public class CandidateFacade {
     private final CandidateService service;
     private final UserService userService;
     private final KeycloakService keycloakService;
+    private final TestResultService testResultService;
 
 
     public CandidateDto findById(Long id) {
@@ -68,6 +71,11 @@ public class CandidateFacade {
 
         if(response.getStatus() != HttpStatus.CREATED.value())
             throw new ResponseStatusException(HttpStatus.CONFLICT, "User creation failed on keycloak");
+
+        TestResult testResult = testResultService.findById(param.getTestResult(),Status.ACTIVE);
+        testResult.setUser(user);
+        testResult.setCandidate(candidate);
+        testResultService.add(testResult);
 
         return CandidateMapper.candidateDto(candidate);
     }

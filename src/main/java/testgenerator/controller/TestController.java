@@ -1,10 +1,6 @@
 package testgenerator.controller;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -48,7 +44,7 @@ public class TestController {
 
     @PostMapping("/submit")
     public ResponseEntity<Void> submit(@RequestBody TestSubmitParam param) {
-        facade
+        facade.submit(param);
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 }

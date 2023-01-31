@@ -40,7 +40,7 @@ public class TestResult extends SuperEntity {
     private List<UserEntity> corrector;
 
     @ManyToOne
-    @JoinColumn(name = "user_id", nullable = false)
+    @JoinColumn(name = "user_id")
     private UserEntity user;
 
     @OneToOne
