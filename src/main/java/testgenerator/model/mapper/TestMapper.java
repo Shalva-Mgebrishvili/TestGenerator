@@ -45,4 +45,15 @@ public class TestMapper {
         return new TestShortDto(test.getGivenTimeInMinutes(),
                 seniority, testStackShortDtos, testQuestionShortDtos);
     }
+
+    public static TestInfoDto testInfoDto(Test test) {
+        return new TestInfoDto(test.getGivenTimeInMinutes(), test.getGivenTestStartDate(), test.getGivenTestEndDate(),
+                test.getNumberOfOpenQuestions(), test.getNumberOfSingleChoiceTestQuestions(), test.getNumberOfMultipleChoiceTestQuestions());
+    }
+
+    public static TestStartDto testStartDto(Test test) {
+        List<TestQuestionStartDto> testQuestionStartDtoList = test.getTestQuestions().stream().map(TestQuestionMapper::testQuestionStartDto).toList();
+
+        return new TestStartDto(testQuestionStartDtoList);
+    }
 }

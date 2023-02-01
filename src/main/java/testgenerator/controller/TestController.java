@@ -7,6 +7,8 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import testgenerator.facade.TestFacade;
 import testgenerator.model.dto.TestDto;
+import testgenerator.model.dto.TestInfoDto;
+import testgenerator.model.dto.TestStartDto;
 import testgenerator.model.params.TestAddParam;
 import testgenerator.model.params.TestCorrectionParam;
 import testgenerator.model.params.TestSubmitParam;
@@ -53,5 +55,17 @@ public class TestController {
     @PutMapping("/correction")
     public ResponseEntity<TestDto> correction(@RequestBody TestCorrectionParam param) {
         return ResponseEntity.status(HttpStatus.OK).body(facade.correction(param));
+    }
+
+    @PreAuthorize("hasRole('CANDIDATE')")
+    @PostMapping("/{id}/test-info")
+    public ResponseEntity<TestInfoDto> testInfoForCandidate(@PathVariable("id") Long id) {
+        return ResponseEntity.status(HttpStatus.OK).body(facade.testInfoForCandidate(id));
+    }
+
+    @PreAuthorize("hasRole('CANDIDATE')")
+    @PostMapping("/{id}/test-start")
+    public ResponseEntity<TestStartDto> testStart(@PathVariable("id") Long id) {
+        return ResponseEntity.status(HttpStatus.OK).body(facade.testStart(id));
     }
 }

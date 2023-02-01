@@ -3,6 +3,7 @@ package testgenerator.model.mapper;
 import testgenerator.model.domain.Answer;
 import testgenerator.model.domain.Question;
 import testgenerator.model.dto.AnswerDto;
+import testgenerator.model.dto.AnswerShortDto;
 import testgenerator.model.enums.Status;
 import testgenerator.model.params.AnswerAddUpdateParam;
 
@@ -27,5 +28,9 @@ public class AnswerMapper {
         answer.setIsCorrect(param.getIsCorrect());
 
         return answer;
+    }
+
+    public static AnswerShortDto answerShortDto(Answer answer) {
+        return new AnswerShortDto(answer.getAnswer());
     }
 }

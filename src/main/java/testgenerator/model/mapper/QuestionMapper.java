@@ -60,4 +60,10 @@ public class QuestionMapper {
                 question.getQuestionType(), topic, answerDtos);
     }
 
+    public static QuestionTestStartDto questionTestStartDto(Question question) {
+        List<AnswerShortDto> answerShortDtoList = question.getAnswers().stream().map(AnswerMapper::answerShortDto).toList();
+
+        return new QuestionTestStartDto(question.getText(), answerShortDtoList);
+    }
+
 }

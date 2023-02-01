@@ -7,6 +7,8 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 import testgenerator.model.domain.*;
 import testgenerator.model.dto.TestDto;
+import testgenerator.model.dto.TestInfoDto;
+import testgenerator.model.dto.TestStartDto;
 import testgenerator.model.enums.QuestionType;
 import testgenerator.model.enums.Status;
 import testgenerator.model.enums.TestStatus;
@@ -148,5 +150,17 @@ public class TestFacade {
         test.setTestStatus(param.getTestStatus());
 
         return TestMapper.testDto(service.add(test));
+    }
+
+    public TestInfoDto testInfoForCandidate(Long id) {
+        Test test = service.findById(id, Status.ACTIVE);
+
+        return TestMapper.testInfoDto(test);
+    }
+
+    public TestStartDto testStart(Long id) {
+        Test test = service.findById(id, Status.ACTIVE);
+
+        return TestMapper.testStartDto(test);
     }
 }

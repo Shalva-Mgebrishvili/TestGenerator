@@ -21,8 +21,7 @@ public class TestQuestionController {
 
     private final TestQuestionFacade facade;
 
-    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_SUPER_ADMIN') or " +
-            "@testQuestionFacade.findById(#id).candidateAnswers.get(0).candidate.id == authentication.principal.id")
+    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_SUPER_ADMIN')")
     @GetMapping("/{id}")
     public ResponseEntity<TestQuestionDto> findById(@PathVariable Long id) {
         return ResponseEntity.status(HttpStatus.OK).body(facade.findById(id));

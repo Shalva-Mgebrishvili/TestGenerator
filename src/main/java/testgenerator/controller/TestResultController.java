@@ -42,7 +42,7 @@ public class TestResultController {
 
     @PreAuthorize("hasRole('ADMIN') or hasRole('SUPER_ADMIN') or hasRole('CORRECTOR') or " +
             "#id == authentication.principal.id")
-    @GetMapping("/{user-id}")
+    @GetMapping("/find-all/{user-id}")
     public ResponseEntity<Page<TestResultShortDto>> findAllByUserId (
             @PathVariable("user-id") Long id,
             @RequestParam(value = "page", defaultValue = "0", required = false) Integer page,

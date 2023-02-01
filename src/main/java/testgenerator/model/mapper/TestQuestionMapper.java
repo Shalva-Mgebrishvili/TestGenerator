@@ -33,4 +33,10 @@ public class TestQuestionMapper {
         return new TestQuestionShortDto(question, candidateAnswerCorrectness);
     }
 
+    public static TestQuestionStartDto testQuestionStartDto(TestQuestion testQuestion) {
+        QuestionTestStartDto questionTestStartDto = QuestionMapper.questionTestStartDto(testQuestion.getQuestion());
+
+        return new TestQuestionStartDto(questionTestStartDto);
+    }
+
 }

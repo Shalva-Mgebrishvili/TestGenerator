@@ -14,7 +14,6 @@ import testgenerator.service.StackService;
 import testgenerator.service.TopicService;
 
 import javax.transaction.Transactional;
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
