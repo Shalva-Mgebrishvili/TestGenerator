@@ -14,6 +14,6 @@ public class StackDto {
 
     private String name;
 
-    private List<TopicDto> topics;
+    private List<TopicShortDto> topics;
 
 }
