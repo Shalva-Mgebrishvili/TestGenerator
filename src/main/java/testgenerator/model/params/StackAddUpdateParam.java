@@ -11,5 +11,4 @@ public class StackAddUpdateParam {
 
     private String name;
 
-    private List<Long> Topics;
 }
