@@ -97,7 +97,7 @@ public class KeycloakService {
         UsersResource usersResource = keycloak.realm(AppConstants.REALM).users();
 
         UserResource userResource = keycloak.realm(AppConstants.REALM).users()
-                .get(searchUserIdInKeycloakByUsername(user.getUsername(), usersResource));
+                .get(searchUserIdInKeycloakByUsername(user.getUsername()));
 
         UserRepresentation userRepresentation = userResource.toRepresentation();
 
@@ -112,10 +112,11 @@ public class KeycloakService {
     public Response deleteUserInKeycloak(String username) {
         UsersResource usersResource = keycloak.realm(AppConstants.REALM).users();
 
-        return usersResource.delete(searchUserIdInKeycloakByUsername(username, usersResource));
+        return usersResource.delete(searchUserIdInKeycloakByUsername(username));
     }
 
-    public String searchUserIdInKeycloakByUsername(String username, UsersResource usersResource) {
+    public String searchUserIdInKeycloakByUsername(String username) {
+        UsersResource usersResource = keycloak.realm(AppConstants.REALM).users();
         List<UserRepresentation> search = usersResource.search(username, true);
 
         if (search.isEmpty()) throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Keycloak user with this username doesn't exist");
@@ -127,7 +128,7 @@ public class KeycloakService {
         UsersResource usersResource = keycloak.realm(AppConstants.REALM).users();
 
         UserResource userResource = keycloak.realm(AppConstants.REALM).users()
-                .get(searchUserIdInKeycloakByUsername(user.getUsername(), usersResource));
+                .get(searchUserIdInKeycloakByUsername(user.getUsername()));
 
         removeKeycloakRoleFromUser(user.getRole().name(), userResource);
 

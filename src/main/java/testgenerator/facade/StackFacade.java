@@ -14,6 +14,7 @@ import testgenerator.service.StackService;
 import testgenerator.service.TopicService;
 
 import javax.transaction.Transactional;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -37,19 +38,18 @@ public class StackFacade {
     }
 
     public StackDto add(StackAddUpdateParam param) {
-        List<Topic> topics = param.getTopics().stream().map(t -> topicService.findById(t, Status.ACTIVE)).toList();
-        Stack stack = new Stack(param.getName(), topics);
+//        List<Topic> topics = param.getTopics().stream().map(t -> topicService.findById(t, Status.ACTIVE)).toList();
+        Stack stack = new Stack(param.getName(), new ArrayList<>());
         stack.setStatus(Status.ACTIVE);
 
         return StackMapper.stackDto(service.add(stack));
     }
 //id
     public StackDto update(Long id, StackAddUpdateParam param) {
-        List<Topic> topics = param.getTopics().stream().map(t -> topicService.findById(t, Status.ACTIVE)).toList();
+//        List<Topic> topics = param.getTopics().stream().map(t -> topicService.findById(t, Status.ACTIVE)).toList();
         Stack updateStack = service.findById(id,Status.ACTIVE);
 
         updateStack.setName(param.getName());
-        updateStack.setTopics(topics);
 
         return StackMapper.stackDto(service.add(updateStack));
     }

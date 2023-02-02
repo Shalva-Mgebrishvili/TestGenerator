@@ -11,6 +11,7 @@ public class TestQuestionMapper {
     public static TestQuestionDto testQuestionDto(TestQuestion testQuestion){
 
         QuestionForTestDto question = QuestionMapper.questionForTestDto(testQuestion.getQuestion());
+
         List<CandidateAnswerDto> candidateAnswerDtos = testQuestion.getCandidateAnswers().stream()
                 .map(CandidateAnswerMapper::candidateAnswerDto).toList();
 

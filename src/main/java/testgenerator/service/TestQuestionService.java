@@ -6,11 +6,13 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
+import testgenerator.model.domain.Test;
 import testgenerator.model.domain.TestQuestion;
 import testgenerator.model.enums.Status;
 import testgenerator.repository.TestQuestionRepository;
 
 import javax.transaction.Transactional;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -18,10 +20,10 @@ import java.util.Optional;
 @Transactional
 public class TestQuestionService {
 
-    private final TestQuestionRepository testQuestionRepository;
+    private final TestQuestionRepository repository;
 
     public TestQuestion findById(Long id, Status status) {
-        Optional<TestQuestion> testQuestion = testQuestionRepository.findByIdAndStatus(id, status);
+        Optional<TestQuestion> testQuestion = repository.findByIdAndStatus(id, status);
 
         if(testQuestion.isEmpty()) throw new ResponseStatusException(HttpStatus.NOT_FOUND, "TestQuestion with ID: " + id + " not found.");
 
@@ -29,10 +31,18 @@ public class TestQuestionService {
     }
 
     public Page<TestQuestion> findAll(Status status, Pageable pageable) {
-        return testQuestionRepository.findAllByStatus(status, pageable);
+        return repository.findAllByStatus(status, pageable);
     }
 
     public TestQuestion add(TestQuestion testQuestion) {
-        return testQuestionRepository.save(testQuestion);
+        return repository.save(testQuestion);
+    }
+
+    public Double getPointSum(Test test) {
+        return repository.getPointSum(Status.ACTIVE, test);
+    }
+
+    public Double getCurrentPointSum(Test test) {
+        return repository.getCurrentPointSum(Status.ACTIVE, test);
     }
 }

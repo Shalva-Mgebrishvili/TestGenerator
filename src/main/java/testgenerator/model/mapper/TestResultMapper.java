@@ -66,10 +66,29 @@ public class TestResultMapper {
         return testResult;
     }
 
+    public static TestResult updateTestResultAfterCorrection(TestResult testResult,
+                                                       List<CandidateAnswer> candidateAnswerList) {
+
+        double candidateScore=0.0;
+
+        for(CandidateAnswer candidateAnswer: candidateAnswerList) {
+            candidateScore+=candidateAnswer.getCandidatePoint();
+        }
+
+        testResult.setCandidateScore(candidateScore);
+
+        return testResult;
+    }
+
     public static TestResultShortDto testResultShortDto(TestResult testResult){
+        return new TestResultShortDto(testResult.getTotalPoint(), testResult.getCandidateScore());
+    }
+
+    public static TestResultByUserIdAndTestResultIdDto testResultByUserIdAndTestResultIdDto(TestResult testResult) {
         TestShortDto test = TestMapper.testShortDto(testResult.getTest());
 
-        return new TestResultShortDto(testResult.getCandidateTestStartDate(), testResult.getCandidateTestFinishDate(),
-                testResult.getTotalPoint(), testResult.getCandidateScore(), test);
+        return new TestResultByUserIdAndTestResultIdDto(testResult.getCandidateTestStartDate(),
+                testResult.getCandidateTestFinishDate(), testResult.getTimeNeeded(), test);
+
     }
 }

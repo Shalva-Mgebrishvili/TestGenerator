@@ -8,11 +8,13 @@ import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.*;
 import testgenerator.facade.TestResultFacade;
+import testgenerator.model.dto.TestResultByUserIdAndTestResultIdDto;
 import testgenerator.model.dto.TestResultDto;
 import testgenerator.model.dto.TestResultShortDto;
-import testgenerator.model.params.TestResultUpdateParam;
 
 @RestController
 @RequestMapping("/test-results")
@@ -40,26 +42,36 @@ public class TestResultController {
         return ResponseEntity.status(HttpStatus.OK).body(facade.findAll(pageable));
     }
 
-    @PreAuthorize("hasRole('ADMIN') or hasRole('SUPER_ADMIN') or hasRole('CORRECTOR') or " +
-            "#id == authentication.principal.id")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('SUPER_ADMIN') or hasRole('CORRECTOR') or hasRole('USER')")
     @GetMapping("/find-all/{user-id}")
     public ResponseEntity<Page<TestResultShortDto>> findAllByUserId (
             @PathVariable("user-id") Long id,
             @RequestParam(value = "page", defaultValue = "0", required = false) Integer page,
             @RequestParam(value = "size", defaultValue = "20", required = false) Integer size,
             @RequestParam(value = "direction", defaultValue = "ASC", required = false) Sort.Direction direction,
-            @RequestParam(value = "sort", defaultValue = "id", required = false) String sort){
+            @RequestParam(value = "sort", defaultValue = "id", required = false) String sort,
+            @AuthenticationPrincipal Jwt jwt){
 
         Pageable pageable = PageRequest.of(page, size, Sort.by(direction, sort));
 
-        return ResponseEntity.status(HttpStatus.OK).body(facade.findAllByUserId(id, pageable));
+        return ResponseEntity.status(HttpStatus.OK).body(facade.findAllByUserId(id, pageable, jwt));
     }
 
-    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_SUPER_ADMIN')")
-    @PutMapping("/{id}")
-    public ResponseEntity<TestResultDto> update(@PathVariable Long id, @RequestBody TestResultUpdateParam param) {
-        return ResponseEntity.status(HttpStatus.OK).body(facade.update(id, param));
+    @PreAuthorize("hasRole('ADMIN') or hasRole('SUPER_ADMIN') or hasRole('CORRECTOR') or hasRole('USER')")
+    @GetMapping("/find-all/{user-id}/{test-result-id}")
+    public ResponseEntity<TestResultByUserIdAndTestResultIdDto> findByUserIdAndTestResultId (
+            @PathVariable("user-id") Long userId,
+            @PathVariable("test-result-id") Long testResultId,
+            @AuthenticationPrincipal Jwt jwt){
+
+        return ResponseEntity.status(HttpStatus.OK).body(facade.findByUserIdAndTestResultId(userId, testResultId, jwt));
     }
+
+//    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_SUPER_ADMIN')")
+//    @PutMapping("/{id}")
+//    public ResponseEntity<TestResultDto> update(@PathVariable Long id, @RequestBody TestResultUpdateParam param) {
+//        return ResponseEntity.status(HttpStatus.OK).body(facade.update(id, param));
+//    }
 
     @PreAuthorize("hasRole('ROLE_SUPER_ADMIN')")
     @DeleteMapping("/{id}")

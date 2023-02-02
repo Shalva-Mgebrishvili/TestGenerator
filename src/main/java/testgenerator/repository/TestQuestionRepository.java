@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
+import testgenerator.model.domain.Test;
 import testgenerator.model.domain.TestQuestion;
 import testgenerator.model.enums.Status;
 
@@ -33,5 +34,28 @@ public interface TestQuestionRepository extends JpaRepository<TestQuestion, Long
     Page<TestQuestion> findAllByStatus(
             @Param("status") Status status,
             Pageable pageable
+    );
+
+    @Query("""
+        SELECT SUM(t.question.point)
+        FROM TestQuestion t
+        WHERE t.status = :status
+        AND t.test = :test
+        """)
+    Double getPointSum(
+            @Param("status") Status status,
+            @Param("test") Test test
+    );
+
+    @Query("""
+        SELECT SUM(ca.candidatePoint)
+        FROM TestQuestion t
+        JOIN t.candidateAnswers ca
+        WHERE t.status = :status
+        AND t.test = :test
+        """)
+    Double getCurrentPointSum(
+            @Param("status") Status status,
+            @Param("test") Test test
     );
 }

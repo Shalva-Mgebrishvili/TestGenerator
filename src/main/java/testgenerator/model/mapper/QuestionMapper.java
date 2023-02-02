@@ -61,7 +61,8 @@ public class QuestionMapper {
     }
 
     public static QuestionTestStartDto questionTestStartDto(Question question) {
-        List<AnswerShortDto> answerShortDtoList = question.getAnswers().stream().map(AnswerMapper::answerShortDto).toList();
+        List<AnswerShortDto> answerShortDtoList = question.getAnswers().stream().filter
+                (answer -> answer.getStatus().equals(Status.ACTIVE)).map(AnswerMapper::answerShortDto).toList();
 
         return new QuestionTestStartDto(question.getText(), answerShortDtoList);
     }

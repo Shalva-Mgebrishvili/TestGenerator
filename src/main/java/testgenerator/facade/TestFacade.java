@@ -92,8 +92,11 @@ public class TestFacade {
 
         TestMapper.paramToTest(test, param, seniority, testStackList, testQuestionList);
 
+        double totalPoint = testQuestionService.getPointSum(test);
+
         TestResult testResult = new TestResult(null, null, null,
-                3.0, null, test, new ArrayList<>(), null,null);
+                totalPoint, null, test, new ArrayList<>(), null,null);
+
         testResult.setStatus(Status.ACTIVE);
         testResultService.add(testResult);
 
@@ -115,8 +118,8 @@ public class TestFacade {
                 chosenAnswer = answerService.findById(candidateAnswerAddParam.getChosenAnswer(), Status.ACTIVE);
             }
 
-            candidateAnswerList.add(CandidateAnswerMapper.paramToCandidateAnswer(candidateAnswerAddParam,
-                    testQuestion, chosenAnswer));
+            candidateAnswerList.add(candidateAnswerService.add(CandidateAnswerMapper.paramToCandidateAnswer(candidateAnswerAddParam,
+                    testQuestion, chosenAnswer)));
         });
 
         Candidate candidate = testResult.getCandidate();
@@ -135,9 +138,11 @@ public class TestFacade {
         UserEntity corrector = userService.findById(param.getCorrectorId(), Status.ACTIVE);
         Test test = testResult.getTest();
 
-        testResult.getCorrector().add(corrector);
+        if(!testResult.getCorrector().contains(corrector)) testResult.getCorrector().add(corrector);
+
         testResultService.add(testResult);
 
+        List<CandidateAnswer> candidateAnswerList = new ArrayList<>();
 
         param.getCandidateAnswerUpdateParamList().forEach(candidateAnswerUpdateParam -> {
             CandidateAnswer candidateAnswer =
@@ -145,7 +150,10 @@ public class TestFacade {
             candidateAnswer.setCandidatePoint(candidateAnswerUpdateParam.getCandidatePoint());
 
             candidateAnswerService.add(candidateAnswer);
+            candidateAnswerList.add(candidateAnswer);
         });
+
+        testResult.setCandidateScore(testQuestionService.getCurrentPointSum(test));
 
         test.setTestStatus(param.getTestStatus());
 
