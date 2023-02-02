@@ -168,6 +168,7 @@ public class TestFacade {
 
     public TestStartDto testStart(Long id) {
         Test test = service.findById(id, Status.ACTIVE);
+        test.setTestStatus(TestStatus.ACTIVE);
 
         return TestMapper.testStartDto(test);
     }
