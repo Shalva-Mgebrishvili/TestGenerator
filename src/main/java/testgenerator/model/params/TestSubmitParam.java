@@ -9,7 +9,6 @@ import java.util.List;
 @Getter
 @Setter
 public class TestSubmitParam {
-    private Long testResultId;
     private LocalDateTime candidateTestStartDate;
     private LocalDateTime candidateTestFinishDate;
     private List<CandidateAnswerAddParam> candidateAnswerList;

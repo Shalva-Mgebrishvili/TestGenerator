@@ -4,6 +4,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.*;
 import testgenerator.facade.TestFacade;
 import testgenerator.model.dto.TestDto;
@@ -45,13 +47,14 @@ public class TestController {
         return ResponseEntity.status(HttpStatus.OK).body(facade.add(param));
     }
 
+    @PreAuthorize("hasRole('CANDIDATE')")
     @PostMapping("/submit")
-    public ResponseEntity<Void> submit(@RequestBody TestSubmitParam param) {
-        facade.submit(param);
+    public ResponseEntity<Void> submit(@RequestBody TestSubmitParam param, @AuthenticationPrincipal Jwt jwt) {
+        facade.submit(param, jwt);
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 
-    @PreAuthorize("hasRole('USER') or hasRole('ADMIN') or hasRole('SUPER_ADMIN') or hasRole('CORRECTOR')")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('SUPER_ADMIN') or hasRole('CORRECTOR')")
     @PutMapping("/correction")
     public ResponseEntity<TestDto> correction(@RequestBody TestCorrectionParam param) {
         return ResponseEntity.status(HttpStatus.OK).body(facade.correction(param));

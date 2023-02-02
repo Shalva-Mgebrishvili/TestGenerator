@@ -2,10 +2,12 @@ package testgenerator.facade;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 import testgenerator.model.domain.*;
+import testgenerator.model.domain.Stack;
 import testgenerator.model.dto.TestDto;
 import testgenerator.model.dto.TestInfoDto;
 import testgenerator.model.dto.TestStartDto;
@@ -20,10 +22,7 @@ import testgenerator.model.params.TestCorrectionParam;
 import testgenerator.model.params.TestSubmitParam;
 import testgenerator.service.*;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -92,23 +91,23 @@ public class TestFacade {
 
         TestMapper.paramToTest(test, param, seniority, testStackList, testQuestionList);
 
-        double totalPoint = testQuestionService.getPointSum(test);
-
-        TestResult testResult = new TestResult(null, null, null,
-                totalPoint, null, test, new ArrayList<>(), null,null);
-
-        testResult.setStatus(Status.ACTIVE);
-        testResultService.add(testResult);
-
         test.setTestStatus(TestStatus.CREATED);
 
         return TestMapper.testDto(service.add(test));
     }
 
     @Transactional
-    public void submit(TestSubmitParam param) {
-        TestResult testResult = testResultService.findById(param.getTestResultId(), Status.ACTIVE);
+    public void submit(TestSubmitParam param, Jwt jwt) {
+        String email = (String) jwt.getClaims().get("email");
+        UserEntity user = userService.findByEmail(email,Status.ACTIVE);
+        List<TestResult> testResultList = user.getTestResults().stream().filter(testResult ->
+        testResult.getTest().getTestStatus().equals(TestStatus.ACTIVE)).toList();
+
+        if(testResultList.size() != 1)
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Internal Server Error");
+
         List<CandidateAnswer> candidateAnswerList = new ArrayList<>();
+        TestResult testResult = testResultList.get(0);
 
         param.getCandidateAnswerList().forEach(candidateAnswerAddParam -> {
             TestQuestion testQuestion = testQuestionService.findById(candidateAnswerAddParam.getTestQuestion(), Status.ACTIVE);

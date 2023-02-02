@@ -20,13 +20,13 @@ public class SeniorityController {
 
     private final SeniorityFacade facade;
 
-    @PreAuthorize("hasRole('USER') or hasRole('ADMIN') or hasRole('SUPER_ADMIN')")
+    @PreAuthorize("hasRole('CORRECTOR') or hasRole('ADMIN') or hasRole('SUPER_ADMIN')")
     @GetMapping("/{id}")
     public ResponseEntity<SeniorityDto> findById(@PathVariable Long id) {
         return ResponseEntity.status(HttpStatus.OK).body(facade.findById(id));
     }
 
-    @PreAuthorize("hasRole('USER') or hasRole('ADMIN') or hasRole('SUPER_ADMIN')")
+    @PreAuthorize("hasRole('CORRECTOR') or hasRole('ADMIN') or hasRole('SUPER_ADMIN')")
     @GetMapping
     public ResponseEntity<Page<SeniorityDto>> findAll(
             @RequestParam(value = "page", defaultValue = "0", required = false) Integer page,

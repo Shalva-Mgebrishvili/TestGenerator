@@ -8,10 +8,13 @@ import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.*;
 import testgenerator.facade.CandidateFacade;
 import testgenerator.model.dto.CandidateDto;
 import testgenerator.model.params.CandidateAddParam;
+import testgenerator.model.params.CandidateCreateForYourselfParam;
 
 
 @RestController
@@ -21,13 +24,13 @@ public class CandidateController {
 
     private final CandidateFacade facade;
 
-    @PreAuthorize("hasRole('ADMIN') or hasRole('SUPER_ADMIN')")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('SUPER_ADMIN') or hasRole('CORRECTOR')")
     @GetMapping("/{id}")
     public ResponseEntity<CandidateDto> findById(@PathVariable Long id) {
         return ResponseEntity.status(HttpStatus.OK).body(facade.findById(id));
     }
 
-    @PreAuthorize("hasRole('ADMIN') or hasRole('SUPER_ADMIN')")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('SUPER_ADMIN') or hasRole('CORRECTOR')")
     @GetMapping
     public ResponseEntity<Page<CandidateDto>> findAll(
             @RequestParam(value = "page", defaultValue = "0", required = false) Integer page,
@@ -40,10 +43,19 @@ public class CandidateController {
         return ResponseEntity.status(HttpStatus.OK).body(facade.findAll(pageable));
     }
 
+    @PreAuthorize("hasRole('ADMIN') or hasRole('SUPER_ADMIN') or hasRole('CORRECTOR')")
+    @PostMapping("{id}/create")
+    public ResponseEntity<Void> create(@PathVariable("id") Long testId, @RequestBody CandidateAddParam param) {
+        facade.create(testId, param);
+        return ResponseEntity.status(HttpStatus.CREATED).build();
+    }
+
     @PreAuthorize("hasRole('USER') or hasRole('ADMIN') or hasRole('SUPER_ADMIN') or hasRole('CORRECTOR')")
-    @PostMapping
-    public ResponseEntity<CandidateDto> add(@RequestBody CandidateAddParam param) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(facade.add(param));
+    @PostMapping("{id}/create-for-yourself")
+    public ResponseEntity<Void> createForYourself(@PathVariable("id") Long testId,
+                                                  @AuthenticationPrincipal Jwt jwt) {
+        facade.createForYourself(testId, jwt);
+        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
 //    @PreAuthorize("hasRole('ADMIN') or hasRole('SUPER_ADMIN')")

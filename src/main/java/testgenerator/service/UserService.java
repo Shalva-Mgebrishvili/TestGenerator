@@ -47,4 +47,12 @@ public class UserService {
 
         return user.isPresent();
     }
+
+    public UserEntity findByEmail(String email, Status status) {
+        Optional<UserEntity> user = repository.findByEmailAndStatus(email, status);
+
+        if(user.isEmpty()) throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User with email: " + email + " not found.");
+
+        return user.get();
+    }
 }

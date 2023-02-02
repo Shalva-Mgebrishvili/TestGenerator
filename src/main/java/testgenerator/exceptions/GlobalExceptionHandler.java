@@ -49,7 +49,11 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(AccessDeniedException.class)
     public ResponseEntity<Void> handleAccessDeniedException(AccessDeniedException e, HttpServletRequest request) {
-
+//        String message = e.getMessage();
+//
+//        ExceptionBody exceptionBody = new ExceptionBody(Integer.toString(HttpStatus.FORBIDDEN.value()), message, LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS), request.getRequestURI());
+//
+//        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(exceptionBody);
         return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
     }
 
