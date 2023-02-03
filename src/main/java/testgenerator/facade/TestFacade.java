@@ -1,6 +1,8 @@
 package testgenerator.facade;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.stereotype.Service;
@@ -42,17 +44,17 @@ public class TestFacade {
     private final CandidateService candidateService;
     private final KeycloakService keycloakService;
 
-//    public TestDto findById(Long id) {
-//        Test test = service.findById(id, Status.ACTIVE);
-//
-//        return TestMapper.testDto(test);
-//    }
-//
-//    public Page<TestDto> findAll(Pageable pageable) {
-//        Page<Test> allTests = service.findAll(Status.ACTIVE, pageable);
-//
-//        return allTests.map(TestMapper::testDto);
-//    }
+    public TestDto findById(Long id) {
+        Test test = service.findById(id, Status.ACTIVE);
+
+        return TestMapper.testDto(test);
+    }
+
+    public Page<TestDto> findAll(Pageable pageable) {
+        Page<Test> allTests = service.findAll(Status.ACTIVE, pageable);
+
+        return allTests.map(TestMapper::testDto);
+    }
 
     public TestDto add(TestAddParam param) {
         Seniority seniority = seniorityService.findById(param.getSeniority(), Status.ACTIVE);
@@ -136,6 +138,17 @@ public class TestFacade {
         TestResult testResult = testResultService.findById(param.getTestResultId(),Status.ACTIVE);
         UserEntity corrector = userService.findById(param.getCorrectorId(), Status.ACTIVE);
         Test test = testResult.getTest();
+
+        List<Stack> correctorStack = corrector.getStacks();
+
+        test.getTestStacks().stream().map(TestStack::getStack).toList().forEach(stack -> {
+            if(!correctorStack.contains(stack))
+                throw new ResponseStatusException(HttpStatus.CONFLICT,
+                        "You do not have authority to correct test with given stack(s)");
+        });
+
+        if (test.getTestStatus() != TestStatus.READY_FOR_CORRECTION)
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "Test should have \"READY_FOR_CORRECTION\" as test status");
 
         if(!testResult.getCorrector().contains(corrector)) testResult.getCorrector().add(corrector);
 

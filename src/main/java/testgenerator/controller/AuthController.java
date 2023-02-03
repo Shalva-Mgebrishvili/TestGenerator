@@ -30,11 +30,4 @@ public class AuthController {
     public ResponseEntity<UserDto> signUp(@RequestBody @Valid SignUpParam param) {
         return ResponseEntity.status(HttpStatus.CREATED).body(facade.signUp(param));
     }
-
-//    @PostMapping("/change-password")
-//    public ResponseEntity<Void> changePassword (@RequestBody @Valid PasswordChangeParam param) {
-//        facade.changePassword(param);
-//
-//        return ResponseEntity.status(HttpStatus.OK).build();
-//    }
 }

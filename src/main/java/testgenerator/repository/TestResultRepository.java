@@ -8,6 +8,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import testgenerator.model.domain.TestResult;
 import testgenerator.model.enums.Status;
+import testgenerator.model.enums.TestStatus;
 
 import java.util.Optional;
 
@@ -40,10 +41,12 @@ public interface TestResultRepository extends JpaRepository<TestResult, Long> {
         FROM TestResult t
         WHERE t.status = :status
         AND t.user.id = :user_id
+        AND t.test.testStatus = :test_status
         """)
     Page<TestResult> findAllByUserId(
             @Param("status") Status status,
             @Param("user_id") Long userId,
+            @Param("test_status") TestStatus testStatus,
             Pageable pageable
     );
 }

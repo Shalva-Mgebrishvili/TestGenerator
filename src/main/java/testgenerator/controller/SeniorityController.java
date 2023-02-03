@@ -39,20 +39,20 @@ public class SeniorityController {
         return ResponseEntity.status(HttpStatus.OK).body(facade.findAll(pageable));
     }
 
-    @PreAuthorize("hasRole('ADMIN') or hasRole('SUPER_ADMIN')")
+    @PreAuthorize("hasRole('CORRECTOR') or hasRole('ADMIN') or hasRole('SUPER_ADMIN')")
 
     @PostMapping
     public ResponseEntity<SeniorityDto> add(@RequestBody SeniorityAddUpdateParam param) {
         return ResponseEntity.status(HttpStatus.OK).body(facade.add(param));
     }
 
-    @PreAuthorize("hasRole('ADMIN') or hasRole('SUPER_ADMIN')")
+    @PreAuthorize("hasRole('CORRECTOR') or hasRole('ADMIN') or hasRole('SUPER_ADMIN')")
     @PutMapping("/{id}")
     public ResponseEntity<SeniorityDto> update(@PathVariable Long id, @RequestBody SeniorityAddUpdateParam param) {
         return ResponseEntity.status(HttpStatus.OK).body(facade.update(id, param));
     }
 
-    @PreAuthorize("hasRole('ADMIN') or hasRole('SUPER_ADMIN')")
+    @PreAuthorize("hasRole('CORRECTOR') or hasRole('ADMIN') or hasRole('SUPER_ADMIN')")
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
         facade.deleteById(id);

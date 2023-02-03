@@ -5,10 +5,9 @@ import testgenerator.model.dto.*;
 
 public class TestStackMapper {
     public static TestStackDto testStackDto(TestStack testStack){
-        StackDto stackDto = StackMapper.stackDto(testStack.getStack());
-        TestDto testDto = TestMapper.testDto(testStack.getTest());
+        StackShortDto stackShortDto = StackMapper.stackShortDto(testStack.getStack());
 
-        return new TestStackDto(testStack.getId(), stackDto, testDto);
+        return new TestStackDto(testStack.getId(), stackShortDto, testStack.getTest().getId());
     }
 
     public static TestStackShortDto testStackShortDto(TestStack testStack){

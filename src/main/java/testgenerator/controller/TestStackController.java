@@ -11,7 +11,6 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import testgenerator.facade.TestStackFacade;
 import testgenerator.model.dto.TestStackDto;
-import testgenerator.model.params.TestStackAddParam;
 
 @RestController
 @RequestMapping("/test-stacks")
@@ -36,12 +35,6 @@ public class TestStackController {
         Pageable pageable = PageRequest.of(page, size, Sort.by(direction, sort));
 
         return ResponseEntity.status(HttpStatus.OK).body(facade.findAll(pageable));
-    }
-
-    @PreAuthorize("hasRole('ROLE_USER') or hasRole('ROLE_ADMIN') or hasRole('ROLE_SUPER_ADMIN')")
-    @PostMapping
-    public ResponseEntity<TestStackDto> add(@RequestBody TestStackAddParam param) {
-        return ResponseEntity.status(HttpStatus.OK).body(facade.add(param));
     }
 
 }

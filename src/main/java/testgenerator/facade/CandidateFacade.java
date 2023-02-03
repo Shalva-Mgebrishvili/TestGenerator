@@ -13,17 +13,13 @@ import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
-import testgenerator.model.domain.Candidate;
-import testgenerator.model.domain.Test;
-import testgenerator.model.domain.TestResult;
-import testgenerator.model.domain.UserEntity;
+import testgenerator.model.domain.*;
 import testgenerator.model.dto.CandidateDto;
 import testgenerator.model.enums.Role;
 import testgenerator.model.enums.Status;
 import testgenerator.model.enums.TestStatus;
 import testgenerator.model.mapper.CandidateMapper;
 import testgenerator.model.params.CandidateAddParam;
-import testgenerator.model.params.CandidateCreateForYourselfParam;
 import testgenerator.service.*;
 
 
@@ -50,7 +46,7 @@ public class CandidateFacade {
         return CandidateMapper.candidateDto(candidate);
     }
 
-    public Page<CandidateDto> findAll(Pageable pageable){
+    public Page<CandidateDto> findAll(Pageable pageable) {
         Page<Candidate> allCandidates = service.findAll(Status.ACTIVE, pageable);
 
         return allCandidates.map(CandidateMapper::candidateDto);
@@ -59,16 +55,34 @@ public class CandidateFacade {
     @Transactional
     public void create(Long testId, CandidateAddParam param) {
         Test test = testService.findById(testId, Status.ACTIVE);
+
+        if (test.getTestStatus() != TestStatus.CREATED)
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "Test with Id: " + testId + " isn't available");
+
         List<UserEntity> users = param.getUser().stream().map
-                (currentUser -> userService.findById(currentUser,Status.ACTIVE)).toList();
+                (currentUser -> userService.findById(currentUser, Status.ACTIVE)).toList();
 
         double totalPoint = testQuestionService.getPointSum(test);
         List<Candidate> candidateList = new ArrayList<>();
 
+        List<Stack> testStacks = test.getTestStacks().stream().map(TestStack::getStack).toList();
+
         users.forEach(currUser -> {
-            if(service.existsByUserIdAndStatus(currUser.getId(), Status.ACTIVE)){
+            if(currUser.getStacks().isEmpty())
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+                        "User with Id " + currUser.getId() + " does not have stacks");
+
+            if (service.existsByUserIdAndStatus(currUser.getId(), Status.ACTIVE)) {
                 throw new ResponseStatusException(HttpStatus.CONFLICT, "Candidate with this userId already exists.");
             }
+
+            List<Stack> userStackList = currUser.getStacks();
+
+            testStacks.forEach(stack -> {
+                if (!userStackList.contains(stack))
+                    throw new ResponseStatusException(HttpStatus.CONFLICT,
+                            "User with Id " + currUser.getId() + " does not belong to given stack(s)");
+            });
 
             Candidate candidate = new Candidate(oneTimeUsername(), oneTimePassword(), currUser);
             candidate.setStatus(Status.ACTIVE);
@@ -81,11 +95,11 @@ public class CandidateFacade {
             Response response = keycloakService.addUserInKeycloak(candidateUser, candidate.getOneTimePassword());
             keycloakService.changeUserKeycloakRole(candidateUser, "CANDIDATE");
 
-            if(response.getStatus() != HttpStatus.CREATED.value())
+            if (response.getStatus() != HttpStatus.CREATED.value())
                 throw new ResponseStatusException(HttpStatus.CONFLICT, "User creation failed on keycloak");
 
             TestResult testResult = new TestResult(null, null, null,
-                    totalPoint, null, test, new ArrayList<>(), currUser,candidate);
+                    totalPoint, null, test, new ArrayList<>(), currUser, candidate);
 
             testResult.setStatus(Status.ACTIVE);
 
@@ -95,52 +109,52 @@ public class CandidateFacade {
 
     @Transactional
     public void createForYourself(Long testId, Jwt jwt) {
-        Test test = testService.findById(testId,Status.ACTIVE);
-        String email = (String) jwt.getClaims().get("email");
-        UserEntity user = userService.findByEmail(email,Status.ACTIVE);
+        Test test = testService.findById(testId, Status.ACTIVE);
 
-        if(service.existsByUserIdAndStatus(user.getId(), Status.ACTIVE)){
+        if (test.getTestStatus() != TestStatus.CREATED)
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "Test with Id: " + testId + " isn't available");
+
+        String email = (String) jwt.getClaims().get("email");
+        UserEntity user = userService.findByEmail(email, Status.ACTIVE);
+
+        if(user.getStacks().isEmpty())
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+                    "User with Id " + user.getId() + " does not have stacks");
+
+        if (service.existsByUserIdAndStatus(user.getId(), Status.ACTIVE)) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, "Candidate with this userId already exists.");
         }
 
-            Candidate candidate = new Candidate(oneTimeUsername(), oneTimePassword(), user);
-            candidate.setStatus(Status.ACTIVE);
-            service.add(candidate);
+        List<Stack> testStacks = test.getTestStacks().stream().map(TestStack::getStack).toList();
 
-            UserEntity candidateUser = new UserEntity(candidate.getOneTimeUsername(), user.getName(),
-                    user.getSurname(), user.getEmail(), Role.CANDIDATE, new ArrayList<>(), new ArrayList<>());
+        testStacks.forEach(stack -> {
+            if (!user.getStacks().contains(stack))
+                throw new ResponseStatusException(HttpStatus.CONFLICT,
+                        "You do not belong to given stack(s)");
+        });
 
-            Response response = keycloakService.addUserInKeycloak(candidateUser, candidate.getOneTimePassword());
-            keycloakService.changeUserKeycloakRole(candidateUser, "CANDIDATE");
+        Candidate candidate = new Candidate(oneTimeUsername(), oneTimePassword(), user);
+        candidate.setStatus(Status.ACTIVE);
+        service.add(candidate);
 
-            if(response.getStatus() != HttpStatus.CREATED.value())
-                throw new ResponseStatusException(HttpStatus.CONFLICT, "User creation failed on keycloak");
+        UserEntity candidateUser = new UserEntity(candidate.getOneTimeUsername(), user.getName(),
+                user.getSurname(), user.getEmail(), Role.CANDIDATE, new ArrayList<>(), new ArrayList<>());
 
-            double totalPoint = testQuestionService.getPointSum(test);
+        Response response = keycloakService.addUserInKeycloak(candidateUser, candidate.getOneTimePassword());
+        keycloakService.changeUserKeycloakRole(candidateUser, "CANDIDATE");
 
-            TestResult testResult = new TestResult(null, null, null,
+        if (response.getStatus() != HttpStatus.CREATED.value())
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "User creation failed on keycloak");
+
+        double totalPoint = testQuestionService.getPointSum(test);
+
+        TestResult testResult = new TestResult(null, null, null,
                 totalPoint, null, test, new ArrayList<>(), user, candidate);
 
-            testResult.setStatus(Status.ACTIVE);
+        testResult.setStatus(Status.ACTIVE);
 
-            testResultService.add(testResult);
+        testResultService.add(testResult);
     }
-
-//    public CandidateDto update(Long id, CandidateUpdateParam param) {
-//        TestResult testResult = testResultService.findById(param.getTestResult(), Status.ACTIVE);
-//        Candidate updateCandidate = service.findById(id,Status.ACTIVE);
-//        updateCandidate.getTestResults().add(testResult);
-//
-//        return CandidateMapper.candidateDto(service.add(updateCandidate));
-//        return null;
-//    }
-
-//    public void deleteById(Long id) {
-//        Candidate candidate = service.findById(id, Status.ACTIVE);
-//        candidate.setStatus(Status.DEACTIVATED);
-//
-//        service.add(candidate);
-//    }
 
     private String oneTimeUsername() {
         return RandomStringUtils.random(10, true, true).toLowerCase();

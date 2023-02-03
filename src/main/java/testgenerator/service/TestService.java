@@ -28,9 +28,9 @@ public class TestService {
         return test.get();
     }
 
-//    public Page<Test> findAll(Status status, Pageable pageable) {
-//        return repository.findAllByStatus(status, pageable);
-//    }
+    public Page<Test> findAll(Status status, Pageable pageable) {
+        return repository.findAllByStatus(status, pageable);
+    }
 
     public Test add(Test test) {
         return repository.save(test);

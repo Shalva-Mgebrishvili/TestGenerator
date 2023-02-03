@@ -13,6 +13,6 @@ import lombok.Setter;
 public class TestStackDto {
 
     private Long id;
-    private StackDto stack;
-    private TestDto test;
+    private StackShortDto stack;
+    private Long testId;
 }

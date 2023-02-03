@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.*;
 import testgenerator.facade.CandidateFacade;
 import testgenerator.model.dto.CandidateDto;
 import testgenerator.model.params.CandidateAddParam;
-import testgenerator.model.params.CandidateCreateForYourselfParam;
 
 
 @RestController
@@ -57,18 +56,5 @@ public class CandidateController {
         facade.createForYourself(testId, jwt);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
-
-//    @PreAuthorize("hasRole('ADMIN') or hasRole('SUPER_ADMIN')")
-//    @PutMapping("/{id}")
-//    public ResponseEntity<CandidateDto> update(@PathVariable Long id, @RequestBody CandidateUpdateParam param) {
-//        return ResponseEntity.status(HttpStatus.OK).body(facade.update(id, param));
-//    }
-
-//    @PreAuthorize("hasRole('ADMIN') or hasRole('SUPER_ADMIN')")
-//    @DeleteMapping("/{id}")
-//    public ResponseEntity<Void> delete(@PathVariable Long id) {
-//        facade.deleteById(id);
-//        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
-//    }
 
 }

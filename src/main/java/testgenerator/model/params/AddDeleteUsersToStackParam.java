@@ -7,7 +7,6 @@ import java.util.List;
 
 @Getter
 @Setter
-public class TestQuestionUpdateParam {
-
-    private List<Long> candidateAnswers;
+public class AddDeleteUsersToStackParam {
+    List<Long> userIdList;
 }

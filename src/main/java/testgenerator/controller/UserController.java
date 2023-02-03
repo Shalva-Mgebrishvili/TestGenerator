@@ -10,7 +10,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import testgenerator.facade.UserFacade;
-import testgenerator.model.dto.TestResultDto;
 import testgenerator.model.dto.UserDto;
 import testgenerator.model.dto.UserShortDto;
 import testgenerator.model.params.ChangeRoleParam;
@@ -49,13 +48,13 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.OK).body(facade.findAll(pageable));
     }
 
-    @PreAuthorize("hasRole('ADMIN') or hasRole('SUPER_ADMIN') or #id == authentication.principal.id")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('SUPER_ADMIN') or hasRole('CORRECTOR') or hasRole('USER')")
     @PutMapping("/{id}")
     public ResponseEntity<UserDto> update(@PathVariable Long id, @RequestBody @Valid UserUpdateParam param) {
         return ResponseEntity.status(HttpStatus.OK).body(facade.update(id, param));
     }
 
-    @PreAuthorize("hasRole('ADMIN') or hasRole('SUPER_ADMIN') or #id == authentication.principal.id")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('SUPER_ADMIN') or hasRole('CORRECTOR') or hasRole('USER')")
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
         facade.deleteById(id);
@@ -67,7 +66,5 @@ public class UserController {
     public ResponseEntity<UserDto> changeRole (@PathVariable Long id, @RequestBody ChangeRoleParam param) {
         return ResponseEntity.status(HttpStatus.OK).body(facade.changeRole(id, param));
     }
-
-
 
 }

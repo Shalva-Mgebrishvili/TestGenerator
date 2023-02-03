@@ -3,19 +3,20 @@ package testgenerator.facade;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 import testgenerator.model.domain.Stack;
-import testgenerator.model.domain.Topic;
 import testgenerator.model.dto.StackDto;
 import testgenerator.model.enums.Status;
 import testgenerator.model.mapper.StackMapper;
+import testgenerator.model.params.AddDeleteUsersToStackParam;
 import testgenerator.model.params.StackAddUpdateParam;
 import testgenerator.service.StackService;
-import testgenerator.service.TopicService;
+import testgenerator.service.UserService;
 
 import javax.transaction.Transactional;
 import java.util.ArrayList;
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -23,7 +24,7 @@ import java.util.List;
 public class StackFacade {
 
     private final StackService service;
-    private final TopicService topicService;
+    private final UserService userService;
 
     public StackDto findById(Long id) {
         Stack stack = service.findById(id, Status.ACTIVE);
@@ -38,7 +39,6 @@ public class StackFacade {
     }
 
     public StackDto add(StackAddUpdateParam param) {
-//        List<Topic> topics = param.getTopics().stream().map(t -> topicService.findById(t, Status.ACTIVE)).toList();
         Stack stack = new Stack(param.getName(), new ArrayList<>());
         stack.setStatus(Status.ACTIVE);
 
@@ -46,7 +46,6 @@ public class StackFacade {
     }
 //id
     public StackDto update(Long id, StackAddUpdateParam param) {
-//        List<Topic> topics = param.getTopics().stream().map(t -> topicService.findById(t, Status.ACTIVE)).toList();
         Stack updateStack = service.findById(id,Status.ACTIVE);
 
         updateStack.setName(param.getName());
@@ -59,5 +58,33 @@ public class StackFacade {
         stack.setStatus(Status.DEACTIVATED);
 
         service.add(stack);
+    }
+
+    public void addUsersToStack (Long stackId, AddDeleteUsersToStackParam param) {
+        Stack stack = service.findById(stackId, Status.ACTIVE);
+
+        param.getUserIdList().stream().map(user -> userService.findById(user, Status.ACTIVE)).
+                forEach(user -> {
+                    if(user.getStacks().contains(stack))
+                        throw new ResponseStatusException(HttpStatus.CONFLICT,
+                                "User with Id " + user.getId() + " has already have the given stack");
+
+                    user.getStacks().add(stack);
+                    userService.add(user);
+                });
+    }
+
+    public void deleteUsersFromStack (Long stackId, AddDeleteUsersToStackParam param) {
+        Stack stack = service.findById(stackId, Status.ACTIVE);
+
+        param.getUserIdList().stream().map(user -> userService.findById(user, Status.ACTIVE)).
+                forEach(user -> {
+                    if(!user.getStacks().contains(stack))
+                        throw new ResponseStatusException(HttpStatus.CONFLICT,
+                                "User with Id " + user.getId() + " does not have the given stack");
+
+                    user.getStacks().remove(stack);
+                    userService.add(user);
+                });
     }
 }

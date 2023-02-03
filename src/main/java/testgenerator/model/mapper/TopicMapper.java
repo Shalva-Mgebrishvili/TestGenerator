@@ -2,7 +2,7 @@ package testgenerator.model.mapper;
 
 import testgenerator.model.domain.Stack;
 import testgenerator.model.domain.Topic;
-import testgenerator.model.dto.StackDto;
+import testgenerator.model.dto.StackShortDto;
 import testgenerator.model.dto.TopicDto;
 import testgenerator.model.dto.TopicShortDto;
 import testgenerator.model.enums.Status;
@@ -11,9 +11,9 @@ import testgenerator.model.params.TopicAddUpdateParam;
 public class TopicMapper {
 
     public static TopicDto topicDto(Topic topic) {
-        StackDto stack = StackMapper.stackDto(topic.getStack());
+        StackShortDto stackShortDto = StackMapper.stackShortDto(topic.getStack());
 
-        return new TopicDto(topic.getId(), topic.getName(), stack);
+        return new TopicDto(topic.getId(), topic.getName(), stackShortDto);
     }
 
     public static Topic paramToTopic(TopicAddUpdateParam param, Stack stack) {

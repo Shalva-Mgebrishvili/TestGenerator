@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 import testgenerator.model.domain.TestResult;
 import testgenerator.model.enums.Status;
+import testgenerator.model.enums.TestStatus;
 import testgenerator.repository.TestResultRepository;
 
 import javax.transaction.Transactional;
@@ -33,7 +34,7 @@ public class TestResultService {
     }
 
     public Page<TestResult> findAllByUserId(Status status, Long userId, Pageable pageable) {
-        return repository.findAllByUserId(status, userId, pageable);
+        return repository.findAllByUserId(status, userId, TestStatus.CORRECTED, pageable);
     }
 
     public TestResult add(TestResult testResult) {

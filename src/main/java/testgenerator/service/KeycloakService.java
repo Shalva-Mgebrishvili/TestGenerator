@@ -94,8 +94,6 @@ public class KeycloakService {
     }
 
     public void updateUserInKeycloak(UserEntity user, UserUpdateParam param) {
-        UsersResource usersResource = keycloak.realm(AppConstants.REALM).users();
-
         UserResource userResource = keycloak.realm(AppConstants.REALM).users()
                 .get(searchUserIdInKeycloakByUsername(user.getUsername()));
 
@@ -125,8 +123,6 @@ public class KeycloakService {
     }
 
     public void changeUserKeycloakRole (UserEntity user, String role) {
-        UsersResource usersResource = keycloak.realm(AppConstants.REALM).users();
-
         UserResource userResource = keycloak.realm(AppConstants.REALM).users()
                 .get(searchUserIdInKeycloakByUsername(user.getUsername()));
 
@@ -147,26 +143,4 @@ public class KeycloakService {
 
         userResource.roles().realmLevel().remove(roleToRemove);
     }
-
-//    public String getPrincipalKeycloakId() {
-//        JwtAuthenticationToken jwt = (JwtAuthenticationToken) SecurityContextHolder.getContext().getAuthentication();
-//
-//        String keycloakId = jwt.getName();
-//
-//        if(keycloakId == null) throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Authorization error");
-//
-//        return keycloakId;
-//    }
-
-//    public boolean checkOldPassword (PasswordChangeParam param, String userKeycloakId) {
-//        boolean validPassword = false;
-//
-//        UserResource userResource = keycloak.realm(AppConstants.REALM).users().get(userKeycloakId);
-//        userResource.
-//        String email = userResource.toRepresentation().getEmail();
-//
-//        try {
-//            AccessTokenResponse  response =
-//        }
-//    }
 }

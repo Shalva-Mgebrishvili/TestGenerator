@@ -43,9 +43,8 @@ public class TestResultController {
     }
 
     @PreAuthorize("hasRole('ADMIN') or hasRole('SUPER_ADMIN') or hasRole('CORRECTOR') or hasRole('USER')")
-    @GetMapping("/find-all/{user-id}")
-    public ResponseEntity<Page<TestResultShortDto>> findAllByUserId (
-            @PathVariable("user-id") Long id,
+    @GetMapping("/my-test-results")
+    public ResponseEntity<Page<TestResultShortDto>> myTestResults (
             @RequestParam(value = "page", defaultValue = "0", required = false) Integer page,
             @RequestParam(value = "size", defaultValue = "20", required = false) Integer size,
             @RequestParam(value = "direction", defaultValue = "ASC", required = false) Sort.Direction direction,
@@ -54,24 +53,17 @@ public class TestResultController {
 
         Pageable pageable = PageRequest.of(page, size, Sort.by(direction, sort));
 
-        return ResponseEntity.status(HttpStatus.OK).body(facade.findAllByUserId(id, pageable, jwt));
+        return ResponseEntity.status(HttpStatus.OK).body(facade.myTestResults(pageable, jwt));
     }
 
     @PreAuthorize("hasRole('ADMIN') or hasRole('SUPER_ADMIN') or hasRole('CORRECTOR') or hasRole('USER')")
-    @GetMapping("/find-all/{user-id}/{test-result-id}")
-    public ResponseEntity<TestResultByUserIdAndTestResultIdDto> findByUserIdAndTestResultId (
-            @PathVariable("user-id") Long userId,
+    @GetMapping("/my-test-results/{test-result-id}")
+    public ResponseEntity<TestResultByUserIdAndTestResultIdDto> myTestResultById (
             @PathVariable("test-result-id") Long testResultId,
             @AuthenticationPrincipal Jwt jwt){
 
-        return ResponseEntity.status(HttpStatus.OK).body(facade.findByUserIdAndTestResultId(userId, testResultId, jwt));
+        return ResponseEntity.status(HttpStatus.OK).body(facade.myTestResultById(testResultId, jwt));
     }
-
-//    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_SUPER_ADMIN')")
-//    @PutMapping("/{id}")
-//    public ResponseEntity<TestResultDto> update(@PathVariable Long id, @RequestBody TestResultUpdateParam param) {
-//        return ResponseEntity.status(HttpStatus.OK).body(facade.update(id, param));
-//    }
 
     @PreAuthorize("hasRole('ROLE_SUPER_ADMIN')")
     @DeleteMapping("/{id}")

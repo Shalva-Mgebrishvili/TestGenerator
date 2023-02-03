@@ -38,11 +38,6 @@ public class AnswerController {
         return ResponseEntity.status(HttpStatus.OK).body(facade.findAll(pageable));
     }
 
-//    @PostMapping
-//    public ResponseEntity<AnswerDto> add(@RequestBody AnswerAddParam param) {
-//        return ResponseEntity.status(HttpStatus.OK).body(facade.add(param));
-//    }
-
     @PutMapping("/{id}")
     public ResponseEntity<AnswerDto> update(@PathVariable Long id, @RequestBody AnswerAddUpdateParam param) {
         return ResponseEntity.status(HttpStatus.OK).body(facade.update(id, param));

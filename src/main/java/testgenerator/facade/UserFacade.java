@@ -51,6 +51,9 @@ public class UserFacade {
     public UserDto update(Long id, UserUpdateParam param) {
         UserEntity updateUser = service.findById(id,Status.ACTIVE);
 
+        if(!keycloakService.getUserId().equals(id) && updateUser.getRole() == Role.USER)
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
+
         keycloakService.updateUserInKeycloak(updateUser, param);
 
         UserEntity user = UserMapper.updateUserWithParam(param, updateUser);
