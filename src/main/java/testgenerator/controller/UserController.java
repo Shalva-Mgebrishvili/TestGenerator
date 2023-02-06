@@ -61,7 +61,7 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
-    @PreAuthorize("hasRole('SUPER_ADMIN')")
+    @PreAuthorize("hasRole('SUPER_ADMIN') or hasRole('ADMIN')")
     @PostMapping("/{id}/change-role")
     public ResponseEntity<UserDto> changeRole (@PathVariable Long id, @RequestBody ChangeRoleParam param) {
         return ResponseEntity.status(HttpStatus.OK).body(facade.changeRole(id, param));

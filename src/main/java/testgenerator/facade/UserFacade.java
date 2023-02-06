@@ -6,6 +6,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
+import testgenerator.constants.AppConstants;
 import testgenerator.model.domain.UserEntity;
 import testgenerator.model.dto.UserDto;
 import testgenerator.model.dto.UserShortDto;
@@ -52,7 +53,8 @@ public class UserFacade {
         UserEntity updateUser = service.findById(id,Status.ACTIVE);
 
         if(!keycloakService.getUserId().equals(id) && updateUser.getRole() == Role.USER)
-            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED,
+                    "You don't have authority to update another user");
 
         keycloakService.updateUserInKeycloak(updateUser, param);
 
@@ -65,10 +67,15 @@ public class UserFacade {
     public void deleteById(Long id) {
         UserEntity user = service.findById(id, Status.ACTIVE);
 
+        if(!keycloakService.getUserId().equals(id) && user.getRole() == Role.USER)
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED,
+                    "You don't have authority to delete another user");
+
         Response response = keycloakService.deleteUserInKeycloak(user.getUsername());
 
         if(response.getStatus() != HttpStatus.NO_CONTENT.value())
-            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "An error occurred while trying to delete employee in authorization server!");
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,
+                    "An error occurred while trying to delete employee in authorization server!");
 
 
         user.setStatus(Status.DEACTIVATED);
@@ -80,7 +87,17 @@ public class UserFacade {
     public UserDto changeRole(Long id, ChangeRoleParam param) {
         UserEntity user = service.findById(id, Status.ACTIVE);
 
-        keycloakService.changeUserKeycloakRole(user, param.getNewRoles().get(0));
+        param.getNewRoles().forEach(role -> {
+            if(!AppConstants.AVAILABLE_ROLES.contains(role.toUpperCase()))
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Given role doesn't exist");
+        });
+
+        if(param.getNewRoles().contains("SUPER_ADMIN") &&
+                service.findById(keycloakService.getUserId(), Status.ACTIVE).getRole() != Role.SUPER_ADMIN)
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED,
+                    "You don't have authority to update user role to \"SUPER_ADMIN\"");
+
+        keycloakService.changeUserKeycloakRole(user, param.getNewRoles().get(0).toUpperCase());
 
         user.setRole(Role.valueOf(param.getNewRoles().get(0).toUpperCase()));
 
