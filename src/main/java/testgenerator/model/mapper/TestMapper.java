@@ -19,7 +19,7 @@ public class TestMapper {
 
         return new TestDto(test.getId(), test.getGivenTimeInMinutes(), test.getGivenTestStartDate(), test.getGivenTestEndDate(),
                 test.getNumberOfOpenQuestions(),test.getNumberOfSingleChoiceTestQuestions(), test.getNumberOfMultipleChoiceTestQuestions(),
-                 seniority, testStackDtos, testQuestionDtos);
+                 seniority, test.getQuestionStatus(), testStackDtos, testQuestionDtos);
     }
 
     public static Test paramToTest(Test test, TestAddParam param, Seniority seniority, List<TestStack> testStacks, List<TestQuestion> testQuestions) {
@@ -32,6 +32,7 @@ public class TestMapper {
         test.setNumberOfSingleChoiceTestQuestions(param.getNumberOfSingleChoiceTestQuestions());
         test.setNumberOfOpenQuestions(param.getNumberOfOpenQuestions());
         test.setGivenTimeInMinutes(param.getGivenTimeInMinutes());
+        test.setQuestionStatus(param.getQuestionStatus());
         test.setStatus(Status.ACTIVE);
 
         return test;

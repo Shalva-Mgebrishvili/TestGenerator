@@ -13,6 +13,7 @@ import testgenerator.model.dto.TestResultDto;
 import testgenerator.model.dto.TestResultShortDto;
 import testgenerator.model.enums.Role;
 import testgenerator.model.enums.Status;
+import testgenerator.model.enums.TestStatus;
 import testgenerator.model.mapper.TestResultMapper;
 import testgenerator.service.KeycloakService;
 import testgenerator.service.TestResultService;
@@ -54,7 +55,7 @@ public class TestResultFacade {
         System.out.println(roles);
 
         if(!userKeycloakId.equals(jwt.getSubject()) && !roles.contains(Role.ADMIN.name())
-                && !roles.contains(Role.SUPER_ADMIN.name()) && !roles.contains(Role.CORRECTOR.name()))
+                && !roles.contains(Role.SUPER_ADMIN.name()) && !roles.contains(Role.REVIEWER.name()))
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "User is not authorized");
 
         Page<TestResult> allUserTestResults = service.findAllByUserId(Status.ACTIVE, user.getId(), pageable);
@@ -68,11 +69,17 @@ public class TestResultFacade {
         TestResult testResult = testResultService.findById(testResultId,Status.ACTIVE);
         String userKeycloakId = keycloakService.searchUserIdInKeycloakByUsername(user.getUsername());
 
+        user.getTestResults().stream().map(TestResult::getTest).forEach(test -> {
+            if(test.getTestStatus() == TestStatus.ACTIVE)
+                throw new ResponseStatusException(HttpStatus.CONFLICT,
+                        "You can't view your test result history right now, you can view it after you finish current test");
+        });
+
         Map<String, List<String>> realmAccess = (Map<String, List<String>>) jwt.getClaims().get("realm_access");
         List<String> roles = realmAccess.get("roles");
 
         if(!userKeycloakId.equals(jwt.getSubject()) && !roles.contains(Role.ADMIN.name())
-                && !roles.contains(Role.SUPER_ADMIN.name()) && !roles.contains(Role.CORRECTOR.name()))
+                && !roles.contains(Role.SUPER_ADMIN.name()) && !roles.contains(Role.REVIEWER.name()))
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "User is not authorized");
 
         return TestResultMapper.testResultByUserIdAndTestResultIdDto(testResult);

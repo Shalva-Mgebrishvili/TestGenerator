@@ -9,7 +9,7 @@ import java.util.List;
 @Getter
 @Setter
 public class TestCorrectionParam {
-    private Long correctorId;
+    private Long reviewerId;
     private Long testResultId;
     private TestStatus testStatus;
     private List<CandidateAnswerUpdateParam> candidateAnswerUpdateParamList;

@@ -24,7 +24,7 @@ public class UserController {
 
     private final UserFacade facade;
 
-    @PreAuthorize("hasRole('ADMIN') or hasRole('SUPER_ADMIN') or hasRole('CORRECTOR')")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('SUPER_ADMIN') or hasRole('REVIEWER')")
     @GetMapping("/{id}")
     public ResponseEntity<UserDto> findById(@PathVariable Long id) {
         return ResponseEntity.status(HttpStatus.OK).body(facade.findById(id));
@@ -35,7 +35,7 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.OK).body(facade.currentUserProfile());
     }
 
-    @PreAuthorize("hasRole('ADMIN') or hasRole('SUPER_ADMIN') or hasRole('CORRECTOR')")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('SUPER_ADMIN') or hasRole('REVIEWER')")
     @GetMapping
     public ResponseEntity<Page<UserDto>> findAll(
             @RequestParam(value = "page", defaultValue = "0", required = false) Integer page,
@@ -48,23 +48,30 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.OK).body(facade.findAll(pageable));
     }
 
-    @PreAuthorize("hasRole('ADMIN') or hasRole('SUPER_ADMIN') or hasRole('CORRECTOR') or hasRole('USER')")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('SUPER_ADMIN') or hasRole('REVIEWER') or hasRole('USER')")
     @PutMapping("/{id}")
     public ResponseEntity<UserDto> update(@PathVariable Long id, @RequestBody @Valid UserUpdateParam param) {
         return ResponseEntity.status(HttpStatus.OK).body(facade.update(id, param));
-    }
-
-    @PreAuthorize("hasRole('ADMIN') or hasRole('SUPER_ADMIN') or hasRole('CORRECTOR') or hasRole('USER')")
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> delete(@PathVariable Long id) {
-        facade.deleteById(id);
-        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
     @PreAuthorize("hasRole('SUPER_ADMIN') or hasRole('ADMIN')")
     @PostMapping("/{id}/change-role")
     public ResponseEntity<UserDto> changeRole (@PathVariable Long id, @RequestBody ChangeRoleParam param) {
         return ResponseEntity.status(HttpStatus.OK).body(facade.changeRole(id, param));
+    }
+
+    @PreAuthorize("hasRole('ADMIN') or hasRole('SUPER_ADMIN') or hasRole('REVIEWER') or hasRole('USER')")
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deactivate(@PathVariable Long id) {
+        facade.deactivate(id);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+    }
+
+    @PreAuthorize("hasRole('SUPER_ADMIN')")
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> delete(@PathVariable Long id) {
+        facade.delete(id);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
 }

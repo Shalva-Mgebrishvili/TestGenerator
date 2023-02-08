@@ -91,6 +91,7 @@ public class QuestionFacade {
         updateQuestion.setTopic(topic);
         updateQuestion.setSeniority(seniority);
         updateQuestion.setAnswers(newAnswers);
+        updateQuestion.setQuestionStatus(param.getQuestionStatus());
 
         return QuestionMapper.questionDto(service.add(updateQuestion));
     }

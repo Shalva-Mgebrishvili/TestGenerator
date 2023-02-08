@@ -1,6 +1,7 @@
 package testgenerator.model.dto;
 
 import lombok.*;
+import testgenerator.model.enums.QuestionStatus;
 import testgenerator.model.enums.QuestionType;
 
 import java.util.List;
@@ -22,6 +23,8 @@ public class QuestionDto {
     private TopicShortDto topic;
 
     private SeniorityDto seniority;
+
+    private QuestionStatus questionStatus;
 
     private List<AnswerDto> answers;
 

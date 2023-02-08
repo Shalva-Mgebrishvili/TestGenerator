@@ -18,13 +18,13 @@ import testgenerator.model.dto.TestStackDto;
 public class TestStackController {
     private final TestStackFacade facade;
 
-    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_SUPER_ADMIN')")
+    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_SUPER_ADMIN') or hasRole('REVIEWER')")
     @GetMapping("/{id}")
     public ResponseEntity<TestStackDto> findById(@PathVariable Long id) {
         return ResponseEntity.status(HttpStatus.OK).body(facade.findById(id));
     }
 
-    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_SUPER_ADMIN')")
+    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_SUPER_ADMIN') or hasRole('REVIEWER')")
     @GetMapping
     public ResponseEntity<Page<TestStackDto>> findAll(
             @RequestParam(value = "page", defaultValue = "0", required = false) Integer page,

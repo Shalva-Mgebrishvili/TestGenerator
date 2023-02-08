@@ -55,4 +55,12 @@ public class UserService {
 
         return user.get();
     }
+
+    public UserEntity findOnlyById(Long id) {
+        Optional<UserEntity> user = repository.findOnlyById(id, Status.DEACTIVATED, Status.ACTIVE);
+
+        if (user.isEmpty()) throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User with ID: " + id + " not found.");
+
+        return user.get();
+    }
 }

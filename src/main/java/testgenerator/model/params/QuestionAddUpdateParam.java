@@ -2,6 +2,7 @@ package testgenerator.model.params;
 
 import lombok.Getter;
 import lombok.Setter;
+import testgenerator.model.enums.QuestionStatus;
 import testgenerator.model.enums.QuestionType;
 
 import java.util.List;
@@ -19,6 +20,8 @@ public class QuestionAddUpdateParam {
     private Long topic;
 
     private Long seniority;
+
+    private QuestionStatus questionStatus;
 
     private List<AnswerAddUpdateParam> answers;
 

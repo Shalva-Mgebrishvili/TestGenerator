@@ -57,6 +57,10 @@ public class TestFacade {
     }
 
     public TestDto add(TestAddParam param) {
+        if(param.getNumberOfOpenQuestions() == 0 && param.getNumberOfSingleChoiceTestQuestions() == 0 &&
+                param.getNumberOfMultipleChoiceTestQuestions() == 0)
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Test should have at least 1 question");
+
         Seniority seniority = seniorityService.findById(param.getSeniority(), Status.ACTIVE);
         List<Stack> stacks = param.getStacks().stream().map(s -> stackService.findById(s, Status.ACTIVE)).toList();
         List<Topic> topicList = param.getTopics().stream().map(t -> topicService.findById(t, Status.ACTIVE)).toList();
@@ -68,9 +72,12 @@ public class TestFacade {
             }
         });
 
-        questionService.findQuestionsForTest(Status.ACTIVE, QuestionType.OPEN_QUESTION, topicList, seniority, param.getNumberOfOpenQuestions(), questionList);
-        questionService.findQuestionsForTest(Status.ACTIVE, QuestionType.SINGLE_CHOICE_TEST, topicList, seniority, param.getNumberOfSingleChoiceTestQuestions(), questionList);
-        questionService.findQuestionsForTest(Status.ACTIVE, QuestionType.MULTIPLE_CHOICE_TEST, topicList, seniority, param.getNumberOfMultipleChoiceTestQuestions(), questionList);
+        questionService.findQuestionsForTest(Status.ACTIVE, QuestionType.OPEN_QUESTION, topicList, seniority,
+                param.getNumberOfOpenQuestions(), questionList, param.getQuestionStatus());
+        questionService.findQuestionsForTest(Status.ACTIVE, QuestionType.SINGLE_CHOICE_TEST, topicList, seniority,
+                param.getNumberOfSingleChoiceTestQuestions(), questionList, param.getQuestionStatus());
+        questionService.findQuestionsForTest(Status.ACTIVE, QuestionType.MULTIPLE_CHOICE_TEST, topicList, seniority,
+                param.getNumberOfMultipleChoiceTestQuestions(), questionList, param.getQuestionStatus());
 
         List<TestQuestion> testQuestionList = new ArrayList<>();
 
@@ -136,13 +143,13 @@ public class TestFacade {
     @Transactional
     public TestDto correction(TestCorrectionParam param) {
         TestResult testResult = testResultService.findById(param.getTestResultId(),Status.ACTIVE);
-        UserEntity corrector = userService.findById(param.getCorrectorId(), Status.ACTIVE);
+        UserEntity reviewer = userService.findById(param.getReviewerId(), Status.ACTIVE);
         Test test = testResult.getTest();
 
-        List<Stack> correctorStack = corrector.getStacks();
+        List<Stack> reviewerStack = reviewer.getStacks();
 
         test.getTestStacks().stream().map(TestStack::getStack).toList().forEach(stack -> {
-            if(!correctorStack.contains(stack))
+            if(!reviewerStack.contains(stack))
                 throw new ResponseStatusException(HttpStatus.CONFLICT,
                         "You do not have authority to correct test with given stack(s)");
         });
@@ -150,7 +157,7 @@ public class TestFacade {
         if (test.getTestStatus() != TestStatus.READY_FOR_CORRECTION)
             throw new ResponseStatusException(HttpStatus.CONFLICT, "Test should have \"READY_FOR_CORRECTION\" as test status");
 
-        if(!testResult.getCorrector().contains(corrector)) testResult.getCorrector().add(corrector);
+        if(!testResult.getReviewer().contains(reviewer)) testResult.getReviewer().add(reviewer);
 
         testResultService.add(testResult);
 

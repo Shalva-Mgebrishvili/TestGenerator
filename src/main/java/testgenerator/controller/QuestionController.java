@@ -16,7 +16,7 @@ import testgenerator.model.params.QuestionAddUpdateParam;
 
 @RestController
 @RequestMapping ("/questions")
-@PreAuthorize("hasRole('ADMIN') or hasRole('SUPER_ADMIN') or hasRole('CORRECTOR')")
+@PreAuthorize("hasRole('ADMIN') or hasRole('SUPER_ADMIN') or hasRole('REVIEWER')")
 @RequiredArgsConstructor
 public class QuestionController {
     private final QuestionFacade facade;

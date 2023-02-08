@@ -21,13 +21,13 @@ public class StackController {
 
     private final StackFacade facade;
 
-    @PreAuthorize("hasRole('CORRECTOR') or hasRole('ADMIN') or hasRole('SUPER_ADMIN')")
+    @PreAuthorize("hasRole('REVIEWER') or hasRole('ADMIN') or hasRole('SUPER_ADMIN')")
     @GetMapping("/{id}")
     public ResponseEntity<StackDto> findById(@PathVariable Long id) {
         return ResponseEntity.status(HttpStatus.OK).body(facade.findById(id));
     }
 
-    @PreAuthorize("hasRole('CORRECTOR') or hasRole('ADMIN') or hasRole('SUPER_ADMIN')")
+    @PreAuthorize("hasRole('REVIEWER') or hasRole('ADMIN') or hasRole('SUPER_ADMIN')")
     @GetMapping
     public ResponseEntity<Page<StackDto>> findAll(
             @RequestParam(value = "page", defaultValue = "0", required = false) Integer page,
@@ -40,33 +40,33 @@ public class StackController {
         return ResponseEntity.status(HttpStatus.OK).body(facade.findAll(pageable));
     }
 
-    @PreAuthorize("hasRole('ADMIN') or hasRole('SUPER_ADMIN') or hasRole('CORRECTOR')")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('SUPER_ADMIN') or hasRole('REVIEWER')")
     @PostMapping
     public ResponseEntity<StackDto> add(@RequestBody StackAddUpdateParam param) {
         return ResponseEntity.status(HttpStatus.OK).body(facade.add(param));
     }
 
-    @PreAuthorize("hasRole('ADMIN') or hasRole('SUPER_ADMIN') or hasRole('CORRECTOR')")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('SUPER_ADMIN') or hasRole('REVIEWER')")
     @PutMapping("/{id}")
     public ResponseEntity<StackDto> update(@PathVariable Long id, @RequestBody StackAddUpdateParam param) {
         return ResponseEntity.status(HttpStatus.OK).body(facade.update(id, param));
     }
 
-    @PreAuthorize("hasRole('ADMIN') or hasRole('SUPER_ADMIN') or hasRole('CORRECTOR')")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('SUPER_ADMIN') or hasRole('REVIEWER')")
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
         facade.deleteById(id);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
-    @PreAuthorize("hasRole('ADMIN') or hasRole('SUPER_ADMIN') or hasRole('CORRECTOR')")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('SUPER_ADMIN') or hasRole('REVIEWER')")
     @PostMapping("/{id}/add-users-to-stack")
     public ResponseEntity<Void> addUsersToStack(@PathVariable("id") Long stackId, @RequestBody AddDeleteUsersToStackParam param) {
         facade.addUsersToStack(stackId, param);
         return  ResponseEntity.status(HttpStatus.OK).build();
     }
 
-    @PreAuthorize("hasRole('ADMIN') or hasRole('SUPER_ADMIN') or hasRole('CORRECTOR')")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('SUPER_ADMIN') or hasRole('REVIEWER')")
     @PostMapping("/{id}/delete-users-from-stack")
     public ResponseEntity<Void> deleteUsersFromStack(@PathVariable("id") Long stackId, @RequestBody AddDeleteUsersToStackParam param) {
         facade.deleteUsersFromStack(stackId, param);

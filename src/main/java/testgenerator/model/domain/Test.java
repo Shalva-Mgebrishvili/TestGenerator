@@ -1,6 +1,7 @@
 package testgenerator.model.domain;
 
 import lombok.*;
+import testgenerator.model.enums.QuestionStatus;
 import testgenerator.model.enums.TestStatus;
 
 import javax.persistence.*;
@@ -49,5 +50,9 @@ public class Test extends SuperEntity {
     @Enumerated(EnumType.STRING)
     @Column(name = "test_status")
     private TestStatus testStatus;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "question_status", nullable = false)
+    private QuestionStatus questionStatus;
 
 }

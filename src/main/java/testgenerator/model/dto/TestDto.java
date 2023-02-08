@@ -1,6 +1,7 @@
 package testgenerator.model.dto;
 
 import lombok.*;
+import testgenerator.model.enums.QuestionStatus;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -27,6 +28,8 @@ public class TestDto {
     private Integer numberOfMultipleChoiceTestQuestions;
 
     private SeniorityDto seniority;
+
+    private QuestionStatus questionStatus;
 
     private List<TestStackShortDto> testStacks;
 

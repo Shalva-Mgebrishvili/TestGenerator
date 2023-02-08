@@ -3,7 +3,7 @@ package testgenerator.model.enums;
 public enum Role {
     CANDIDATE,
     USER,
-    CORRECTOR,
+    REVIEWER,
     ADMIN,
     SUPER_ADMIN
 }

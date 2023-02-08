@@ -6,6 +6,6 @@ import lombok.Setter;
 @Getter
 @Setter
 public class TestResultUpdateParam {
-    private Long corrector;
+    private Long reviewer;
 
 }

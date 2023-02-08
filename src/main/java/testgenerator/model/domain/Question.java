@@ -1,6 +1,7 @@
 package testgenerator.model.domain;
 
 import lombok.*;
+import testgenerator.model.enums.QuestionStatus;
 import testgenerator.model.enums.QuestionType;
 
 import javax.persistence.*;
@@ -25,6 +26,10 @@ public class Question extends SuperEntity {
     @Enumerated(EnumType.STRING)
     @Column(name = "question_type", nullable = false)
     private QuestionType questionType;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "question_status", nullable = false)
+    private QuestionStatus questionStatus;
 
     @ManyToOne
     @JoinColumn(name = "topic_id", nullable = false)

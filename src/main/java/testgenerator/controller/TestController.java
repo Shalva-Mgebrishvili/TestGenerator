@@ -26,13 +26,13 @@ public class TestController {
 
     private final TestFacade facade;
 
-    @PreAuthorize("hasRole('ADMIN') or hasRole('SUPER_ADMIN') or hasRole('CORRECTOR')")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('SUPER_ADMIN') or hasRole('REVIEWER')")
     @GetMapping("/{id}")
     public ResponseEntity<TestDto> findById(@PathVariable Long id) {
         return ResponseEntity.status(HttpStatus.OK).body(facade.findById(id));
     }
 
-    @PreAuthorize("hasRole('ADMIN') or hasRole('SUPER_ADMIN') or hasRole('CORRECTOR')")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('SUPER_ADMIN') or hasRole('REVIEWER')")
     @GetMapping
     public ResponseEntity<Page<TestDto>> findAll(
             @RequestParam(value = "page", defaultValue = "0", required = false)Integer page,
@@ -45,7 +45,7 @@ public class TestController {
         return ResponseEntity.status(HttpStatus.OK).body(facade.findAll(pageable));
     }
 
-    @PreAuthorize("hasRole('USER') or hasRole('ADMIN') or hasRole('SUPER_ADMIN') or hasRole('CORRECTOR')")
+    @PreAuthorize("hasRole('USER') or hasRole('ADMIN') or hasRole('SUPER_ADMIN') or hasRole('REVIEWER')")
     @PostMapping
     public ResponseEntity<TestDto> add(@RequestBody TestAddParam param) {
         return ResponseEntity.status(HttpStatus.OK).body(facade.add(param));
@@ -58,7 +58,7 @@ public class TestController {
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 
-    @PreAuthorize("hasRole('ADMIN') or hasRole('SUPER_ADMIN') or hasRole('CORRECTOR')")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('SUPER_ADMIN') or hasRole('REVIEWER')")
     @PutMapping("/correction")
     public ResponseEntity<TestDto> correction(@RequestBody TestCorrectionParam param) {
         return ResponseEntity.status(HttpStatus.OK).body(facade.correction(param));

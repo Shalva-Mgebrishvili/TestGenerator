@@ -15,7 +15,7 @@ import testgenerator.model.params.AnswerAddUpdateParam;
 
 @RestController
 @RequestMapping ("/answers")
-@PreAuthorize("hasRole('ADMIN') or hasRole('SUPER_ADMIN') or hasRole('CORRECTOR')")
+@PreAuthorize("hasRole('ADMIN') or hasRole('SUPER_ADMIN') or hasRole('REVIEWER')")
 @RequiredArgsConstructor
 public class AnswerController {
 

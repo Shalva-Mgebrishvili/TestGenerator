@@ -9,6 +9,7 @@ import org.springframework.web.server.ResponseStatusException;
 import testgenerator.model.domain.Question;
 import testgenerator.model.domain.Seniority;
 import testgenerator.model.domain.Topic;
+import testgenerator.model.enums.QuestionStatus;
 import testgenerator.model.enums.QuestionType;
 import testgenerator.model.enums.Status;
 import testgenerator.repository.QuestionRepository;
@@ -39,11 +40,12 @@ public class QuestionService {
         return repository.save(question);
     }
 
-    public void findQuestionsForTest(Status status, QuestionType questionType, List<Topic> topics, Seniority seniority, Integer numberOfQuestions, Set<Question> set){
+    public void findQuestionsForTest(Status status, QuestionType questionType, List<Topic> topics,
+                                     Seniority seniority, Integer numberOfQuestions, Set<Question> set, QuestionStatus questionStatus){
         List<Question> questions = new ArrayList<>();
 
         for(Topic topic: topics) {
-            questions.addAll(repository.findByQuestionTypeByTopicBySeniority(status, questionType, topic, seniority));
+            questions.addAll(repository.findByQuestionTypeByTopicBySeniority(status, questionType, topic, seniority, questionStatus));
         }
 
         if(questions.size()<numberOfQuestions) throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Indicated number of " + questionType + "S are not available");

@@ -23,13 +23,13 @@ public class CandidateController {
 
     private final CandidateFacade facade;
 
-    @PreAuthorize("hasRole('ADMIN') or hasRole('SUPER_ADMIN') or hasRole('CORRECTOR')")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('SUPER_ADMIN') or hasRole('REVIEWER')")
     @GetMapping("/{id}")
     public ResponseEntity<CandidateDto> findById(@PathVariable Long id) {
         return ResponseEntity.status(HttpStatus.OK).body(facade.findById(id));
     }
 
-    @PreAuthorize("hasRole('ADMIN') or hasRole('SUPER_ADMIN') or hasRole('CORRECTOR')")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('SUPER_ADMIN') or hasRole('REVIEWER')")
     @GetMapping
     public ResponseEntity<Page<CandidateDto>> findAll(
             @RequestParam(value = "page", defaultValue = "0", required = false) Integer page,
@@ -42,14 +42,14 @@ public class CandidateController {
         return ResponseEntity.status(HttpStatus.OK).body(facade.findAll(pageable));
     }
 
-    @PreAuthorize("hasRole('ADMIN') or hasRole('SUPER_ADMIN') or hasRole('CORRECTOR')")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('SUPER_ADMIN') or hasRole('REVIEWER')")
     @PostMapping("{id}/create")
     public ResponseEntity<Void> create(@PathVariable("id") Long testId, @RequestBody CandidateAddParam param) {
         facade.create(testId, param);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
-    @PreAuthorize("hasRole('USER') or hasRole('ADMIN') or hasRole('SUPER_ADMIN') or hasRole('CORRECTOR')")
+    @PreAuthorize("hasRole('USER') or hasRole('ADMIN') or hasRole('SUPER_ADMIN') or hasRole('REVIEWER')")
     @PostMapping("{id}/create-for-yourself")
     public ResponseEntity<Void> createForYourself(@PathVariable("id") Long testId,
                                                   @AuthenticationPrincipal Jwt jwt) {

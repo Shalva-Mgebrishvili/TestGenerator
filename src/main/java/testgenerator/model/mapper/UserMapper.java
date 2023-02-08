@@ -1,5 +1,6 @@
 package testgenerator.model.mapper;
 
+import testgenerator.model.domain.Stack;
 import testgenerator.model.domain.UserEntity;
 import testgenerator.model.dto.UserDto;
 import testgenerator.model.dto.UserShortDto;
@@ -9,6 +10,7 @@ import testgenerator.model.params.SignUpParam;
 import testgenerator.model.params.UserUpdateParam;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class UserMapper {
 
@@ -25,9 +27,9 @@ public class UserMapper {
         return user;
     }
 
-    public static UserEntity signUpParamToUser(SignUpParam param) {
+    public static UserEntity signUpParamToUser(SignUpParam param, List<Stack> stackList) {
         UserEntity user = new UserEntity(param.getUsername().toLowerCase(), param.getName(), param.getSurname(),
-                param.getEmail().toLowerCase(), Role.USER, new ArrayList<>(), new ArrayList<>());
+                param.getEmail().toLowerCase(), param.getRole(), new ArrayList<>(), stackList);
         user.setStatus(Status.ACTIVE);
 
         return user;

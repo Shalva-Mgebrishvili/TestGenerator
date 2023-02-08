@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 import testgenerator.model.domain.Question;
 import testgenerator.model.domain.Seniority;
 import testgenerator.model.domain.Topic;
+import testgenerator.model.enums.QuestionStatus;
 import testgenerator.model.enums.QuestionType;
 import testgenerator.model.enums.Status;
 
@@ -46,11 +47,13 @@ public interface QuestionRepository extends JpaRepository<Question, Long> {
         AND q.questionType = :question_type
         AND q.topic = :topic
         AND q.seniority = :seniority
+        AND q.questionStatus = :question_status
         """)
     List<Question> findByQuestionTypeByTopicBySeniority(
             @Param("status") Status status,
             @Param("question_type") QuestionType questionType,
             @Param("topic") Topic topic,
-            @Param("seniority") Seniority seniority
+            @Param("seniority") Seniority seniority,
+            @Param("question_status") QuestionStatus questionStatus
             );
 }

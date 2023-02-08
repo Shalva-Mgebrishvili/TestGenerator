@@ -15,7 +15,7 @@ public class TestResultMapper {
     public static TestResultDto testResultDto(TestResult testResult){
         TestDto test = TestMapper.testDto(testResult.getTest());
         UserShortDto user = UserMapper.userShortDto(testResult.getUser());
-        List<UserShortDto> correctors = testResult.getCorrector().stream().map(UserMapper::userShortDto).toList();
+        List<UserShortDto> reviewers = testResult.getReviewer().stream().map(UserMapper::userShortDto).toList();
 
         TestResultDto testResultDto = new TestResultDto();
 
@@ -26,7 +26,7 @@ public class TestResultMapper {
         testResultDto.setTotalPoint(testResult.getTotalPoint());
         testResultDto.setCandidateScore(testResult.getCandidateScore());
         testResultDto.setTest(test);
-        testResultDto.setCorrector(correctors);
+        testResultDto.setReviewer(reviewers);
         testResultDto.setUser(user);
 
         return testResultDto;

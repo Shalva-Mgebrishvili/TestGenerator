@@ -29,7 +29,7 @@ public class TestResultDto {
 
     private TestDto test;
 
-    private List<UserShortDto> corrector;
+    private List<UserShortDto> reviewer;
 
     private UserShortDto user;
 

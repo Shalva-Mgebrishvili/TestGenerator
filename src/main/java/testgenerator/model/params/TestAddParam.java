@@ -2,6 +2,7 @@ package testgenerator.model.params;
 
 import lombok.Getter;
 import lombok.Setter;
+import testgenerator.model.enums.QuestionStatus;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -23,6 +24,8 @@ public class TestAddParam {
     private Integer numberOfMultipleChoiceTestQuestions;
 
     private Long seniority;
+
+    private QuestionStatus questionStatus;
 
     private List<Long> stacks;
 

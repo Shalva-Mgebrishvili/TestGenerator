@@ -26,7 +26,7 @@ public class QuestionMapper {
         }
 
         return new QuestionDto(question.getId(), question.getText(), question.getPoint(),
-                question.getQuestionType(), topic, seniority, answerDtos);
+                question.getQuestionType(), topic, seniority, question.getQuestionStatus(), answerDtos);
     }
 
     public static Question paramToQuestion(QuestionAddUpdateParam param, List<Answer> answers, Topic topic, Seniority seniority) {
@@ -39,6 +39,7 @@ public class QuestionMapper {
         question.setSeniority(seniority);
         question.setPoint(param.getPoint());
         question.setTopic(topic);
+        question.setQuestionStatus(param.getQuestionStatus());
         question.setStatus(Status.ACTIVE);
 
         return question;

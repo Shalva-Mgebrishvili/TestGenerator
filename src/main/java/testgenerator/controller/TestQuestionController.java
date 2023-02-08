@@ -19,13 +19,13 @@ public class TestQuestionController {
 
     private final TestQuestionFacade facade;
 
-    @PreAuthorize("hasRole('ADMIN') or hasRole('SUPER_ADMIN') or hasRole('CORRECTOR')")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('SUPER_ADMIN') or hasRole('REVIEWER')")
     @GetMapping("/{id}")
     public ResponseEntity<TestQuestionDto> findById(@PathVariable Long id) {
         return ResponseEntity.status(HttpStatus.OK).body(facade.findById(id));
     }
 
-    @PreAuthorize("hasRole('ADMIN') or hasRole('SUPER_ADMIN') or hasRole('CORRECTOR')")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('SUPER_ADMIN') or hasRole('REVIEWER')")
     @GetMapping
     public ResponseEntity<Page<TestQuestionDto>> findAll(
             @RequestParam(value = "page", defaultValue = "0", required = false) Integer page,

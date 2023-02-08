@@ -1,6 +1,7 @@
 package testgenerator.facade;
 
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -64,26 +65,6 @@ public class UserFacade {
     }
 
     @Transactional
-    public void deleteById(Long id) {
-        UserEntity user = service.findById(id, Status.ACTIVE);
-
-        if(!keycloakService.getUserId().equals(id) && user.getRole() == Role.USER)
-            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED,
-                    "You don't have authority to delete another user");
-
-        Response response = keycloakService.deleteUserInKeycloak(user.getUsername());
-
-        if(response.getStatus() != HttpStatus.NO_CONTENT.value())
-            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,
-                    "An error occurred while trying to delete employee in authorization server!");
-
-
-        user.setStatus(Status.DEACTIVATED);
-        service.add(user);
-
-    }
-
-    @Transactional
     public UserDto changeRole(Long id, ChangeRoleParam param) {
         UserEntity user = service.findById(id, Status.ACTIVE);
 
@@ -103,4 +84,48 @@ public class UserFacade {
 
         return UserMapper.userDto(service.add(user));
     }
+
+    @Transactional
+    public void deactivate(Long id) {
+        UserEntity user = service.findById(id, Status.ACTIVE);
+
+        if(!keycloakService.getUserId().equals(id) && user.getRole() == Role.USER)
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED,
+                    "You don't have authority to delete another user");
+
+        Response response = keycloakService.deleteUserInKeycloak(user.getUsername());
+
+        if(response.getStatus() != HttpStatus.NO_CONTENT.value())
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,
+                    "An error occurred while trying to delete employee in authorization server!");
+
+
+        user.setStatus(Status.DEACTIVATED);
+        service.add(user);
+
+    }
+
+    @Transactional
+    public void delete(Long id) {
+        UserEntity user = service.findOnlyById(id);
+
+        Response response = keycloakService.deleteUserInKeycloak(user.getUsername());
+
+        if(response.getStatus() != HttpStatus.NO_CONTENT.value())
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,
+                    "An error occurred while trying to delete employee in authorization server!");
+
+        user.setName(randomString());
+        user.setSurname(randomString());
+        user.setUsername(randomString());
+        user.setStatus(Status.DELETED);
+        service.add(user);
+    }
+
+    private String randomString() {
+        return RandomStringUtils.random(10, true, true);
+    }
+
+
+
 }

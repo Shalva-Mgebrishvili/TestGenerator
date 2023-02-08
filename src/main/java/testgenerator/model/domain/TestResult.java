@@ -34,10 +34,10 @@ public class TestResult extends SuperEntity {
     private Test test;
 
     @ManyToMany
-    @JoinTable(name = "corrector_testResult",
+    @JoinTable(name = "reviewer_testResult",
     joinColumns = @JoinColumn(name = "testResult_id"),
-    inverseJoinColumns = @JoinColumn(name = "corrector_id"))
-    private List<UserEntity> corrector;
+    inverseJoinColumns = @JoinColumn(name = "reviewer_id"))
+    private List<UserEntity> reviewer;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
